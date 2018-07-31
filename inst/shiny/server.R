@@ -40,44 +40,44 @@ shinyServer(function(input, output, session) {
             if (is.null(input$pathInputData)) {
                 return(NULL)
             }
-            rv$data_User <- data.table::fread(input$pathInputData$datapath,
-                                              data.table = FALSE)
+            rv$data_User <- data.table::fread(input$pathInputData$datapath)
         })
         rv$names_User <- rv$names_UserAfter <- colnames(rv$data_User)
     })
 
-    observeEvent(input$pathInputDictonary, {
-        if (is.null(input$pathInputDictonary)) {
-            return(NULL)
-        }
-        d <- data.table::fread(input$pathInputDictonary$datapath, 
-                               data.table = FALSE)
-        if (ncol(d) == 2 & 
-            any(grepl("fieldname", colnames(d), ignore.case = TRUE)) &
-            any(grepl("standard", colnames(d), ignore.case = TRUE))) {
-            rv$dic_User <- d
+    observeEvent(input$pathInputDictionary, {
+        d <- data.table::fread(input$pathInputDictionary$datapath)
+        colnames(d) <- tolower(colnames(d))
+        if (sum(grepl("fieldname", colnames(d))) == 1 & 
+            sum(grepl("standard", colnames(d))) == 1) {
+            rv$dic_User <- subset(d, select = c("fieldname", "standard"))
         } else {
-            warning("Data was wrong format")
+            warning("Given dictionary was in wrong format")
         }
     })
 
     observeEvent(input$submitToDarwinizer, {
-        library(data.table)
         rv$dic_Darwinizer <- data.table::fread("/Users/pogibas/work/bdDwC/data/dw.csv")
-        rv$dic_Darwinizer <- rv$dic_Darwinizer[standard != ""]
-        rv$dic_Rename <- rbind(rv$dic_User, rv$dic_Darwinizer[, c("fieldname", "standard")])
+        rv$dic_Darwinizer <- subset(rv$dic_Darwinizer, standard != "")
+
         rv$names_Standard <- unique(rv$dic_Darwinizer$standard)
         rv$names_StandardAfter <- unique(rv$dic_Darwinizer$standard)
+
+        rv$dic_Rename <- rbind(rv$dic_User, 
+                               rv$dic_Darwinizer[, c("fieldname", "standard")])
         rv$data_Darwinized <- darwinazeNames(rv$data_User, rv$dic_Rename)
 
         # Chechboxes
-        rv$data_Rename <- data.frame(nameOld = rv$data_Darwinized$fieldname,
-                        nameNew = rv$data_Darwinized$standard,
-                        nameRename = NA)
-        rv$data_Rename$nameRename <- as.character(apply(rv$data_Rename[, 1:2], 1, paste, collapse = "  "))
-        rv$names_StandardAfter <- rv$names_Standard[!rv$names_Standard %in% rv$data_Rename$nameNew]
-        rv$names_UserAfter <- rv$names_User[!rv$names_User %in% rv$data_Rename$nameOld]
-
+        # Update if something was darwinized
+        if (nrow(rv$data_Darwinized) > 0) {
+            rv$data_Rename <- data.frame(nameOld = rv$data_Darwinized$fieldname,
+                                         nameNew = rv$data_Darwinized$standard,
+                                         nameRename = NA,
+                                         stringsAsFactors = FALSE)
+            rv$data_Rename$nameRename <- as.character(apply(rv$data_Rename[, 1:2], 1, paste, collapse = "\n"))
+            rv$names_StandardAfter <- rv$names_Standard[!rv$names_Standard %in% rv$data_Rename$nameNew]
+            rv$names_UserAfter <- rv$names_User[!rv$names_User %in% rv$data_Rename$nameOld]
+        }
     })
 
 
@@ -108,15 +108,17 @@ shinyServer(function(input, output, session) {
         rv$data_Rename <- rbind(rv$data_Rename,
               data.frame(nameOld = input$names_User_radio, 
                         nameNew = input$names_Standard_radio,
-                        nameRename = NA))
-        rv$data_Rename$nameRename <- as.character(apply(rv$data_Rename[, 1:2], 1, paste, collapse = "  "))
+                        nameRename = NA,
+                        stringsAsFactors = FALSE))
+        rv$data_Rename$nameRename <- as.character(apply(rv$data_Rename[, 1:2], 1, paste, collapse = "\n"))
         rv$names_StandardAfter <- rv$names_Standard[!rv$names_Standard %in% rv$data_Rename$nameNew]
         rv$names_UserAfter <- rv$names_User[!rv$names_User %in% rv$data_Rename$nameOld]
+        saveRDS(rv$data_Rename, "~/Desktop/foo.RDS")
     })
     observeEvent(input$names_Remove, {
         foo <- !rv$data_Rename$nameRename %in% input$names_Renamed
         rv$data_Rename <- rv$data_Rename[foo, ]
-        rv$data_Rename$nameRename <- as.character(apply(rv$data_Rename[, 1:2], 1, paste, collapse = "  "))
+        rv$data_Rename$nameRename <- as.character(apply(rv$data_Rename[, 1:2], 1, paste, collapse = "\n"))
         rv$names_StandardAfter <- rv$names_Standard[!rv$names_Standard %in% rv$data_Rename$nameNew]
         rv$names_UserAfter <- rv$names_User[!rv$names_User %in% rv$data_Rename$nameOld]
     })
@@ -125,13 +127,16 @@ shinyServer(function(input, output, session) {
         rv$names_StandardAfter <- rv$names_Standard[!rv$names_Standard %in% rv$data_Rename$nameNew]
         rv$names_UserAfter <- rv$names_User[!rv$names_User %in% rv$data_Rename$nameOld]
     })
-   observeEvent(input$names_Reverse, {
-        rv$data_Rename <- data.frame(nameOld = rv$data_Darwinized$fieldname,
-                                     nameNew = rv$data_Darwinized$standard,
-                                     nameRename = NA)
-        rv$data_Rename$nameRename <- as.character(apply(rv$data_Rename[, 1:2], 1, paste, collapse = "  "))
-        rv$names_StandardAfter <- rv$names_Standard[!rv$names_Standard %in% rv$data_Rename$nameNew]
-        rv$names_UserAfter <- rv$names_User[!rv$names_User %in% rv$data_Rename$nameOld]
+   observeEvent(input$names_Rollback, {
+        if (nrow(rv$data_Darwinized) > 0) {
+            rv$data_Rename <- data.frame(nameOld = rv$data_Darwinized$fieldname,
+                                         nameNew = rv$data_Darwinized$standard,
+                                         nameRename = NA,
+                                         stringsAsFactors = FALSE)
+            rv$data_Rename$nameRename <- as.character(apply(rv$data_Rename[, 1:2], 1, paste, collapse = "\n"))
+            rv$names_StandardAfter <- rv$names_Standard[!rv$names_Standard %in% rv$data_Rename$nameNew]
+            rv$names_UserAfter <- rv$names_User[!rv$names_User %in% rv$data_Rename$nameOld]
+        }
     })
 
 
@@ -139,12 +144,22 @@ shinyServer(function(input, output, session) {
     output$names_Standard_Hover <- renderUI({
         result <- list()
         for(i in sort(rv$names_StandardAfter)) {
-            bar <- subset(darwinizeInfo, name == i)$definition
-            if (length(bar) == 0) {
-                bar <- "NO"
+            info <- subset(darwinizeInfo, name == i)$definition
+            if (length(info) == 0) {
+                info <- "NO"
             }
-            result[[i]] <- bsTooltip(paste0("DWC_", i), bar, "right", "hover")
+            result[[i]] <- bsTooltip(paste0("DWC_", i), info, "right", "hover")
         }
         do.call(tagList, result)
     })
+
+    output$downloadData <- downloadHandler(
+        filename = function() {
+            paste0("Darwinized-", Sys.Date(), ".csv")
+        },
+        content = function(con) {
+            write.csv(renameUserData(rv$data_User, rv$data_Rename), 
+                      con, row.names = FALSE, col.names = TRUE)
+        }
+    )
 })

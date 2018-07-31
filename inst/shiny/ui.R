@@ -7,32 +7,29 @@ fluidPage(
     tabsetPanel(type = "pills",
 
         tabPanel("Upload Data",
-            fileInput("pathInputData",
-                      "Choose a csv file",
+            fileInput("pathInputData", "Choose dataset",
                       multiple = FALSE,
-                      c("text/csv", ".csv",
-                        "text/comma-separated-values,text/plain")),
-            fileInput("pathInputDictonary",
-                      "Choose a csv file",
+                      c("text/csv", ".csv", "text/comma-separated-values,text/plain")),
+            fileInput("pathInputDictionary", "Choose dictionary",
                       multiple = FALSE,
-                      c("text/csv", ".csv",
-                        "text/comma-separated-values,text/plain")),
-            actionButton("submitToDarwinizer", 
-                         "Submit to Darwinizer")
+                      c("text/csv", ".csv", "text/comma-separated-values,text/plain")),
+            actionButton("submitToDarwinizer", "Submit to Darwinizer")
         ),
 
         tabPanel("Darwinizer",
+            fluidRow(
+              actionButton("names_Rename", "Rename"),
+              actionButton("names_Remove", "Remove selected rename"),
+              actionButton("names_Clean", "Remove all renames"),
+              actionButton("names_Rollback", "Rollback to Darwinizer")),
             column(2, uiOutput("names_User")),
             column(2, uiOutput("names_Standard"), 
-                      uiOutput("names_Standard_Hover")),
-            actionButton("names_Rename", "RENAME"),
-            actionButton("names_Remove", "REMOVE"),
-            actionButton("names_Clean", "CLEAN"),
-            actionButton("names_Reverse", "REVERSE"),
-            column(2, uiOutput("names_Renamed"))
+                      uiOutput("names_Standard_Hover"), offset = 1),
+            column(2, uiOutput("names_Renamed"), offset = 1)
         ),
 
-        tabPanel("Results")
+        tabPanel("Results",
+            downloadButton("downloadData", "Download Darwinized data"))
 
     )
 )
