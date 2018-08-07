@@ -13,7 +13,10 @@ fluidPage(title = "Darwinizer",
             fileInput("pathInputDictionary", "Choose dictionary",
                       multiple = FALSE,
                       c("text/csv", ".csv", "text/comma-separated-values,text/plain")),
-            uiOutput("names_User_Field"), uiOutput("names_User_Standard")
+            splitLayout(uiOutput("names_User_Field"), 
+                        uiOutput("names_User_Standard"),
+                        cellWidths = 200,
+                        cellArgs = list(style = "padding: 6px"))
         ),
 
         mainPanel(

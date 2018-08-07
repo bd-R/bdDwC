@@ -76,20 +76,16 @@ shinyServer(function(input, output, session) {
         if (nrow(rv$dic_UserRaw) == 0) {
             return(NULL)
         } else {
-            radioButtons("names_User_Field", 
-                         "Field Name",
-                         rv$names_UserRaw[!rv$names_UserRaw %in% input$names_User_Standard],
-                         rv$names_UserRaw[1])
-            # RAW <- radioButtons("names_User_Field", 
-            #                     "Field Names",
-            #                     rv$names_UserRaw.
-            #                     rv$names_UserRaw[1])
-            # for(i in rv$names_UserRaw) {
-            #     RAW <- gsub(paste0('<span>', i, '</span>'), 
-            #                 paste0('<span id="userField_', i, '">', i, '</span>'), 
-            #                 RAW)
-            # }
-            # HTML(RAW)
+            RAW <- radioButtons("names_User_Field", 
+                                "Field Names",
+                                rv$names_UserRaw,
+                                1)
+            for(i in rv$names_UserRaw) {
+                RAW <- gsub(paste0('<span>', i, '</span>'), 
+                            paste0('<span id="userField_', i, '">', i, '</span>'), 
+                            RAW)
+            }
+            HTML(RAW)
         }
     })
 
@@ -97,28 +93,28 @@ shinyServer(function(input, output, session) {
         if (nrow(rv$dic_UserRaw) == 0) {
             return(NULL)
         } else {
-            radioButtons("names_User_Standard", 
-                         "Standard Name",
-                         rv$names_UserRaw[!rv$names_UserRaw %in% input$names_User_Field],
-                         rv$names_UserRaw[2])
-            # RAW <- radioButtons("names_User_Standard", 
-            #                     "Standard Names",
-            #                     rv$names_UserRaw,
-            #                     rv$names_UserRaw[2])
-            # for(i in rv$names_UserRaw) {
-            #     RAW <- gsub(paste0('<span>', i, '</span>'), 
-            #                 paste0('<span id="userStandard_', i, '">', i, '</span>'), 
-            #                 RAW)
-            # }
-            # HTML(RAW)
+            RAW <- radioButtons("names_User_Standard", 
+                                "Standard Names",
+                                rv$names_UserRaw,
+                                2)
+            for(i in rv$names_UserRaw) {
+                RAW <- gsub(paste0('<span>', i, '</span>'), 
+                            paste0('<span id="userStandard_', i, '">', i, '</span>'), 
+                            RAW)
+            }
+            HTML(RAW)
         }
     })
 
     observeEvent(input$names_User_Standard, {
-        shinyjs::disable(id = paste0("userField_", input$names_User_Standard))
+        result <- grepl(input$names_User_Standard, rv$names_UserRaw)
+        shinyjs::disable(selector = paste0("#names_User_Field .radio:nth-child(", which(result),") label"))
+        shinyjs::enable(selector = paste0("#names_User_Field .radio:nth-child(", which(!result),") label"))
     })
     observeEvent(input$names_User_Field, {
-        shinyjs::disable(id = paste0("userStandard_", input$names_User_Field))
+        result <- grepl(input$names_User_Field, rv$names_UserRaw)
+        shinyjs::disable(selector = paste0("#names_User_Standard .radio:nth-child(", which(result),") label"))
+        shinyjs::enable(selector = paste0("#names_User_Standard .radio:nth-child(", which(!result),") label"))
     })
 
 
