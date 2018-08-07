@@ -3,7 +3,7 @@ shinyServer(function(input, output, session) {
     showModal(modalDialog(
         title = h3("Welcome to Darwinizer!"),
         p("Darwinize Your Data"),
-        img(src = "www/bdverse.png", align = "center"),
+        img(src = "bdverse.png", align = "center", width = "570"),
         helpText(
             "MIT License ©Tomer Gueta, Vijay Barve, Povilas Gibas, Thiloshon Nagarajah, Ashwin Agrawal and Carmel Yohay (2018).",
             br(),
@@ -58,6 +58,13 @@ shinyServer(function(input, output, session) {
         } else {
             shinyjs::disable("submitToDarwinizer")
         }
+    })
+    observeEvent(input$submitToDarwinizer, {
+        shinyjs::enable("names_Rename") 
+        shinyjs::enable("names_Remove") 
+        shinyjs::enable("names_Clean") 
+        shinyjs::enable("names_Rollback") 
+        shinyjs::enable("downloadData") 
     })
 
     observeEvent(input$pathInputDictionary, {
