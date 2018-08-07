@@ -19,6 +19,7 @@ shinyServer(function(input, output, session) {
         easyClose = TRUE
     ))
 
+
     rv <- reactiveValues(
         data_User           = data.frame(),
         data_Darwinized     = data.frame(),
@@ -45,11 +46,25 @@ shinyServer(function(input, output, session) {
         rv$names_User <- rv$names_UserAfter <- colnames(rv$data_User)
     })
 
+    output$submitToDarwinizer_Pop <- renderUI({
+        text <- paste("bdDwC uses references dictionary downloaded from the github.com/kurator-org/kurator-validation, last update at",
+                      bdDwC:::dataDarwinCloud[[2]], ". But you can also add your own dictionary to the bdDwC using file input slot bellow.")
+        bsPopover("submitToDarwinizer", title = "Add you own dictionary", text)
+    })
+
+    observe({
+        if (nrow(rv$data_User) > 0) {
+            shinyjs::enable("submitToDarwinizer") 
+        } else {
+            shinyjs::disable("submitToDarwinizer")
+        }
+    })
+
     observeEvent(input$pathInputDictionary, {
         rv$dic_UserRaw <- data.table::fread(input$pathInputDictionary$datapath)
         rv$names_UserRaw <- sort(colnames(rv$dic_UserRaw))
-
     })
+
     output$names_User_Field <- renderUI({
         if (nrow(rv$dic_UserRaw) == 0) {
             return(NULL)
@@ -57,9 +72,20 @@ shinyServer(function(input, output, session) {
             radioButtons("names_User_Field", 
                          "Field Name",
                          rv$names_UserRaw[!rv$names_UserRaw %in% input$names_User_Standard],
-                        rv$names_UserRaw[1])
+                         rv$names_UserRaw[1])
+            # RAW <- radioButtons("names_User_Field", 
+            #                     "Field Names",
+            #                     rv$names_UserRaw.
+            #                     rv$names_UserRaw[1])
+            # for(i in rv$names_UserRaw) {
+            #     RAW <- gsub(paste0('<span>', i, '</span>'), 
+            #                 paste0('<span id="userField_', i, '">', i, '</span>'), 
+            #                 RAW)
+            # }
+            # HTML(RAW)
         }
     })
+
     output$names_User_Standard <- renderUI({
         if (nrow(rv$dic_UserRaw) == 0) {
             return(NULL)
@@ -67,9 +93,27 @@ shinyServer(function(input, output, session) {
             radioButtons("names_User_Standard", 
                          "Standard Name",
                          rv$names_UserRaw[!rv$names_UserRaw %in% input$names_User_Field],
-                          rv$names_UserRaw[2])
+                         rv$names_UserRaw[2])
+            # RAW <- radioButtons("names_User_Standard", 
+            #                     "Standard Names",
+            #                     rv$names_UserRaw,
+            #                     rv$names_UserRaw[2])
+            # for(i in rv$names_UserRaw) {
+            #     RAW <- gsub(paste0('<span>', i, '</span>'), 
+            #                 paste0('<span id="userStandard_', i, '">', i, '</span>'), 
+            #                 RAW)
+            # }
+            # HTML(RAW)
         }
     })
+
+    observeEvent(input$names_User_Standard, {
+        shinyjs::disable(id = paste0("userField_", input$names_User_Standard))
+    })
+    observeEvent(input$names_User_Field, {
+        shinyjs::disable(id = paste0("userStandard_", input$names_User_Field))
+    })
+
 
     observeEvent(input$submitToDarwinizer, {
 

@@ -9,7 +9,7 @@ Author: Tomer Gueta <tomer.gu@gmail.com>, Vijay Barve <vijay.barve@gmail.com>,
     Carmel Yohay <yohay@cv.technion.ac.il>
 Maintainer: Povilas Gibas <povilasgibas@gmail.com>
 Imports: 
-    data.table,
-    shiny, shinyBS
+    shiny, shinyBS, shinyjs,
+    data.table
 LazyData: true
 RoxygenNote: 6.0.1

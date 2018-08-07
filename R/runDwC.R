@@ -6,6 +6,7 @@
 runDwC <- function() {
     library(shiny)
     library(shinyBS)
+    library(shinyjs)
     pathApp <- system.file("shiny", package = "bdDwC")
     return(shiny::runApp(pathApp, launch.browser = TRUE))
 }
