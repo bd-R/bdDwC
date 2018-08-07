@@ -1,12 +1,7 @@
-library(shiny)
-library(shinyBS)
-fluidPage(
+fluidPage(title = "Darwinizer",
+    sidebarLayout(
 
-    titlePanel("Darwinizer"),
-
-    tabsetPanel(type = "pills",
-
-        tabPanel("Upload Data",
+        sidebarPanel(
             fileInput("pathInputData", "Choose dataset",
                       multiple = FALSE,
                       c("text/csv", ".csv", "text/comma-separated-values,text/plain")),
@@ -16,20 +11,31 @@ fluidPage(
             actionButton("submitToDarwinizer", "Submit to Darwinizer")
         ),
 
-        tabPanel("Darwinizer",
-            fluidRow(
-              actionButton("names_Rename", "Rename"),
-              actionButton("names_Remove", "Remove selected rename"),
-              actionButton("names_Clean", "Remove all renames"),
-              actionButton("names_Rollback", "Rollback to Darwinizer")),
+        mainPanel(
+            fluidRow(column(2, 
+                actionButton("names_Rename", "Rename",
+                             icon("arrow-circle-right"),                                                 
+                             style = "color: #000000; background-color: #66c2a5; border-color: #091520"), 
+                offset = 2)
+            ),
             column(2, uiOutput("names_User")),
             column(2, uiOutput("names_Standard"), 
                       uiOutput("names_Standard_Hover"), offset = 1),
-            column(2, uiOutput("names_Renamed"), offset = 1)
-        ),
-
-        tabPanel("Results",
-            downloadButton("downloadData", "Download Darwinized data"))
-
+            column(2, uiOutput("names_Renamed"), offset = 1),
+            column(2, verticalLayout(
+                actionButton("names_Remove", "Remove selected rename",
+                             icon("times"),
+                             style = "color: #000000; background-color: #fbb4ae; border-color: #091520"), 
+                actionButton("names_Clean", "Remove all renames",
+                             icon("times"),
+                             style = "color: #000000; background-color: #e41a1c; border-color: #091520"), 
+                actionButton("names_Rollback", "Rollback to Darwinizer",
+                             icon("fast-backward"),
+                             style = "color: #000000; background-color: #ffffb3; border-color: #091520"), 
+                downloadButton("downloadData", "Download Darwinized data",
+                               style = "color: #000000; background-color: #66c2a5; border-color: #091520")),
+                offset = 1
+            )
+        )
     )
 )

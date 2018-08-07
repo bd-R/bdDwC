@@ -1,5 +1,3 @@
-library(shiny)
-library(shinyBS)
 shinyServer(function(input, output, session) {
 
     showModal(modalDialog(
@@ -57,7 +55,7 @@ shinyServer(function(input, output, session) {
     })
 
     observeEvent(input$submitToDarwinizer, {
-        rv$dic_Darwinizer <- data.table::fread("/Users/pogibas/work/bdDwC/data/dw.csv")
+        rv$dic_Darwinizer <- bdDwC:::dataDarwinCloud$data
         rv$dic_Darwinizer <- subset(rv$dic_Darwinizer, standard != "")
 
         rv$names_Standard <- unique(rv$dic_Darwinizer$standard)
@@ -65,7 +63,7 @@ shinyServer(function(input, output, session) {
 
         rv$dic_Rename <- rbind(rv$dic_User, 
                                rv$dic_Darwinizer[, c("fieldname", "standard")])
-        rv$data_Darwinized <- darwinazeNames(rv$data_User, rv$dic_Rename)
+        rv$data_Darwinized <- bdDwC:::darwinazeNames(rv$data_User, rv$dic_Rename)
 
         # Chechboxes
         # Update if something was darwinized
@@ -82,26 +80,38 @@ shinyServer(function(input, output, session) {
 
 
     output$names_User <- renderUI({
-        radioButtons("names_User_radio", 
-                           "User Names",
-                           sort(rv$names_UserAfter))
+        if (length(rv$names_UserAfter) == 0) {
+            return(NULL)
+        } else {
+            radioButtons("names_User_radio", 
+                               "User Names",
+                               sort(rv$names_UserAfter))
+        }
     })
     output$names_Standard <- renderUI({
-        RAW <- radioButtons("names_Standard_radio", 
-                           "Stand Names",
-                           sort(rv$names_StandardAfter))
-        for(i in sort(rv$names_StandardAfter)) {
-            RAW <- gsub(paste0('<span>', i, '</span>'), 
-                        paste0('<span id="DWC_', i, '">', i, '</span>'), 
-                        RAW)
+        if (length(rv$names_StandardAfter) == 0) {
+            return(NULL)
+        } else {
+            RAW <- radioButtons("names_Standard_radio", 
+                               "Stand Names",
+                               sort(rv$names_StandardAfter))
+            for(i in sort(rv$names_StandardAfter)) {
+                RAW <- gsub(paste0('<span>', i, '</span>'), 
+                            paste0('<span id="DWC_', i, '">', i, '</span>'), 
+                            RAW)
+            }
+            HTML(RAW)
         }
-        HTML(RAW)
     })
     output$names_Renamed <- renderUI({
-        checkboxGroupInput("names_Renamed", 
-                           "Renamed",
-                           # Use rev to have newest on top
-                           rev(rv$data_Rename$nameRename))
+        if (length(rv$data_Rename$nameRename) == 0) {
+            return(NULL)
+        } else {
+            checkboxGroupInput("names_Renamed", 
+                               "Renamed",
+                               # Use rev to have newest on top
+                               rev(rv$data_Rename$nameRename))
+        }
     })
 
    observeEvent(input$names_Rename, {
@@ -113,7 +123,6 @@ shinyServer(function(input, output, session) {
         rv$data_Rename$nameRename <- as.character(apply(rv$data_Rename[, 1:2], 1, paste, collapse = "\n"))
         rv$names_StandardAfter <- rv$names_Standard[!rv$names_Standard %in% rv$data_Rename$nameNew]
         rv$names_UserAfter <- rv$names_User[!rv$names_User %in% rv$data_Rename$nameOld]
-        saveRDS(rv$data_Rename, "~/Desktop/foo.RDS")
     })
     observeEvent(input$names_Remove, {
         foo <- !rv$data_Rename$nameRename %in% input$names_Renamed
@@ -140,7 +149,7 @@ shinyServer(function(input, output, session) {
     })
 
 
-    darwinizeInfo <- getDarwinzeInfo()
+    darwinizeInfo <- bdDwC:::getDarwinzeInfo()
     output$names_Standard_Hover <- renderUI({
         result <- list()
         for(i in sort(rv$names_StandardAfter)) {
@@ -158,7 +167,7 @@ shinyServer(function(input, output, session) {
             paste0("Darwinized-", Sys.Date(), ".csv")
         },
         content = function(con) {
-            write.csv(renameUserData(rv$data_User, rv$data_Rename), 
+            write.csv(bdDwC:::renameUserData(rv$data_User, rv$data_Rename), 
                       con, row.names = FALSE, col.names = TRUE)
         }
     )
