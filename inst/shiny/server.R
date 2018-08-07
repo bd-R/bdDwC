@@ -27,6 +27,8 @@ shinyServer(function(input, output, session) {
         names_User          = c(),
         names_UserAfter     = c(),
         names_Renamed       = c(),
+        names_UserRaw       = c(),
+        dic_UserRaw         = data.frame(),
         dic_User            = data.frame(),
         dic_Darwinizer      = data.frame(),
         dic_Rename          = data.frame()
@@ -44,17 +46,38 @@ shinyServer(function(input, output, session) {
     })
 
     observeEvent(input$pathInputDictionary, {
-        d <- data.table::fread(input$pathInputDictionary$datapath)
-        colnames(d) <- tolower(colnames(d))
-        if (sum(grepl("fieldname", colnames(d))) == 1 & 
-            sum(grepl("standard", colnames(d))) == 1) {
-            rv$dic_User <- subset(d, select = c("fieldname", "standard"))
+        rv$dic_UserRaw <- data.table::fread(input$pathInputDictionary$datapath)
+        rv$names_UserRaw <- sort(colnames(rv$dic_UserRaw))
+
+    })
+    output$names_User_Field <- renderUI({
+        if (nrow(rv$dic_UserRaw) == 0) {
+            return(NULL)
         } else {
-            warning("Given dictionary was in wrong format")
+            radioButtons("names_User_Field", 
+                         "Field Name",
+                         rv$names_UserRaw[!rv$names_UserRaw %in% input$names_User_Standard],
+                        rv$names_UserRaw[1])
+        }
+    })
+    output$names_User_Standard <- renderUI({
+        if (nrow(rv$dic_UserRaw) == 0) {
+            return(NULL)
+        } else {
+            radioButtons("names_User_Standard", 
+                         "Standard Name",
+                         rv$names_UserRaw[!rv$names_UserRaw %in% input$names_User_Field],
+                          rv$names_UserRaw[2])
         }
     })
 
     observeEvent(input$submitToDarwinizer, {
+
+        if (nrow(rv$dic_UserRaw) > 0) {
+            rv$dic_User <- subset(rv$dic_UserRaw, select = c(input$names_User_Field, input$names_User_Standard))
+            colnames(rv$dic_User) <- c("fieldname", "standard")
+        }
+
         rv$dic_Darwinizer <- bdDwC:::dataDarwinCloud$data
         rv$dic_Darwinizer <- subset(rv$dic_Darwinizer, standard != "")
 
