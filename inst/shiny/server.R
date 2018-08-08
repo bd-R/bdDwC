@@ -225,7 +225,7 @@ shinyServer(function(input, output, session) {
         for(i in sort(rv$names_StandardAfter)) {
             info <- subset(DarwinCoreInfo, name == i)$definition
             if (length(info) == 0) {
-                info <- "NO"
+                info <- NULL
             }
             result[[i]] <- bsTooltip(paste0("DWC_", i), info, "right", "hover")
         }
