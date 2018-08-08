@@ -22,7 +22,14 @@ fluidPage(title = "Darwinizer",
                             uiOutput("names_User_Standard"),
                             cellWidths = 200,
                             cellArgs = list(style = "padding: 6px"))
-            )
+            ),
+
+            # Restart shiny session
+            tags$a(href = "javascript:history.go(0)", 
+                   popify(tags$i(class = "fa fa-refresh fa-1x"),
+                   title = NULL, 
+                   content = "Click here to restart bdDwC shiny session",
+                   placement = "right"))
         ),
 
         mainPanel(
