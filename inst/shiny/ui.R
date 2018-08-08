@@ -1,5 +1,9 @@
 fluidPage(title = "Darwinizer",
+
+    includeCSS("www/style.css"),
+
     sidebarLayout(
+
 
         sidebarPanel(
             fileInput("pathInputData", "Choose dataset",

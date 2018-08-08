@@ -237,7 +237,7 @@ shinyServer(function(input, output, session) {
             if (length(info) == 0) {
                 info <- NULL
             }
-            result[[i]] <- bsTooltip(paste0("DWC_", i), info, "right", "hover")
+            result[[i]] <- shinyBS::bsTooltip(paste0("DWC_", i), info, "right", "hover")
         }
         do.call(tagList, result)
     })
