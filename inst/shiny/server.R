@@ -219,11 +219,11 @@ shinyServer(function(input, output, session) {
     })
 
 
-    darwinizeInfo <- bdDwC:::getDarwinzeInfo()
+    DarwinCoreInfo <- bdDwC:::getDarwinCoreInfo()
     output$names_Standard_Hover <- renderUI({
         result <- list()
         for(i in sort(rv$names_StandardAfter)) {
-            info <- subset(darwinizeInfo, name == i)$definition
+            info <- subset(DarwinCoreInfo, name == i)$definition
             if (length(info) == 0) {
                 info <- "NO"
             }

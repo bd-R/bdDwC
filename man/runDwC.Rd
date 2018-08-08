@@ -6,6 +6,13 @@
 \usage{
 runDwC()
 }
+\value{
+`shiny::runApp()` result within browser.
+}
 \description{
 `bdDwC` is a function that starts bdverse Darwin Cloud cleaning `shiny` app.
+}
+\examples{
+runDwC()
+
 }

@@ -2,7 +2,13 @@
 #'
 #' `bdDwC` is a function that starts bdverse Darwin Cloud cleaning `shiny` app.
 #'
+#' @examples
+#' runDwC()
+#' 
+#' @return `shiny::runApp()` result within browser.
+#' 
 #' @export
+#' 
 runDwC <- function() {
     library(shiny)
     library(shinyBS)
