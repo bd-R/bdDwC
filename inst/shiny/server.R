@@ -1,39 +1,61 @@
 shinyServer(function(input, output, session) {
 
+    # --------------------------
+    # MODAL
+    # --------------------------
+
     showModal(modalDialog(
         title = h3("Welcome to Darwinizer!"),
         p("Darwinize Your Data"),
         img(src = "bdverse.png", align = "center", width = "570"),
-        helpText(
-            "MIT License ©Tomer Gueta, Vijay Barve, Povilas Gibas, Thiloshon Nagarajah, Ashwin Agrawal and Carmel Yohay (2018).",
-            br(),
-            "darwinizer. R package version 1.0.0."
+        helpText("MIT License ©Tomer Gueta, Vijay Barve, Povilas Gibas, Thiloshon Nagarajah, Ashwin Agrawal and Carmel Yohay (2018).",
+                 br(),
+                 "bdDwC. R package version 1.0.0"
         ),
-        helpText(
-            "Contribute: ",
-            a("https://github.com/bd-R/bdDwC", href = "https://github.com/bd-R/bdDwC"),
-            br(), "Join: ",
-            a("https://bd-r-group.slack.com", href = "https://bd-r-group.slack.com")
+        helpText("Contribute: ",
+                 a("https://github.com/bd-R/bdDwC", 
+                   href = "https://github.com/bd-R/bdDwC"),
+                 br(), 
+                 "Join: ",
+                 a("https://bd-r-group.slack.com", 
+                   href = "https://bd-r-group.slack.com")
         ), 
         size = "m",
         easyClose = TRUE
     ))
 
 
+    # --------------------------
+    # REACTIVE VALUES
+    # --------------------------
+    # Showing all reactive values that are used in app
+
     rv <- reactiveValues(
-        data_User           = data.frame(),
+        # User data used in Darwinizer
+        # Uploaded by user (csv)
+        data_User           = data.frame(), 
+        # Darwinized data (created with darwinazeNames)
         data_Darwinized     = data.frame(),
+        # Data that contains all renamings
         data_Rename         = data.frame(),
-        names_Standard      = c(),
-        names_StandardAfter = c(),
+        # Original set of names in user data
         names_User          = c(),
+        # Set of names in user data after renaming
         names_UserAfter     = c(),
-        names_Renamed       = c(),
-        names_UserRaw       = c(),
+        # Original set of Darwin Cloud names
+        names_Standard      = c(),
+        # Set of Darwin Cloud names after renaming
+        names_StandardAfter = c(),
+        # ------
+        # USER DICTIONARY
+        # User original dictionary 
+        # Uploaded by user (csv)
         dic_UserRaw         = data.frame(),
-        dic_User            = data.frame(),
-        dic_Darwinizer      = data.frame(),
-        dic_Rename          = data.frame()
+        # Names in user original dictionary used to create radio buttons
+        names_UserRaw       = c(),
+        # Subset of users dictionary 
+        # Subset made using column names specified by user
+        dic_User            = data.frame()
     )
 
     # User data main
@@ -54,10 +76,10 @@ shinyServer(function(input, output, session) {
     })
 
     observe({
-        if (nrow(rv$data_User) > 0) {
-            shinyjs::enable("submitToDarwinizer") 
-        } else {
+        if (nrow(rv$data_User) == 0) {
             shinyjs::disable("submitToDarwinizer")
+        } else {
+            shinyjs::enable("submitToDarwinizer") 
         }
     })
     observeEvent(input$submitToDarwinizer, {
@@ -135,15 +157,10 @@ shinyServer(function(input, output, session) {
             colnames(rv$dic_User) <- c("fieldname", "standard")
         }
 
-        rv$dic_Darwinizer <- bdDwC:::dataDarwinCloud$data
-        rv$dic_Darwinizer <- subset(rv$dic_Darwinizer, standard != "")
+        rv$names_StandardAfter <- rv$names_Standard <- unique(bdDwC:::dataDarwinCloud$data$standard)
 
-        rv$names_Standard <- unique(rv$dic_Darwinizer$standard)
-        rv$names_StandardAfter <- unique(rv$dic_Darwinizer$standard)
-
-        rv$dic_Rename <- rbind(rv$dic_User, 
-                               rv$dic_Darwinizer[, c("fieldname", "standard")])
-        rv$data_Darwinized <- bdDwC:::darwinazeNames(rv$data_User, rv$dic_Rename)
+        rv$data_Darwinized <- bdDwC:::darwinazeNames(rv$data_User,
+                                                     rbind(rv$dic_User, bdDwC:::dataDarwinCloud$data))
 
         # Chechboxes
         # Update if something was darwinized
