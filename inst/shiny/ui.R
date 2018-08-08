@@ -10,13 +10,15 @@ fluidPage(title = "Darwinizer",
                          style = "color: #000000; background-color: #71a879; border-color: #091520"),
             uiOutput("submitToDarwinizer_Pop"),
             br(), br(),
-            fileInput("pathInputDictionary", "Choose dictionary",
-                      multiple = FALSE,
-                      c("text/csv", ".csv", "text/comma-separated-values,text/plain")),
-            splitLayout(uiOutput("names_User_Field"), 
-                        uiOutput("names_User_Standard"),
-                        cellWidths = 200,
-                        cellArgs = list(style = "padding: 6px"))
+            shinyBS::bsCollapsePanel("Upload Dictionary",
+                fileInput("pathInputDictionary", "Choose dictionary file",
+                          multiple = FALSE,
+                          c("text/csv", ".csv", "text/comma-separated-values,text/plain")),
+                splitLayout(uiOutput("names_User_Field"), 
+                            uiOutput("names_User_Standard"),
+                            cellWidths = 200,
+                            cellArgs = list(style = "padding: 6px"))
+            )
         ),
 
         mainPanel(
