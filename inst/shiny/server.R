@@ -1,5 +1,15 @@
 shinyServer(function(input, output, session) {
 
+    combineOldNew <- function(data, symbolArrow = "\U2192", symbolSpace = "\U00A0") {
+        namesOLD <- data[, 1]
+        namesNEW <- data[, 2]
+        # Using specific symbol for space so arrow is always on the line
+        # as the old name
+        result <- paste0(namesOLD, symbolSpace, symbolArrow, "\n", namesNEW)
+        return(as.character(result))
+    }
+
+
     # --------------------------
     # MODAL
     # --------------------------
@@ -230,7 +240,7 @@ shinyServer(function(input, output, session) {
                                          nameRename = NA,
                                          stringsAsFactors = FALSE)
             # Create (combine) renamed name
-            rv$data_Rename$nameRename <- as.character(apply(rv$data_Rename[, 1:2], 1, paste, collapse = "\n"))
+            rv$data_Rename$nameRename <- combineOldNew(rv$data_Rename)
             # Updated (remove name) from standard names
             rv$names_StandardAfter <- rv$names_Standard[!rv$names_Standard %in% rv$data_Rename$nameNew]
             # Updated (remove name) from user names
@@ -300,7 +310,7 @@ shinyServer(function(input, output, session) {
                                            nameRename = NA,
                                            stringsAsFactors = FALSE))
         # Create (combine) renamed name
-        rv$data_Rename$nameRename <- as.character(apply(rv$data_Rename[, 1:2], 1, paste, collapse = "\n"))
+        rv$data_Rename$nameRename <- combineOldNew(rv$data_Rename)
         # Updated (remove name) from standard names
         rv$names_StandardAfter <- rv$names_Standard[!rv$names_Standard %in% rv$data_Rename$nameNew]
         # Updated (remove name) from user names
@@ -332,7 +342,7 @@ shinyServer(function(input, output, session) {
                                          nameNew = rv$data_Darwinized$standard,
                                          nameRename = NA,
                                          stringsAsFactors = FALSE)
-            rv$data_Rename$nameRename <- as.character(apply(rv$data_Rename[, 1:2], 1, paste, collapse = "\n"))
+            rv$data_Rename$nameRename <- combineOldNew(rv$data_Rename)
             rv$names_StandardAfter <- rv$names_Standard[!rv$names_Standard %in% rv$data_Rename$nameNew]
             rv$names_UserAfter <- rv$names_User[!rv$names_User %in% rv$data_Rename$nameOld]
         }
