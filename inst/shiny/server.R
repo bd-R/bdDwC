@@ -8,7 +8,8 @@ shinyServer(function(input, output, session) {
         title = h3("Welcome to Darwinizer!"),
         p("Darwinize Your Data"),
         img(src = "bdverse.png", align = "center", width = "570"),
-        helpText("MIT License ©Tomer Gueta, Vijay Barve, Povilas Gibas, Thiloshon Nagarajah, Ashwin Agrawal and Carmel Yohay (2018).",
+        helpText("MIT License ©Tomer Gueta, Vijay Barve, Povilas Gibas, 
+                  Thiloshon Nagarajah, Ashwin Agrawal and Carmel Yohay (2018).",
                  br(),
                  "bdDwC. R package version 1.0.0"
         ),
@@ -23,6 +24,7 @@ shinyServer(function(input, output, session) {
         size = "m",
         easyClose = TRUE
     ))
+
 
 
     # --------------------------
@@ -58,23 +60,13 @@ shinyServer(function(input, output, session) {
         dic_User            = data.frame()
     )
 
-    # User data main
-    observeEvent(input$pathInputData, {
-        withProgress(message = paste("Loading", input$pathInputData, "..."), {
-            if (is.null(input$pathInputData)) {
-                return(NULL)
-            }
-            rv$data_User <- data.table::fread(input$pathInputData$datapath)
-        })
-        rv$names_User <- rv$names_UserAfter <- colnames(rv$data_User)
-    })
 
-    output$submitToDarwinizer_Pop <- renderUI({
-        text <- paste("bdDwC uses references dictionary downloaded from the github.com/kurator-org/kurator-validation, last update at",
-                      bdDwC:::dataDarwinCloud[[2]], ". But you can also add your own dictionary to the bdDwC using file input slot bellow.")
-        bsPopover("submitToDarwinizer", title = "Add you own dictionary", text)
-    })
 
+    # --------------------------
+    # DISABLE BUTTONS
+    # --------------------------
+
+    # Disable Darwinize button if no user data uploaded
     observe({
         if (nrow(rv$data_User) == 0) {
             shinyjs::disable("submitToDarwinizer")
@@ -82,6 +74,7 @@ shinyServer(function(input, output, session) {
             shinyjs::enable("submitToDarwinizer") 
         }
     })
+    # Disable all other buttons if not submitted to Darwinizer
     observeEvent(input$submitToDarwinizer, {
         shinyjs::enable("names_Rename") 
         shinyjs::enable("names_Remove") 
@@ -89,6 +82,8 @@ shinyServer(function(input, output, session) {
         shinyjs::enable("names_Rollback") 
         shinyjs::enable("downloadData") 
     })
+    # Disable renaming of no names left
+    # !!! UNDER DEVELOPTMENT
     # observe({
     #     if ((length(rv$names_UserAfter) == 0 | 
     #         length(rv$names_StandardAfter) == 0) &
@@ -99,19 +94,50 @@ shinyServer(function(input, output, session) {
 
 
 
+    # --------------------------
+    # UPLOAD USER DATA
+    # --------------------------
+
+    observeEvent(input$pathInputData, {
+        withProgress(message = paste("Loading", input$pathInputData, "..."), {
+            if (is.null(input$pathInputData)) {
+                return(NULL)
+            }
+            # Load user data
+            rv$data_User <- data.table::fread(input$pathInputData$datapath)
+        })
+        # Get column names (used for Darwinizer)
+        rv$names_User <- rv$names_UserAfter <- colnames(rv$data_User)
+    })
+
+
+
+    # --------------------------
+    # DICTIONARY
+    # --------------------------
+
+    # Upload user dictionary
     observeEvent(input$pathInputDictionary, {
+        # Dictionary
         rv$dic_UserRaw <- data.table::fread(input$pathInputDictionary$datapath)
+        # Columns
         rv$names_UserRaw <- sort(colnames(rv$dic_UserRaw))
     })
 
+    # Created radiobuttons for users field name column
     output$names_User_Field <- renderUI({
+        # If data is uploaded
         if (nrow(rv$dic_UserRaw) == 0) {
             return(NULL)
         } else {
+            # Main function to create radio buttons
             RAW <- radioButtons("names_User_Field", 
                                 "Field Names",
                                 rv$names_UserRaw,
-                                1)
+                                rv$names_UserRaw[1])
+            # For each name change ID
+            # We need individual IDs so we can disable them with shinyjs
+            # We need to disable them as same ID can't be field and standard
             for(i in rv$names_UserRaw) {
                 RAW <- gsub(paste0('<span>', i, '</span>'), 
                             paste0('<span id="userField_', i, '">', i, '</span>'), 
@@ -121,14 +147,20 @@ shinyServer(function(input, output, session) {
         }
     })
 
+    # Created radiobuttons for users standard name column
     output$names_User_Standard <- renderUI({
+        # If data is uploaded
         if (nrow(rv$dic_UserRaw) == 0) {
             return(NULL)
         } else {
+            # Main function to create radio buttons
             RAW <- radioButtons("names_User_Standard", 
                                 "Standard Names",
                                 rv$names_UserRaw,
-                                2)
+                                rv$names_UserRaw[2])
+            # For each name change ID
+            # We need individual IDs so we can disable them with shinyjs
+            # We need to disable them as same ID can't be field and standard
             for(i in rv$names_UserRaw) {
                 RAW <- gsub(paste0('<span>', i, '</span>'), 
                             paste0('<span id="userStandard_', i, '">', i, '</span>'), 
@@ -138,44 +170,81 @@ shinyServer(function(input, output, session) {
         }
     })
 
+    # If button in standard is marked
     observeEvent(input$names_User_Standard, {
+        # Which button was marked
         result <- grepl(input$names_User_Standard, rv$names_UserRaw)
-        shinyjs::disable(selector = paste0("#names_User_Field .radio:nth-child(", which(result),") label"))
-        shinyjs::enable(selector = paste0("#names_User_Field .radio:nth-child(", which(!result),") label"))
+        # We need double action (PG: I don't know why)
+        # Disable marked button in opposite box
+        shinyjs::disable(selector = paste0("#names_User_Field .radio:nth-child(", 
+                                           which(result),") label"))
+        # Enable all non marked buttons in current box
+        shinyjs::enable(selector = paste0("#names_User_Field .radio:nth-child(", 
+                                           which(!result),") label"))
+
     })
+    # If button in field is marked
     observeEvent(input$names_User_Field, {
+        # Which button was marked
         result <- grepl(input$names_User_Field, rv$names_UserRaw)
-        shinyjs::disable(selector = paste0("#names_User_Standard .radio:nth-child(", which(result),") label"))
-        shinyjs::enable(selector = paste0("#names_User_Standard .radio:nth-child(", which(!result),") label"))
+        # We need double action (PG: I don't know why)
+        # Disable marked button in opposite box
+        shinyjs::disable(selector = paste0("#names_User_Standard .radio:nth-child(", 
+                                           which(result),") label"))
+        # Enable all non marked buttons in current box
+        shinyjs::enable(selector = paste0("#names_User_Standard .radio:nth-child(", 
+                                           which(!result),") label"))
     })
 
 
+
+    # --------------------------
+    # DARWINIZER
+    # --------------------------
+    # Run Darwinizer
+
+    # When Darwinizer button is clicked
     observeEvent(input$submitToDarwinizer, {
 
+        # If user has uploaded dictionary
         if (nrow(rv$dic_UserRaw) > 0) {
+            # Update reactive user dictionary
             rv$dic_User <- subset(rv$dic_UserRaw, select = c(input$names_User_Field, input$names_User_Standard))
             colnames(rv$dic_User) <- c("fieldname", "standard")
         }
 
-        rv$names_StandardAfter <- rv$names_Standard <- unique(bdDwC:::dataDarwinCloud$data$standard)
+        # Get all standard names
+        rv$names_Standard <- unique(bdDwC:::dataDarwinCloud$data$standard)
+        rv$names_StandardAfter <- unique(bdDwC:::dataDarwinCloud$data$standard)
 
-        rv$data_Darwinized <- bdDwC:::darwinazeNames(rv$data_User,
-                                                     rbind(rv$dic_User, bdDwC:::dataDarwinCloud$data))
+        # Run Darwinizer with user and reference dictionary
+        rv$data_Darwinized <- bdDwC:::darwinazeNames(
+            rv$data_User, rbind(rv$dic_User, bdDwC:::dataDarwinCloud$data))
 
-        # Chechboxes
+        # Checkboxes
         # Update if something was darwinized
         if (nrow(rv$data_Darwinized) > 0) {
+            # Create renamed dataset from field and standard
             rv$data_Rename <- data.frame(nameOld = rv$data_Darwinized$fieldname,
                                          nameNew = rv$data_Darwinized$standard,
                                          nameRename = NA,
                                          stringsAsFactors = FALSE)
+            # Create (combine) renamed name
             rv$data_Rename$nameRename <- as.character(apply(rv$data_Rename[, 1:2], 1, paste, collapse = "\n"))
+            # Updated (remove name) from standard names
             rv$names_StandardAfter <- rv$names_Standard[!rv$names_Standard %in% rv$data_Rename$nameNew]
+            # Updated (remove name) from user names
             rv$names_UserAfter <- rv$names_User[!rv$names_User %in% rv$data_Rename$nameOld]
         }
     })
 
 
+
+    # --------------------------
+    # CHECKBOXES
+    # --------------------------
+
+    # Create checkbox with current user names
     output$names_User <- renderUI({
         if (length(rv$names_UserAfter) == 0) {
             return(NULL)
@@ -185,6 +254,7 @@ shinyServer(function(input, output, session) {
                                sort(rv$names_UserAfter))
         }
     })
+    # Create checkbox with current standard names
     output$names_Standard <- renderUI({
         if (length(rv$names_StandardAfter) == 0) {
             return(NULL)
@@ -192,6 +262,7 @@ shinyServer(function(input, output, session) {
             RAW <- radioButtons("names_Standard_radio", 
                                "Stand Names",
                                sort(rv$names_StandardAfter))
+            # Adding unique ID so we can add info boxes with additional info
             for(i in sort(rv$names_StandardAfter)) {
                 RAW <- gsub(paste0('<span>', i, '</span>'), 
                             paste0('<span id="DWC_', i, '">', i, '</span>'), 
@@ -200,6 +271,7 @@ shinyServer(function(input, output, session) {
             HTML(RAW)
         }
     })
+    # Create checkbox with current renamed names
     output$names_Renamed <- renderUI({
         if (length(rv$data_Rename$nameRename) == 0) {
             return(NULL)
@@ -211,29 +283,50 @@ shinyServer(function(input, output, session) {
         }
     })
 
-   observeEvent(input$names_Rename, {
+
+
+    # --------------------------
+    # BUTTONS
+    # --------------------------
+
+    # RENAMED
+    # This is very similar what happens with Darwinizer part
+    # Should refactor this in the future
+    observeEvent(input$names_Rename, {
+        # Update renamed dataset
         rv$data_Rename <- rbind(rv$data_Rename,
-              data.frame(nameOld = input$names_User_radio, 
-                        nameNew = input$names_Standard_radio,
-                        nameRename = NA,
-                        stringsAsFactors = FALSE))
+                                data.frame(nameOld = input$names_User_radio, 
+                                           nameNew = input$names_Standard_radio,
+                                           nameRename = NA,
+                                           stringsAsFactors = FALSE))
+        # Create (combine) renamed name
         rv$data_Rename$nameRename <- as.character(apply(rv$data_Rename[, 1:2], 1, paste, collapse = "\n"))
+        # Updated (remove name) from standard names
         rv$names_StandardAfter <- rv$names_Standard[!rv$names_Standard %in% rv$data_Rename$nameNew]
+        # Updated (remove name) from user names
         rv$names_UserAfter <- rv$names_User[!rv$names_User %in% rv$data_Rename$nameOld]
     })
+
+    # REMOVE
     observeEvent(input$names_Remove, {
-        foo <- !rv$data_Rename$nameRename %in% input$names_Renamed
-        rv$data_Rename <- rv$data_Rename[foo, ]
-        rv$data_Rename$nameRename <- as.character(apply(rv$data_Rename[, 1:2], 1, paste, collapse = "\n"))
+        # Remove input from renamed names dataset
+        rv$data_Rename <- rv$data_Rename[!rv$data_Rename$nameRename %in% input$names_Renamed, ]
+        # Update standard names checkbox
         rv$names_StandardAfter <- rv$names_Standard[!rv$names_Standard %in% rv$data_Rename$nameNew]
+        # Update user names checkbox
         rv$names_UserAfter <- rv$names_User[!rv$names_User %in% rv$data_Rename$nameOld]
     })
-   observeEvent(input$names_Clean, {
+
+    # Clean all renamings
+    observeEvent(input$names_Clean, {
         rv$data_Rename <- data.frame()
-        rv$names_StandardAfter <- rv$names_Standard[!rv$names_Standard %in% rv$data_Rename$nameNew]
-        rv$names_UserAfter <- rv$names_User[!rv$names_User %in% rv$data_Rename$nameOld]
+        rv$names_StandardAfter <- rv$names_Standard
+        rv$names_UserAfter <- rv$names_User
     })
-   observeEvent(input$names_Rollback, {
+
+    # ROLLBACK
+    # This is the same as part in Darwinize (should refactor)
+    observeEvent(input$names_Rollback, {
         if (nrow(rv$data_Darwinized) > 0) {
             rv$data_Rename <- data.frame(nameOld = rv$data_Darwinized$fieldname,
                                          nameNew = rv$data_Darwinized$standard,
@@ -245,27 +338,49 @@ shinyServer(function(input, output, session) {
         }
     })
 
-
-    DarwinCoreInfo <- bdDwC:::getDarwinCoreInfo()
-    output$names_Standard_Hover <- renderUI({
-        result <- list()
-        for(i in sort(rv$names_StandardAfter)) {
-            info <- subset(DarwinCoreInfo, name == i)$definition
-            if (length(info) == 0) {
-                info <- NULL
-            }
-            result[[i]] <- shinyBS::bsTooltip(paste0("DWC_", i), info, "right", "hover")
-        }
-        do.call(tagList, result)
-    })
-
+    # DONWLOAD
     output$downloadData <- downloadHandler(
         filename = function() {
             paste0("Darwinized-", Sys.Date(), ".csv")
         },
         content = function(con) {
+            # Rename user data using current renaming dataset
             write.csv(bdDwC:::renameUserData(rv$data_User, rv$data_Rename), 
                       con, row.names = FALSE, col.names = TRUE)
         }
     )
+
+
+
+    # --------------------------
+    # DARWIN CORE INFO
+    # --------------------------
+
+    output$names_Standard_Hover <- renderUI({
+        # Download Darwin Core information
+        DarwinCoreInfo <- bdDwC:::getDarwinCoreInfo()
+        result <- list()
+        for(i in rv$names_StandardAfter) {
+            # Extract information
+            info <- subset(DarwinCoreInfo, name == i)$definition
+            if (length(info) == 0) {
+                info <- NULL
+            }
+            # Append information as a tool tip
+            result[[i]] <- shinyBS::bsTooltip(paste0("DWC_", i), info, "right", "hover")
+        }
+        do.call(tagList, result)
+    })
+
+
+
+    # --------------------------
+    # POP UP FOR DICTIONARY
+    # --------------------------
+
+    output$submitToDarwinizer_Pop <- renderUI({
+        text <- paste("bdDwC uses references dictionary downloaded from the github.com/kurator-org/kurator-validation, last update at",
+                      bdDwC:::dataDarwinCloud[[2]], ". But you can also add your own dictionary to the bdDwC using file input slot bellow.")
+        bsPopover("submitToDarwinizer", title = "Add you own dictionary", text)
+    })
 })
