@@ -15,7 +15,7 @@
 #' 
 renameUserData <- function(dataUser, dataRenamed) {
     # Extract user names (we don't need all data just to rename)
-    namesUser <- data.frame(nameOld = tolower(colnames(dataUser)), 
+    namesUser <- data.frame(nameOld = colnames(dataUser), 
                             stringsAsFactors = FALSE)
     # merge gives us names that were in renamed dataset
     result <- merge(namesUser, dataRenamed, "nameOld", all.x = TRUE)

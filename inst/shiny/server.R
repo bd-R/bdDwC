@@ -4,7 +4,7 @@ shinyServer(function(input, output, session) {
         namesOLD <- data[, 1]
         namesNEW <- data[, 2]
         # Using specific symbol for space so arrow is always on the line
-        # as the old name
+        # as the old
         result <- paste0(namesOLD, symbolSpace, symbolArrow, "\n", namesNEW)
         return(as.character(result))
     }
@@ -244,7 +244,7 @@ shinyServer(function(input, output, session) {
             # Updated (remove name) from standard names
             rv$names_StandardAfter <- rv$names_Standard[!rv$names_Standard %in% rv$data_Rename$nameNew]
             # Updated (remove name) from user names
-            rv$names_UserAfter <- rv$names_User[!rv$names_User %in% rv$data_Rename$nameOld]
+            rv$names_UserAfter <- rv$names_User[!tolower(rv$names_User) %in% tolower(rv$data_Rename$nameOld)]
         }
     })
 
@@ -314,7 +314,7 @@ shinyServer(function(input, output, session) {
         # Updated (remove name) from standard names
         rv$names_StandardAfter <- rv$names_Standard[!rv$names_Standard %in% rv$data_Rename$nameNew]
         # Updated (remove name) from user names
-        rv$names_UserAfter <- rv$names_User[!rv$names_User %in% rv$data_Rename$nameOld]
+        rv$names_UserAfter <- rv$names_User[!tolower(rv$names_User) %in% tolower(rv$data_Rename$nameOld)]
     })
 
     # REMOVE
@@ -324,7 +324,7 @@ shinyServer(function(input, output, session) {
         # Update standard names checkbox
         rv$names_StandardAfter <- rv$names_Standard[!rv$names_Standard %in% rv$data_Rename$nameNew]
         # Update user names checkbox
-        rv$names_UserAfter <- rv$names_User[!rv$names_User %in% rv$data_Rename$nameOld]
+        rv$names_UserAfter <- rv$names_User[!tolower(rv$names_User) %in% tolower(rv$data_Rename$nameOld)]
     })
 
     # Clean all renamings
@@ -344,7 +344,7 @@ shinyServer(function(input, output, session) {
                                          stringsAsFactors = FALSE)
             rv$data_Rename$nameRename <- combineOldNew(rv$data_Rename)
             rv$names_StandardAfter <- rv$names_Standard[!rv$names_Standard %in% rv$data_Rename$nameNew]
-            rv$names_UserAfter <- rv$names_User[!rv$names_User %in% rv$data_Rename$nameOld]
+            rv$names_UserAfter <- rv$names_User[!tolower(rv$names_User) %in% tolower(rv$data_Rename$nameOld)]
         }
     })
 

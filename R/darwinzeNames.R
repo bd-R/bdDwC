@@ -13,8 +13,11 @@
 #' darwinazeNames(dataUser, bdDwC:::dataDarwinCloud[[1]])
 #' 
 darwinazeNames <- function(dataUser, dataReference) {
-    dataReference <- data.frame(apply(dataReference, 2, tolower))
-    namesUser     <- data.frame(fieldname = tolower(names(dataUser)))
-    resultCombine <- merge(namesUser, dataReference, "fieldname")
-    return(resultCombine)
+    dataReference$fieldname <- tolower(dataReference$fieldname)
+    namesUser     <- data.frame(fieldname      = tolower(names(dataUser)),
+                                fieldnameOrig  = names(dataUser))
+    result <- merge(namesUser, dataReference, "fieldname")
+    result <- subset(result, select = c("fieldnameOrig", "standard"))
+    colnames(result) <- c("fieldname", "standard")
+    return(result)
 }
