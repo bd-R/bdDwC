@@ -14,6 +14,7 @@ dashboardPage(
 
     dashboardSidebar(
         sidebarMenu(
+            id = "myTabs",
             menuItem("Upload Data", tabName = "upload"),
             menuItem("Darwinizer", tabName = "darwinizer"),
             # Restart shiny session
@@ -37,18 +38,16 @@ dashboardPage(
 
         tabItems(
 
-
-
             # --------------------------
             # UPLOAD DATA
             # --------------------------
 
             tabItem("upload",
-
-                # Upload user data
-                column(4, 
-                    bsCollapse(multiple = FALSE, open = "Upload Local File",
-                               bsCollapsePanel("Upload Local File", 
+                fluidRow(
+                    # Upload user data
+                    box(title = "Upload Data", status = "warning", width = 5,
+                        bsCollapse(multiple = FALSE, open = "From a Local File",
+                               bsCollapsePanel("From a Local File", 
                                                fileInput("pathInputData",
                                                          "Choose a csv file",
                                                          multiple = FALSE,
@@ -59,7 +58,7 @@ dashboardPage(
                                                style = "info"
 
                                ),
-                               bsCollapsePanel("Query Data From a Database",
+                               bsCollapsePanel("From a Database",
                                                textInput("scientificName",
                                                          h3("Scientific Name:"),
                                                          "Puma concolor"),
@@ -85,27 +84,29 @@ dashboardPage(
                                                                 icon("download"))), 
                                                style = "success"
                                )
+                        )
                     ),
-                    actionButton("submitToDarwinizer", "Submit to Darwinizer", width = 210,
-                                 style = "color: #000000; background-color: #71a879; border-color: #091520"),
-                    uiOutput("submitToDarwinizer_Pop")
-                ),
 
-                # Upload user dictionary
-                column(4,
-                    fileInput("pathInputDictionary", "Choose dictionary file",
-                              multiple = FALSE,
-                              c("text/csv", ".csv", "text/comma-separated-values,text/plain")
-                    ),
-                    shinyBS::bsCollapsePanel(
-                        "Select field and standard names",
-                        splitLayout(uiOutput("names_User_Field"), 
-                                    uiOutput("names_User_Standard"),
-                                    cellWidths = 200,
-                                    cellArgs = list(style = "padding: 6px")
+                    # Upload user dictionary
+                    box(title = "Upload Dictionary", width = 3,
+                        fileInput("pathInputDictionary", "Choose a dictionary file",
+                                  multiple = FALSE,
+                                  c("text/csv", ".csv", "text/comma-separated-values,text/plain")
+                        ),
+                        shinyBS::bsCollapsePanel(
+                            "Select field and standard names",
+                            splitLayout(uiOutput("names_User_Field"), 
+                                        uiOutput("names_User_Standard"),
+                                        cellWidths = 200,
+                                        cellArgs = list(style = "padding: 6px")
+                            )
                         )
                     )
-                )
+                ),
+
+                actionButton("submitToDarwinizer", "Submit to Darwinizer", width = 210,
+                             style = "color: #000000; background-color: #71a879; border-color: #091520"),
+                uiOutput("submitToDarwinizer_Pop")
             ),
 
 

@@ -209,6 +209,9 @@ shinyServer(function(input, output, session) {
     # When Darwinizer button is clicked
     observeEvent(input$submitToDarwinizer, {
 
+        # Jump to Darwinizer tab
+        updateTabItems(session, "myTabs", "darwinizer")
+
         # Download Darwin Core information
         rv$data_DarwinCore <- bdDwC:::getDarwinCoreInfo()
 
