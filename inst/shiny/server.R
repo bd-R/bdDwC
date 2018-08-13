@@ -50,6 +50,8 @@ shinyServer(function(input, output, session) {
         data_Darwinized     = data.frame(),
         # Data that contains all renamings
         data_Rename         = data.frame(),
+        # Darwin Cloud Information (used to display info when hover)
+        data_DarwinCore     = data.frame(),
         # Original set of names in user data
         names_User          = c(),
         # Set of names in user data after renaming
@@ -207,6 +209,9 @@ shinyServer(function(input, output, session) {
     # When Darwinizer button is clicked
     observeEvent(input$submitToDarwinizer, {
 
+        # Download Darwin Core information
+        rv$data_DarwinCore <- bdDwC:::getDarwinCoreInfo()
+
         # If user has uploaded dictionary
         if (nrow(rv$dic_UserRaw) > 0) {
             # Update reactive user dictionary
@@ -358,12 +363,11 @@ shinyServer(function(input, output, session) {
     # --------------------------
 
     output$names_Standard_Hover <- renderUI({
-        # Download Darwin Core information
-        DarwinCoreInfo <- bdDwC:::getDarwinCoreInfo()
         result <- list()
+        # For each name extract Darwin Core information
         for(i in rv$names_StandardAfter) {
             # Extract information
-            info <- subset(DarwinCoreInfo, name == i)$definition
+            info <- subset(rv$data_DarwinCore, name == i)$definition
             if (length(info) == 0) {
                 info <- NULL
             }
