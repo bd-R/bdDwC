@@ -14,7 +14,7 @@
 getDarwinCoreInfo <- function(pathDarwinCloud = "http://tdwg.github.io/dwc/terms/") {
     # Catching error as if there's no internet connection app wouldn't run
     data <- tryCatch({
-        readLines(pathDarwinCloud)
+        readLines(pathDarwinCloud, warn = FALSE)
     }, error = function(cond) {return(NA)})
 
     if (all(is.na(data))) {
