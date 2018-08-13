@@ -92,15 +92,6 @@ shinyServer(function(input, output, session) {
         shinyjs::enable("names_Rollback") 
         shinyjs::enable("downloadData") 
     })
-    # Disable renaming of no names left
-    # !!! UNDER DEVELOPTMENT
-    # observe({
-    #     if ((length(rv$names_UserAfter) == 0 | 
-    #         length(rv$names_StandardAfter) == 0) &
-    #         nrow(rv$data_Rename > 0)) {
-    #         shinyjs::disable("names_Rename") 
-    #     }
-    # })
 
 
 

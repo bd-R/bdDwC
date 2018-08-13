@@ -17,7 +17,7 @@ getDarwinCoreInfo <- function(pathDarwinCloud = "http://tdwg.github.io/dwc/terms
         readLines(pathDarwinCloud)
     }, error = function(cond) {return(NA)})
 
-    if (is.na(data)) {
+    if (all(is.na(data))) {
         resultName       <- NA
         resultDefinition <- NA
     } else {
