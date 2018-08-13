@@ -123,7 +123,9 @@ dashboardPage(
                     column(2, uiOutput("names_User")),
                     column(2, uiOutput("names_Standard"), 
                               uiOutput("names_Standard_Hover"), offset = 1),
-                    column(2, uiOutput("names_Renamed"), offset = 1),
+                    column(2, uiOutput("names_Renamed"), 
+                              offset = 1
+                    ),
                     column(2, verticalLayout(
                         shinyjs::disabled(actionButton("names_Remove", "Remove selected rename",
                                                        icon = icon("times"), width = 210,

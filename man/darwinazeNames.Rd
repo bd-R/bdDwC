@@ -4,12 +4,12 @@
 \alias{darwinazeNames}
 \title{Darwinize names}
 \usage{
-darwinazeNames(dataUser, dataReference)
+darwinazeNames(dataUser, dataDWC)
 }
 \arguments{
 \item{dataUser}{data.frame with user data}
 
-\item{dataReference}{data.frame with Darwin Cloud data}
+\item{dataDWC}{data.frame with Darwin Cloud data}
 }
 \value{
 data.frame of darwinized user names.

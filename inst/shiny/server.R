@@ -1,15 +1,5 @@
 shinyServer(function(input, output, session) {
 
-    combineOldNew <- function(data, symbolArrow = "\U2192", symbolSpace = "\U00A0") {
-        namesOLD <- data[, 1]
-        namesNEW <- data[, 2]
-        # Using specific symbol for space so arrow is always on the line
-        # as the old
-        result <- paste0(namesOLD, symbolSpace, symbolArrow, "\n", namesNEW)
-        return(as.character(result))
-    }
-
-
     # --------------------------
     # MODAL
     # --------------------------
@@ -240,13 +230,8 @@ shinyServer(function(input, output, session) {
         # Checkboxes
         # Update if something was darwinized
         if (nrow(rv$data_Darwinized) > 0) {
-            # Create renamed dataset from field and standard
-            rv$data_Rename <- data.frame(nameOld = rv$data_Darwinized$fieldname,
-                                         nameNew = rv$data_Darwinized$standard,
-                                         nameRename = NA,
-                                         stringsAsFactors = FALSE)
-            # Create (combine) renamed name
-            rv$data_Rename$nameRename <- combineOldNew(rv$data_Rename)
+            rv$data_Rename <- rv$data_Darwinized
+            rv$data_Rename$nameRename <- bdDwC:::combineOldNew(rv$data_Rename)
             # Updated (remove name) from standard names
             rv$names_StandardAfter <- rv$names_Standard[!rv$names_Standard %in% rv$data_Rename$nameNew]
             # Updated (remove name) from user names
@@ -287,15 +272,34 @@ shinyServer(function(input, output, session) {
             HTML(RAW)
         }
     })
-    # Create checkbox with current renamed names
+    # Create renamed checkboxes - combination of 3 renaming types
     output$names_Renamed <- renderUI({
         if (length(rv$data_Rename$nameRename) == 0) {
             return(NULL)
         } else {
-            checkboxGroupInput("names_Renamed", 
-                               "Renamed",
-                               # Use rev to have newest on top
-                               rev(rv$data_Rename$nameRename))
+            res1 <- shinyBS::bsCollapsePanel("Manually Renamed",
+                checkboxGroupInput("names_Renamed_Manual", 
+                                   NULL,
+                                   # Use rev to have newest on top
+                                   rev(subset(rv$data_Rename, matchType == "Manual")$nameRename))
+            )
+            res2 <- shinyBS::bsCollapsePanel("Darwinized Names",
+                checkboxGroupInput("names_Renamed_Darwinized", 
+                                   NULL,
+                                   # Use rev to have newest on top
+                                   subset(rv$data_Rename, matchType == "Darwinized")$nameRename)
+            )
+            res3 <- shinyBS::bsCollapsePanel("Identical Matches",
+                checkboxGroupInput("names_Renamed_Identical", 
+                                   NULL,
+                                   # Use rev to have newest on top
+                                   subset(rv$data_Rename, matchType == "Identical")$nameRename)
+            )
+
+            shinyBS::bsCollapse(res1, res2, res3,
+                                multiple = TRUE, open = c("Darwinized Names", 
+                                                          "Manually Renamed", 
+                                                          "Identical Matches"))
         }
     })
 
@@ -310,13 +314,14 @@ shinyServer(function(input, output, session) {
     # Should refactor this in the future
     observeEvent(input$names_Rename, {
         # Update renamed dataset
+        rv$data_Rename$nameRename <- NULL
         rv$data_Rename <- rbind(rv$data_Rename,
                                 data.frame(nameOld = input$names_User_radio, 
                                            nameNew = input$names_Standard_radio,
-                                           nameRename = NA,
+                                           matchType = "Manual",
                                            stringsAsFactors = FALSE))
         # Create (combine) renamed name
-        rv$data_Rename$nameRename <- combineOldNew(rv$data_Rename)
+        rv$data_Rename$nameRename <- bdDwC:::combineOldNew(rv$data_Rename)
         # Updated (remove name) from standard names
         rv$names_StandardAfter <- rv$names_Standard[!rv$names_Standard %in% rv$data_Rename$nameNew]
         # Updated (remove name) from user names
@@ -325,8 +330,18 @@ shinyServer(function(input, output, session) {
 
     # REMOVE
     observeEvent(input$names_Remove, {
+        rmNames <- c()
+        if (length(input$names_Renamed_Manual) > 0) {
+            rmNames <- c(rmNames, input$names_Renamed_Manual)
+        }
+        if (length(input$names_Renamed_Darwinized) > 0) {
+            rmNames <- c(rmNames, input$names_Renamed_Darwinized)
+        }
+        if (length(input$names_Renamed_Identical) > 0) {
+            rmNames <- c(rmNames, input$names_Renamed_Identical)
+        }
         # Remove input from renamed names dataset
-        rv$data_Rename <- rv$data_Rename[!rv$data_Rename$nameRename %in% input$names_Renamed, ]
+        rv$data_Rename <- rv$data_Rename[!rv$data_Rename$nameRename %in% rmNames, ]
         # Update standard names checkbox
         rv$names_StandardAfter <- rv$names_Standard[!rv$names_Standard %in% rv$data_Rename$nameNew]
         # Update user names checkbox
@@ -344,11 +359,8 @@ shinyServer(function(input, output, session) {
     # This is the same as part in Darwinize (should refactor)
     observeEvent(input$names_Rollback, {
         if (nrow(rv$data_Darwinized) > 0) {
-            rv$data_Rename <- data.frame(nameOld = rv$data_Darwinized$fieldname,
-                                         nameNew = rv$data_Darwinized$standard,
-                                         nameRename = NA,
-                                         stringsAsFactors = FALSE)
-            rv$data_Rename$nameRename <- combineOldNew(rv$data_Rename)
+            rv$data_Rename <- rv$data_Darwinized
+            rv$data_Rename$nameRename <- bdDwC:::combineOldNew(rv$data_Rename)
             rv$names_StandardAfter <- rv$names_Standard[!rv$names_Standard %in% rv$data_Rename$nameNew]
             rv$names_UserAfter <- rv$names_User[!tolower(rv$names_User) %in% tolower(rv$data_Rename$nameOld)]
         }
