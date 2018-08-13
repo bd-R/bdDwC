@@ -101,6 +101,7 @@ shinyServer(function(input, output, session) {
     # UPLOAD USER DATA
     # --------------------------
 
+    # Upload local file
     observeEvent(input$pathInputData, {
         withProgress(message = paste("Loading", input$pathInputData, "..."), {
             if (is.null(input$pathInputData)) {
@@ -108,6 +109,15 @@ shinyServer(function(input, output, session) {
             }
             # Load user data
             rv$data_User <- data.table::fread(input$pathInputData$datapath)
+        })
+        # Get column names (used for Darwinizer)
+        rv$names_User <- rv$names_UserAfter <- colnames(rv$data_User)
+    })
+    # Download from database
+    observeEvent(input$queryDatabase, {
+        withProgress(message = paste("Querying", input$queryDB, "..."), {
+            rv$data_User <- spocc::occ(input$scientificName, input$queryDB,
+                                       input$recordSize)[[input$queryDB]]$data[[1]]
         })
         # Get column names (used for Darwinizer)
         rv$names_User <- rv$names_UserAfter <- colnames(rv$data_User)
