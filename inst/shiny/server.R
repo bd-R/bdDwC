@@ -298,8 +298,7 @@ shinyServer(function(input, output, session) {
 
             shinyBS::bsCollapse(res1, res2, res3,
                                 multiple = TRUE, open = c("Darwinized Names", 
-                                                          "Manually Renamed", 
-                                                          "Identical Matches"))
+                                                          "Manually Renamed"))
         }
     })
 
@@ -369,12 +368,11 @@ shinyServer(function(input, output, session) {
     # DONWLOAD
     output$downloadData <- downloadHandler(
         filename = function() {
-            paste0("Darwinized-", Sys.Date(), ".csv")
+            paste0("Darwinized-", Sys.Date(), ".RDS")
         },
         content = function(con) {
             # Rename user data using current renaming dataset
-            write.csv(bdDwC:::renameUserData(rv$data_User, rv$data_Rename), 
-                      con, row.names = FALSE, col.names = TRUE)
+            saveRDS(bdDwC:::renameUserData(rv$data_User, rv$data_Rename), con)
         }
     )
 

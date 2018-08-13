@@ -23,5 +23,5 @@ renameUserData <- function(dataUser, dataRenamed) {
     result <- result[match(namesUser$nameOld, result$nameOld), ]
     colnames(dataUser) <- ifelse(is.na(result$nameNew),
                                  result$nameOld, result$nameNew)
-    return(dataUser)
+    return(as.data.frame(dataUser))
 }
