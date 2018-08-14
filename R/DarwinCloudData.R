@@ -12,7 +12,7 @@
 #' 
 #' @export
 #' 
-downloadCloudData <- function(pathCloud = NULL, columnField = "fieldname", columnStandard = "standard") {
+downloadCloudData <- function(pathCloud = "https://raw.githubusercontent.com/kurator-org/kurator-validation/master/packages/kurator_dwca/data/vocabularies/darwin_cloud.txt", columnField = "fieldname", columnStandard = "standard") {
     # Using data.table::fread for speed
     data <- data.table::fread(pathCloud, 
                               data.table = FALSE,
