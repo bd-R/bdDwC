@@ -17,3 +17,4 @@ Imports:
 LazyData: true
 RoxygenNote: 6.1.0
 License: MIT + file LICENSE
+Encoding: UTF-8
