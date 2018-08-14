@@ -10,6 +10,7 @@ Author: Tomer Gueta <tomer.gu@gmail.com>,
     Ashwin Agrawal <ashwin.agrawal.met14@itbhu.ac.in>,
     Carmel Yohay <yohay@cv.technion.ac.il>
 Maintainer: Povilas Gibas <povilasgibas@gmail.com>
+Depends: R (>= 2.10)
 Imports: 
     shiny, shinyBS,  shinydashboard, shinyjs,
     data.table
