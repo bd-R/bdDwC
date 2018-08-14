@@ -11,7 +11,7 @@
 #' @import shiny
 #' @import shinyBS
 #' @import shinydashboard
-#' @import shinyjs
+#' @importFrom shinyjs addCssClass disable disabled enable useShinyjs
 #' 
 #' @export
 #' 
@@ -19,3 +19,5 @@ runDwC <- function() {
     pathApp <- system.file("shiny", package = "bdDwC")
     return(shiny::runApp(pathApp, launch.browser = TRUE))
 }
+
+
