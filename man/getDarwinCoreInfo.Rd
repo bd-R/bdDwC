@@ -18,7 +18,7 @@ Darwin Cloud term.
 Darwin Core Terms. This information is displayed when using manually renaming.
 }
 \examples{
-\dontrun {
+\dontrun{
     getDarwinCoreInfo()
 }
 

@@ -21,7 +21,7 @@ renames data.frame.
 (usually given user data) according previously Darwinized Names.
 }
 \examples{
-\dontrun {
+\dontrun{
     renameUserData(rv$data_User, rv$data_Rename)
 }
 

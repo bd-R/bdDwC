@@ -21,7 +21,7 @@ that this information could be shown in a `shiny` app. Therefore we create
 a list (Darwind Cloud data and time stamp (`Sys.Date()`)).
 }
 \examples{
-\dontrun {
+\dontrun{
     getCloudData()
 }
 

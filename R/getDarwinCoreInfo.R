@@ -8,7 +8,7 @@
 #' @return data.frame that contains name and definition for each available
 #' Darwin Cloud term.
 #' 
-#' @examples \dontrun {
+#' @examples \dontrun{
 #'     getDarwinCoreInfo()
 #' }
 #' 

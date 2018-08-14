@@ -9,7 +9,7 @@
 #' 
 #' @return data.frame of darwinized user names.
 #' 
-#' @examples \dontrun {
+#' @examples \dontrun{
 #'     darwinazeNames(dataUser, bdDwC:::dataDarwinCloud[[1]])
 #' }
 #' 

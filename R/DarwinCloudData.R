@@ -10,7 +10,7 @@
 #' 
 #' @return NULL.
 #' 
-#' @examples \dontrun {
+#' @examples \dontrun{
 #'     getCloudData()
 #' }
 #' 
