@@ -4,8 +4,7 @@
 \alias{combineOldNew}
 \title{Combine old/new name for checkboxes}
 \usage{
-combineOldNew(data, symbolEqual = "⥱", symbolRename = "↠",
-  symbolManual = "→", symbolSpace = " ")
+combineOldNew(data, symbolArrow = "→", symbolSpace = " ")
 }
 \description{
 `combineOldNew()` is a function that combines (`paste`) fieldname and standard
