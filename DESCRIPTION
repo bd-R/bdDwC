@@ -1,8 +1,8 @@
 Package: bdDwC
-Version: 0.0.2
-Date: 2018-08-13
+Version: 0.1.0
+Date: 2018-08-14
 Title: Darwinizer 
-Description: Darwinize biodiversity data from user supplied data files.
+Description: Darwinizer makes biodiversity data Darwin Core compatible
 Author: Tomer Gueta <tomer.gu@gmail.com>, 
     Vijay Barve <vijay.barve@gmail.com>, 
     Povilas Gibas <povilasgibas@gmail.com>, 
