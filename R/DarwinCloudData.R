@@ -4,24 +4,31 @@
 #' data. First it downloads data, then it subsets informative columns and 
 #' renames them so they could be used in `shiny` app.
 #' 
-#' @param pathCloud Path to Darwin Cloud data.
+#' @param pathRemote Path to remote repository (Kurator in Github).
+#' @param pathGithub Path within given repository.
+#' @param pathFile Name of a file.
 #' @param columnField Name of the column that contains field information.
-#' @param columnStandard Name of the column that contains standard information.
+#' @param columnStand Name of the column that contains standard information.
 #' 
 #' @return data.frame of Darwin Cloud data.
 #' 
 #' @export
 #' 
-downloadCloudData <- function(pathCloud = "https://raw.githubusercontent.com/kurator-org/kurator-validation/master/packages/kurator_dwca/data/vocabularies/darwin_cloud.txt", columnField = "fieldname", columnStandard = "standard") {
+downloadCloudData <- function(pathRemote  = "https://raw.githubusercontent.com/kurator-org", 
+                              pathGithub  = "/kurator-validation/master/packages/kurator_dwca/data/vocabularies/",
+                              pathFile    = "darwin_cloud.txt",
+                              columnField = "fieldname", 
+                              columnStand = "standard") {
     # Using data.table::fread for speed
+    pathCloud <- paste0(pathRemote, pathGithub, pathFile)
     data <- data.table::fread(pathCloud, 
                               data.table = FALSE,
                               verbose = FALSE,
                               showProgress = FALSE)
     # Subset only used columns
-    data <- subset(data, select = c(columnField, columnStandard))
+    data <- subset(data, select = c(columnField, columnStand))
     # Rename to match names in shiny server 
-    colnames(data) <- c(columnField, columnStandard)
+    colnames(data) <- c(columnField, columnStand)
 
     # Add values for missing standard
     # Don't know why they are not there

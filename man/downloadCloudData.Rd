@@ -5,15 +5,21 @@
 \title{Download Darwin Cloud Data}
 \usage{
 
-  downloadCloudData(pathCloud = "https://raw.githubusercontent.com/kurator-org/kurator-validation/master/packages/kurator_dwca/data/vocabularies/darwin_cloud.txt",
-  columnField = "fieldname", columnStandard = "standard")
+  downloadCloudData(pathRemote = "https://raw.githubusercontent.com/kurator-org",
+  pathGithub = "/kurator-validation/master/packages/kurator_dwca/data/vocabularies/",
+  pathFile = "darwin_cloud.txt", columnField = "fieldname",
+  columnStand = "standard")
 }
 \arguments{
-\item{pathCloud}{Path to Darwin Cloud data.}
+\item{pathRemote}{Path to remote repository (Kurator in Github).}
+
+\item{pathGithub}{Path within given repository.}
+
+\item{pathFile}{Name of a file.}
 
 \item{columnField}{Name of the column that contains field information.}
 
-\item{columnStandard}{Name of the column that contains standard information.}
+\item{columnStand}{Name of the column that contains standard information.}
 }
 \value{
 data.frame of Darwin Cloud data.
