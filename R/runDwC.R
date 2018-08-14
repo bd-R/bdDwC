@@ -2,8 +2,9 @@
 #'
 #' `bdDwC` is a function that starts bdverse Darwin Cloud cleaning `shiny` app.
 #'
-#' @examples
-#' runDwC()
+#' @examples \dontrun {
+#'     runDwC()
+#' }
 #' 
 #' @return `shiny::runApp()` result within browser.
 #' 

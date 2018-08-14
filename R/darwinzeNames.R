@@ -9,8 +9,9 @@
 #' 
 #' @return data.frame of darwinized user names.
 #' 
-#' @examples
-#' darwinazeNames(dataUser, bdDwC:::dataDarwinCloud[[1]])
+#' @examples \dontrun {
+#'     darwinazeNames(dataUser, bdDwC:::dataDarwinCloud[[1]])
+#' }
 #' 
 darwinazeNames <- function(dataUser, dataDWC) {
 

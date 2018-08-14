@@ -10,8 +10,9 @@
 #' @return data.frame of submitted user data, but renamed according given 
 #' renames data.frame.
 #' 
-#' @examples
-#' renameUserData(rv$data_User, rv$data_Rename)
+#' @examples \dontrun {
+#'     renameUserData(rv$data_User, rv$data_Rename)
+#' }
 #' 
 renameUserData <- function(dataUser, dataRenamed) {
     # Extract user names (we don't need all data just to rename)

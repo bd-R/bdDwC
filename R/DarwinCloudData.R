@@ -10,8 +10,9 @@
 #' 
 #' @return NULL.
 #' 
-#' @examples
-#' getCloudData()
+#' @examples \dontrun {
+#'     getCloudData()
+#' }
 #' 
 getCloudData <- function(pathCloud = "https://raw.githubusercontent.com/kurator-org/kurator-validation/master/packages/kurator_dwca/data/vocabularies/darwin_cloud.txt") {
     dataDarwinCloud <- list(data = downloadCloudData(pathCloud), date = Sys.Date())
