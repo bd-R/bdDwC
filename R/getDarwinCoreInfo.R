@@ -3,7 +3,7 @@
 #' `getDarwinCoreInfo()` is a function (not exported) to download
 #' Darwin Core Terms. This information is displayed when using manually renaming.
 #' 
-#' @param pathCloud Path to Darwin Cloud data.
+#' @param pathDarwinCloud Path to Darwin Cloud data.
 #' 
 #' @return data.frame that contains name and definition for each available
 #' Darwin Cloud term.

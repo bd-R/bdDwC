@@ -7,7 +7,7 @@
 getDarwinCoreInfo(pathDarwinCloud = "http://tdwg.github.io/dwc/terms/")
 }
 \arguments{
-\item{pathCloud}{Path to Darwin Cloud data.}
+\item{pathDarwinCloud}{Path to Darwin Cloud data.}
 }
 \value{
 data.frame that contains name and definition for each available
