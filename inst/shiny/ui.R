@@ -22,7 +22,7 @@ dashboardPage(
             menuItem("Upload Data", tabName = "upload"),
             menuItem("Darwinizer", tabName = "darwinizer"),
             # Horizontal line
-            tags$hr(style="border-color: black;")
+            tags$hr(style = "border-color: #bfbfbf;"),
             # Restart shiny session
             tags$a(href = "javascript:history.go(0)", 
                    popify(tags$i(class = "fa fa-refresh fa-1x"),
@@ -30,7 +30,9 @@ dashboardPage(
                    content = "Click here to restart bdDwC shiny session",
                    placement = "right")),
             # Citation
-            actionButton("citation", "Cite us", style = "border-color: #091520")
+            actionButton("citation", "Cite us", 
+                         style = "border-color: #091520;
+                                  background-color: #e5e5e5")
         )
     ),
 
