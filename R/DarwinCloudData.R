@@ -16,7 +16,7 @@
 #' 
 getCloudData <- function(pathCloud = "https://raw.githubusercontent.com/kurator-org/kurator-validation/master/packages/kurator_dwca/data/vocabularies/darwin_cloud.txt") {
     dataDarwinCloud <- list(data = downloadCloudData(pathCloud), date = Sys.Date())
-    devtools::use_data(dataDarwinCloud, internal = TRUE, overwrite = TRUE)
+    saveRDS(dataDarwinCloud, "dataDarwinCloud.RDS")
     return(NULL)
 }
 
