@@ -58,6 +58,13 @@ darwinazeNames <- function(dataUser, dataDWC) {
 #' `combineOldNew()` is a function that combines (`paste`) fieldname and standard
 #' names with unicode characters to present in checkboxes.
 #' 
+#' @param data data.frame of matched names (`darwinazeNames()` output)
+#' @param symbolArrow character string for symbol that is used in `paste0` to connect
+#' old and new name
+#' @param symbolSpace character string for symbol used instead of white space 
+#' 
+#' @return data.frame of darwinized user names.
+#' 
 combineOldNew <- function(data, symbolArrow = "\U2192", symbolSpace  = "\U00A0") {
     result <- apply(data, 1, function(x) paste0(x[1], symbolSpace, symbolArrow, "\n", x[2]))
     return(as.character(result))
