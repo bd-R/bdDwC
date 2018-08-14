@@ -68,6 +68,10 @@ shinyServer(function(input, output, session) {
     # DISABLE BUTTONS
     # --------------------------
 
+    # Disable darwinizer tab
+    shinyjs::addCssClass(selector = "a[data-value='darwinizer']", 
+                         class = "inactiveLink")
+
     # Disable Darwinize button if no user data uploaded
     observe({
         if (nrow(rv$data_User) == 0) {
@@ -75,6 +79,16 @@ shinyServer(function(input, output, session) {
         } else {
             shinyjs::enable("submitToDarwinizer") 
         }
+    })
+    # Disable all other buttons if not submitted to Darwinizer
+    observeEvent(input$submitToDarwinizer, {
+        removeCssClass(selector = "a[data-value='darwinizer']", 
+                       class = "inactiveLink")
+        shinyjs::enable("names_Rename") 
+        shinyjs::enable("names_Remove") 
+        shinyjs::enable("names_Clean") 
+        shinyjs::enable("names_Rollback") 
+        shinyjs::enable("downloadData") 
     })
     # Disable renaming when no names left
     observe({
@@ -92,14 +106,6 @@ shinyServer(function(input, output, session) {
         if (length(rv$data_Darwinized$nameOld) == 0) {
             shinyjs::disable("names_Rollback") 
         }
-    })
-    # Disable all other buttons if not submitted to Darwinizer
-    observeEvent(input$submitToDarwinizer, {
-        shinyjs::enable("names_Rename") 
-        shinyjs::enable("names_Remove") 
-        shinyjs::enable("names_Clean") 
-        shinyjs::enable("names_Rollback") 
-        shinyjs::enable("downloadData") 
     })
 
 

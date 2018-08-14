@@ -15,6 +15,10 @@ dashboardPage(
     dashboardSidebar(
         sidebarMenu(
             id = "myTabs",
+            tags$head(tags$style(".inactiveLink {
+                                  pointer-events: none;
+                                  cursor: default;}"
+            )),
             menuItem("Upload Data", tabName = "upload"),
             menuItem("Darwinizer", tabName = "darwinizer"),
             # Restart shiny session
