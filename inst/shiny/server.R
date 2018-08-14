@@ -76,40 +76,40 @@ shinyServer(function(input, output, session) {
     #                      class = "inactiveLink")
 
     # Disable Darwinize button if no user data uploaded
-    # observe({
-    #     if (nrow(rv$data_User) == 0) {
-    #         shinyjs::disable("submitToDarwinizer")
-    #     } else {
-    #         shinyjs::enable("submitToDarwinizer") 
-    #     }
-    # })
-    # # Disable all other buttons if not submitted to Darwinizer
-    # observeEvent(input$submitToDarwinizer, {
-    #     removeCssClass(selector = "a[data-value='darwinizer']", 
-    #                    class = "inactiveLink")
-    #     shinyjs::enable("names_Rename") 
-    #     shinyjs::enable("names_Remove") 
-    #     shinyjs::enable("names_Clean") 
-    #     shinyjs::enable("names_Rollback") 
-    #     shinyjs::enable("downloadData") 
-    # })
-    # # Disable renaming when no names left
-    # observe({
-    #     if ((length(rv$names_UserAfter) == 0 | 
-    #         length(rv$names_StandardAfter) == 0) &
-    #         nrow(rv$data_Rename > 0)) {
-    #         shinyjs::disable("names_Rename") 
-    #     }
-    #     if (length(rv$names_UserAfter) > 0) {
-    #         shinyjs::enable("names_Rename") 
-    #     }
-    # })
-    # # Disable rollback when no nothing was darwinized
-    # observe({
-    #     if (length(rv$data_Darwinized$nameOld) == 0) {
-    #         shinyjs::disable("names_Rollback") 
-    #     }
-    # })
+    observe({
+        if (nrow(rv$data_User) == 0) {
+            shinyjs::disable("submitToDarwinizer")
+        } else {
+            shinyjs::enable("submitToDarwinizer") 
+        }
+    })
+    # Disable all other buttons if not submitted to Darwinizer
+    observeEvent(input$submitToDarwinizer, {
+        # shinyjs::removeCssClass(selector = "a[data-value='darwinizer']", 
+        #                         class = "inactiveLink")
+        shinyjs::enable("names_Rename") 
+        shinyjs::enable("names_Remove") 
+        shinyjs::enable("names_Clean") 
+        shinyjs::enable("names_Rollback") 
+        shinyjs::enable("downloadData") 
+    })
+    # Disable renaming when no names left
+    observe({
+        if ((length(rv$names_UserAfter) == 0 | 
+            length(rv$names_StandardAfter) == 0) &
+            nrow(rv$data_Rename > 0)) {
+            shinyjs::disable("names_Rename") 
+        }
+        if (length(rv$names_UserAfter) > 0) {
+            shinyjs::enable("names_Rename") 
+        }
+    })
+    # Disable rollback when no nothing was darwinized
+    observe({
+        if (length(rv$data_Darwinized$nameOld) == 0) {
+            shinyjs::disable("names_Rollback") 
+        }
+    })
 
 
 
