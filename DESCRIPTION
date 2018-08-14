@@ -1,15 +1,17 @@
 Package: bdDwC
-Version: 0.0.1
-Date: 2018-08-06
-Title: biodiversity Darwin Cloud
-Description: Darwinize biodiversity data
-Author: Tomer Gueta <tomer.gu@gmail.com>, Vijay Barve <vijay.barve@gmail.com>, 
+Version: 0.0.2
+Date: 2018-08-13
+Title: Darwinizer 
+Description: Darwinize biodiversity data from user supplied data files.
+Author: Tomer Gueta <tomer.gu@gmail.com>, 
+    Vijay Barve <vijay.barve@gmail.com>, 
     Povilas Gibas <povilasgibas@gmail.com>, 
-    Thiloshon Nagarajah <thiloshon@gmail.com>, Ashwin Agrawal <ashwin.agrawal.met14@itbhu.ac.in>,
+    Thiloshon Nagarajah <thiloshon@gmail.com>, 
+    Ashwin Agrawal <ashwin.agrawal.met14@itbhu.ac.in>,
     Carmel Yohay <yohay@cv.technion.ac.il>
 Maintainer: Povilas Gibas <povilasgibas@gmail.com>
 Imports: 
-    shiny, shinyBS, shinydashboard, shinyjs,
     data.table
 LazyData: true
 RoxygenNote: 6.0.1
+License: MIT + file LICENSE
