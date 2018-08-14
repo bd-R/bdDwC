@@ -104,8 +104,12 @@ dashboardPage(
                     )
                 ),
 
-                actionButton("submitToDarwinizer", "Submit to Darwinizer", width = 210,
-                             style = "color: #000000; background-color: #71a879; border-color: #091520"),
+                actionButton("submitToDarwinizer", "Submit to Darwinizer", width = 250,
+                             style = "background: url('Darwin.svg'); background-position: left center; 
+                                      background-repeat: no-repeat; background-color: #ffffff;
+                                      color: #000000; border-color: #091520;
+                                      padding:10px; font-size:120%"),
+
                 uiOutput("submitToDarwinizer_Pop")
             ),
 
@@ -132,8 +136,8 @@ dashboardPage(
                         column(2, 
                             br(), br(),
                             shinyjs::disabled(actionButton("names_Rename", "Rename",
-                                              incon = icon("arrow-circle-right"), 
-                                              width = 210,                                     
+                                              icon = icon("arrow-circle-right"), 
+                                              width = 210,
                                               style = "color: #000000; background-color: #71a879; border-color: #091520;
                                                        padding:10px; font-size:120%")), 
                             offset = 1),
