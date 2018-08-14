@@ -26,7 +26,9 @@ dashboardPage(
                    popify(tags$i(class = "fa fa-refresh fa-1x"),
                    title = NULL, 
                    content = "Click here to restart bdDwC shiny session",
-                   placement = "right"))
+                   placement = "right")),
+            # Citation
+            actionButton("citation", "Cite us", style = "border-color: #091520")
         )
     ),
 

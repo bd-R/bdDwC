@@ -486,4 +486,20 @@ shinyServer(function(input, output, session) {
                       bdDwC:::dataDarwinCloud[[2]], ". But you can also add your own dictionary to the bdDwC using file input slot bellow.")
         bsPopover("submitToDarwinizer", title = "Add you own dictionary", text)
     })
+
+
+
+    # --------------------------
+    # CITATION
+    # --------------------------
+
+    observeEvent(input$citation, {
+        showModal(modalDialog(
+            title = "Cite us",
+            HTML(paste("Cite as at ...\nBibtex")),
+            easyClose = TRUE
+            )
+        )
+    })
+
 })
