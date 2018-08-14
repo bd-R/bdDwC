@@ -292,33 +292,52 @@ shinyServer(function(input, output, session) {
             HTML(RAW)
         }
     })
-    # Create renamed checkboxes - combination of 3 renaming types
-    output$names_Renamed <- renderUI({
+    output$names_Renamed_Manual <- renderUI({
         if (length(rv$data_Rename$nameRename) == 0) {
-            return(NULL)
+            h5("Nothing was renamed")
         } else {
-            res1 <- shinyBS::bsCollapsePanel("Manually Renamed",
+            foo <- subset(rv$data_Rename, matchType == "Manual")$nameRename
+            if (length(foo) > 0) {
                 checkboxGroupInput("names_Renamed_Manual", 
                                    NULL,
                                    # Use rev to have newest on top
-                                   rev(subset(rv$data_Rename, matchType == "Manual")$nameRename))
-            )
-            res2 <- shinyBS::bsCollapsePanel("Darwinized Names",
+                                   rev(foo)
+                )
+            } else {
+                h5("Nothing was renamed")
+            }
+        }
+    })
+    output$names_Renamed_Darwinized <- renderUI({
+        if (length(rv$data_Rename$nameRename) == 0) {
+            h5("No names were Darwinized")
+        } else {
+            foo <- subset(rv$data_Rename, matchType == "Darwinized")$nameRename
+            if (length(foo) > 0) {
                 checkboxGroupInput("names_Renamed_Darwinized", 
                                    NULL,
                                    # Use rev to have newest on top
-                                   subset(rv$data_Rename, matchType == "Darwinized")$nameRename)
-            )
-            res3 <- shinyBS::bsCollapsePanel("Identical Matches",
+                                   foo
+                )
+            } else {
+                h5("No names were Darwinized")
+            }
+        }
+    })
+    output$names_Renamed_Identical <- renderUI({
+        if (length(rv$data_Rename$nameRename) == 0) {
+            h5("No names were Identical")
+        } else {
+            foo <- subset(rv$data_Rename, matchType == "Identical")$nameRename
+            if (length(foo) > 0) {
                 checkboxGroupInput("names_Renamed_Identical", 
                                    NULL,
                                    # Use rev to have newest on top
-                                   subset(rv$data_Rename, matchType == "Identical")$nameRename)
-            )
-
-            shinyBS::bsCollapse(res1, res2, res3,
-                                multiple = TRUE, open = c("Darwinized Names", 
-                                                          "Manually Renamed"))
+                                   foo
+                )
+            } else {
+                h5("No names were Identical")
+            }
         }
     })
 

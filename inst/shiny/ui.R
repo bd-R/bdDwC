@@ -124,15 +124,19 @@ dashboardPage(
                             valueBoxOutput("vb_DWCmatch", width = 2), 
                             valueBoxOutput("vb_Manual",   width = 2),
                             valueBoxOutput("vb_DWCident", width = 2),
-                            style = "margin-bottom:30px; border-bottom:2px solid; padding: 20px")
+                            offset = 1),
+                        # Adds lines belowe value boxes
+                        column(12, style = "margin-bottom:10px; border-bottom:2px solid")
                     ),
                     fluidRow(
                         column(2, 
+                            br(), br(),
                             shinyjs::disabled(actionButton("names_Rename", "Rename",
                                               incon = icon("arrow-circle-right"), 
                                               width = 210,                                     
-                                              style = "color: #000000; background-color: #71a879; border-color: #091520")), 
-                            offset = 0),
+                                              style = "color: #000000; background-color: #71a879; border-color: #091520;
+                                                       padding:10px; font-size:120%")), 
+                            offset = 1),
                         column(2, verticalLayout(
                             shinyjs::disabled(actionButton("names_Remove", "Remove selected rename",
                                                            icon = icon("times"), width = 210,
@@ -145,7 +149,7 @@ dashboardPage(
                             shinyjs::disabled(actionButton("names_Rollback", "Rollback to Darwinizer",
                                                            icon = icon("fast-backward"), width = 210,
                                                            style = "color: #000000; background-color: #c4cc6d; border-color: #091520"))), 
-                            offset = 0
+                            offset = 2
                         ),
                         column(2,
                             shinyjs::disabled(downloadButton("downloadData", "Download Darwinized data",
@@ -159,7 +163,18 @@ dashboardPage(
                     column(2, uiOutput("names_User")),
                     column(2, uiOutput("names_Standard"), 
                               uiOutput("names_Standard_Hover"), offset = 1),
-                    column(2, uiOutput("names_Renamed"), offset = 1)
+                    box(title = "Darwinized Names", width = 2, 
+                        status = "success", collapsible = TRUE, 
+                        solidHeader = TRUE,
+                        uiOutput("names_Renamed_Darwinized")),
+                    box(title = "Manually Renamed", width = 2, 
+                        status = "success", collapsible = TRUE, 
+                        solidHeader = TRUE,
+                        uiOutput("names_Renamed_Manual")),
+                    box(title = "Identical matches", width = 2, 
+                        status = "success", collapsible = TRUE, 
+                        solidHeader = TRUE,
+                        uiOutput("names_Renamed_Identical"))
                 )
             )
         )
