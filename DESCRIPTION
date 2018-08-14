@@ -1,9 +1,10 @@
 Package: bdDwC
 Version: 0.1.1
 Date: 2018-08-14
-Title: Darwinizer 
-Description: Darwinizer makes biodiversity data Darwin Core compatible.  
-Author: Tomer Gueta <tomer.gu@gmail.com>, 
+Title: Darwinizer: Darwin Core (DwC) field names standardization
+Description: The 'shiny' application 'bdDwC' makes biodiversity data field names Darwin Core compatible.
+Author: 
+    Tomer Gueta <tomer.gu@gmail.com>, 
     Vijay Barve <vijay.barve@gmail.com>, 
     Povilas Gibas <povilasgibas@gmail.com>, 
     Thiloshon Nagarajah <thiloshon@gmail.com>, 
@@ -16,5 +17,5 @@ Imports:
     data.table
 LazyData: true
 RoxygenNote: 6.1.0
-License: MIT + file LICENSE
+License: GPL-3
 Encoding: UTF-8
