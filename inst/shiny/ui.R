@@ -1,5 +1,8 @@
-dashboardPage(
+# Not import even though in DESCRIPTION
+library(shinydashboard)
+library(shinyBS)
 
+dashboardPage(
     # --------------------------
     # HEADER
     # --------------------------
@@ -25,7 +28,7 @@ dashboardPage(
             tags$hr(style = "border-color: #bfbfbf;"),
             # Restart shiny session
             tags$a(href = "javascript:history.go(0)", 
-                   popify(tags$i(class = "fa fa-refresh fa-1x"),
+                   shinyBS::popify(tags$i(class = "fa fa-refresh fa-1x"),
                    title = NULL, 
                    content = "Click here to restart bdDwC shiny session",
                    placement = "right")),

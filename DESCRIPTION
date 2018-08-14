@@ -11,7 +11,9 @@ Author: Tomer Gueta <tomer.gu@gmail.com>,
     Carmel Yohay <yohay@cv.technion.ac.il>
 Maintainer: Povilas Gibas <povilasgibas@gmail.com>
 Depends: R (>= 2.10)
-Imports: shiny, shinyBS, shinydashboard, shinyjs, data.table
+Imports: 
+    shiny, shinyBS, shinydashboard, shinyjs, 
+    data.table
 LazyData: true
 RoxygenNote: 6.0.1
 License: MIT + file LICENSE

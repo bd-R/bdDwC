@@ -1,3 +1,6 @@
+# Not import even though in DESCRIPTION
+library(shinydashboard)
+library(shinyBS)
 shinyServer(function(input, output, session) {
 
     # --------------------------
@@ -484,7 +487,7 @@ shinyServer(function(input, output, session) {
     output$submitToDarwinizer_Pop <- renderUI({
         text <- paste("bdDwC uses references dictionary downloaded from the github.com/kurator-org/kurator-validation, last update at",
                       bdDwC:::dataDarwinCloud[[2]], ". But you can also add your own dictionary to the bdDwC using file input slot bellow.")
-        bsPopover("submitToDarwinizer", title = "Add you own dictionary", text)
+        shinyBS::bsPopover("submitToDarwinizer", title = "Add you own dictionary", text)
     })
 
 
