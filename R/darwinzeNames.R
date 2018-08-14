@@ -65,7 +65,7 @@ darwinazeNames <- function(dataUser, dataDWC) {
 #' 
 #' @return data.frame of darwinized user names.
 #' 
-combineOldNew <- function(data, symbolArrow = "\U2192", symbolSpace  = "\U00A0") {
+combineOldNew <- function(data, symbolArrow = "->", symbolSpace  = " ") {
     result <- apply(data, 1, function(x) paste0(x[1], symbolSpace, symbolArrow, "\n", x[2]))
     result <- as.character(result)
     return(result)

@@ -4,8 +4,9 @@
 \alias{downloadCloudData}
 \title{Download Darwin Cloud Data}
 \usage{
-downloadCloudData(pathCloud = NULL, columnField = "fieldname",
-  columnStandard = "standard")
+
+  downloadCloudData(pathCloud = "https://raw.githubusercontent.com/kurator-org/kurator-validation/master/packages/kurator_dwca/data/vocabularies/darwin_cloud.txt",
+  columnField = "fieldname", columnStandard = "standard")
 }
 \arguments{
 \item{pathCloud}{Path to Darwin Cloud data.}

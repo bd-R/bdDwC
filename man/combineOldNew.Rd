@@ -4,7 +4,7 @@
 \alias{combineOldNew}
 \title{Combine old/new name for checkboxes}
 \usage{
-combineOldNew(data, symbolArrow = "→", symbolSpace = " ")
+combineOldNew(data, symbolArrow = "->", symbolSpace = " ")
 }
 \arguments{
 \item{data}{data.frame of matched names (`darwinazeNames()` output)}
