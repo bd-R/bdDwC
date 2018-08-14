@@ -21,6 +21,8 @@ dashboardPage(
             )),
             menuItem("Upload Data", tabName = "upload"),
             menuItem("Darwinizer", tabName = "darwinizer"),
+            # Horizontal line
+            tags$hr(style="border-color: black;")
             # Restart shiny session
             tags$a(href = "javascript:history.go(0)", 
                    popify(tags$i(class = "fa fa-refresh fa-1x"),
