@@ -20,6 +20,8 @@ data.frame of darwinized user names.
 name (ie, name from given user dataset that had a match in reference dataset).
 }
 \examples{
-darwinazeNames(dataUser, bdDwC:::dataDarwinCloud[[1]])
+\dontrun {
+    darwinazeNames(dataUser, bdDwC:::dataDarwinCloud[[1]])
+}
 
 }
