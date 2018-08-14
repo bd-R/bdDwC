@@ -34,8 +34,8 @@ darwinazeNames <- function(dataUser, dataDWC) {
     }
 
     # Subset data for further filtering
-    dataUserSub <- subset(dataUser, !fieldnameOrig %in% matchIdentical$fieldname)
-    dataDWCSub  <- subset(dataDWC, !standard %in% matchIdentical$standard)
+    dataUserSub <- dataUser[!dataUser$fieldnameOrig %in% matchIdentical$fieldname, ]
+    dataDWCSub  <- dataDWC[!dataDWC$standard %in% matchIdentical$standard, ]
 
     # Match user lower cases
     matchLower <- merge(dataUserSub, dataDWCSub, "fieldnameLow")
