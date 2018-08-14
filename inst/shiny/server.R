@@ -76,11 +76,21 @@ shinyServer(function(input, output, session) {
             shinyjs::enable("submitToDarwinizer") 
         }
     })
+    # Disable renaming when no names left
     observe({
         if ((length(rv$names_UserAfter) == 0 | 
             length(rv$names_StandardAfter) == 0) &
             nrow(rv$data_Rename > 0)) {
             shinyjs::disable("names_Rename") 
+        }
+        if (length(rv$names_UserAfter) > 0) {
+            shinyjs::enable("names_Rename") 
+        }
+    })
+    # Disable rollback when no nothing was darwinized
+    observe({
+        if (length(rv$data_Darwinized$nameOld) == 0) {
+            shinyjs::disable("names_Rollback") 
         }
     })
     # Disable all other buttons if not submitted to Darwinizer

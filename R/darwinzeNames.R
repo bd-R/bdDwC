@@ -38,10 +38,12 @@ darwinazeNames <- function(dataUser, dataDWC) {
 
     # Match user lower cases
     matchLower <- merge(dataUserSub, dataDWCSub, "fieldnameLow")
-    matchLower <- data.frame(fieldname = matchLower$fieldnameOrig.x, 
-                             standard = matchLower$standard,
-                             matchType = "Darwinized",
-                             stringsAsFactors = FALSE)
+    if (nrow(matchLower) > 0) {
+        matchLower <- data.frame(fieldname = matchLower$fieldnameOrig.x, 
+                                 standard = matchLower$standard,
+                                 matchType = "Darwinized",
+                                 stringsAsFactors = FALSE)
+    }
 
     result <- data.frame(nameOld = c(matchIdentical$fieldname, matchLower$fieldname),
                          nameNew = c(matchIdentical$standard, matchLower$standard),
