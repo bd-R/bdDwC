@@ -116,35 +116,50 @@ dashboardPage(
             # --------------------------
 
             tabItem("darwinizer",
-                fluidRow(fluidRow(column(2, 
-                    shinyjs::disabled(actionButton("names_Rename", "Rename",
-                                      incon = icon("arrow-circle-right"), width = 210,                                     
-                                      style = "color: #000000; background-color: #71a879; border-color: #091520")), 
-                    offset = 2)),
+                fluidRow(
+                    fluidRow(
+                        column(12, 
+                            valueBoxOutput("vb_allNames", width = 2), 
+                            valueBoxOutput("vb_DWCNames", width = 2), 
+                            valueBoxOutput("vb_DWCmatch", width = 2), 
+                            valueBoxOutput("vb_Manual",   width = 2),
+                            valueBoxOutput("vb_DWCident", width = 2),
+                            style = "margin-bottom:30px; border-bottom:2px solid; padding: 20px")
+                    ),
+                    fluidRow(
+                        column(2, 
+                            shinyjs::disabled(actionButton("names_Rename", "Rename",
+                                              incon = icon("arrow-circle-right"), 
+                                              width = 210,                                     
+                                              style = "color: #000000; background-color: #71a879; border-color: #091520")), 
+                            offset = 0),
+                        column(2, verticalLayout(
+                            shinyjs::disabled(actionButton("names_Remove", "Remove selected rename",
+                                                           icon = icon("times"), width = 210,
+                                                           style = "color: #000000; background-color: #a188bd; border-color: #091520")), 
+                            br(),
+                            shinyjs::disabled(actionButton("names_Clean", "Remove all renames",
+                                                          icon = icon("times"), width = 210,
+                                                          style = "color: #000000; background-color: #a188bd; border-color: #091520")), 
+                            br(),
+                            shinyjs::disabled(actionButton("names_Rollback", "Rollback to Darwinizer",
+                                                           icon = icon("fast-backward"), width = 210,
+                                                           style = "color: #000000; background-color: #c4cc6d; border-color: #091520"))), 
+                            offset = 0
+                        ),
+                        column(2,
+                            shinyjs::disabled(downloadButton("downloadData", "Download Darwinized data",
+                                                             with = 210,
+                                                             style = "color: #000000; background-color: #71a879; border-color: #091520")),
+                            offset = 0
+                        ),
+                        style = "margin-bottom:30px; border-bottom:2px solid; padding: 20px"
+                    ),
+                    br(), br(),
                     column(2, uiOutput("names_User")),
                     column(2, uiOutput("names_Standard"), 
                               uiOutput("names_Standard_Hover"), offset = 1),
-                    column(2, uiOutput("names_Renamed"), 
-                              offset = 1
-                    ),
-                    column(2, verticalLayout(
-                        shinyjs::disabled(actionButton("names_Remove", "Remove selected rename",
-                                                       icon = icon("times"), width = 210,
-                                                       style = "color: #000000; background-color: #a188bd; border-color: #091520")), 
-                        br(),
-                        shinyjs::disabled(actionButton("names_Clean", "Remove all renames",
-                                                      icon = icon("times"), width = 210,
-                                                      style = "color: #000000; background-color: #a188bd; border-color: #091520")), 
-                        br(),
-                        shinyjs::disabled(actionButton("names_Rollback", "Rollback to Darwinizer",
-                                                       icon = icon("fast-backward"), width = 210,
-                                                       style = "color: #000000; background-color: #c4cc6d; border-color: #091520")), 
-                        br(),
-                        shinyjs::disabled(downloadButton("downloadData", "Download Darwinized data",
-                                                         with = 210,
-                                                         style = "color: #000000; background-color: #71a879; border-color: #091520"))),
-                        offset = 1
-                    )
+                    column(2, uiOutput("names_Renamed"), offset = 1)
                 )
             )
         )

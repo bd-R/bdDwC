@@ -399,6 +399,39 @@ shinyServer(function(input, output, session) {
 
 
     # --------------------------
+    # VALUE BOXES
+    # --------------------------
+
+    output$vb_allNames <- renderValueBox({
+        valueBox(length(rv$names_User),
+                 "Names Submitted", 
+                 color = "light-blue")
+    })
+    output$vb_DWCNames <- renderValueBox({
+        valueBox(paste0(nrow(rv$data_Rename), 
+                        "  (", round(nrow(rv$data_Rename) * 100 / 
+                                     length(rv$names_User)),"%)"),
+                 "Names Darwinized", 
+                 color = "olive")
+    })
+    output$vb_DWCident <- renderValueBox({
+        valueBox(sum(rv$data_Rename$matchType == "Identical"), 
+                 "Darwinized: Identical", 
+                 color = "green")
+    })
+    output$vb_DWCmatch <- renderValueBox({
+        valueBox(sum(rv$data_Rename$matchType == "Darwinized"), 
+                 "Darwinized: Matched", 
+                 color = "green")
+    })
+    output$vb_Manual <- renderValueBox({
+        valueBox(sum(rv$data_Rename$matchType == "Manual"), 
+                 "Darwinized: Manually", 
+                 color = "green")
+    })
+
+
+    # --------------------------
     # DARWIN CORE INFO
     # --------------------------
 
