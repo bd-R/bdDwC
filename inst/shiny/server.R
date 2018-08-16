@@ -38,31 +38,36 @@ shinyServer(function(input, output, session) {
     rv <- reactiveValues(
         # User data used in Darwinizer
         # Uploaded by user (csv)
-        data_User           = data.frame(), 
+        data_User            = data.frame(), 
         # Darwinized data (created with darwinazeNames)
-        data_Darwinized     = data.frame(),
+        data_Darwinized      = data.frame(),
         # Data that contains all renamings
-        data_Rename         = data.frame(),
+        data_Rename          = data.frame(),
+        # Darwin Cloud Data (standard and fieldname)
+        data_DarwinCloud     = bdDwC:::dataDarwinCloud$data,
         # Darwin Cloud Information (used to display info when hover)
-        data_DarwinCore     = data.frame(),
+        data_DarwinCloudInfo = data.frame(),
         # Original set of names in user data
-        names_User          = c(),
+        names_User           = c(),
         # Set of names in user data after renaming
-        names_UserAfter     = c(),
+        names_UserAfter      = c(),
         # Original set of Darwin Cloud names
-        names_Standard      = c(),
+        names_Standard       = c(),
         # Set of Darwin Cloud names after renaming
-        names_StandardAfter = c(),
+        names_StandardAfter  = c(),
         # ------
+        # DC DICTIONARY 
+        # ------
+        info_DCdate          = bdDwC:::dataDarwinCloud$date,
         # USER DICTIONARY
         # User original dictionary 
         # Uploaded by user (csv)
-        dic_UserRaw         = data.frame(),
+        dic_UserRaw          = data.frame(),
         # Names in user original dictionary used to create radio buttons
-        names_UserRaw       = c(),
+        names_UserRaw        = c(),
         # Subset of users dictionary 
         # Subset made using column names specified by user
-        dic_User            = data.frame()
+        dic_User             = data.frame()
     )
 
 
@@ -142,7 +147,7 @@ shinyServer(function(input, output, session) {
 
 
     # --------------------------
-    # DICTIONARY
+    # USER DICTIONARY
     # --------------------------
 
     # Upload user dictionary
@@ -228,6 +233,84 @@ shinyServer(function(input, output, session) {
 
 
     # --------------------------
+    # UPDATED DC DICTIONARY
+    # --------------------------
+
+    # Update DC dictionary
+    observeEvent(input$updateDarwinCloud, {
+        rv$data_DarwinCloud <- downloadCloudData()
+        rv$info_DCdate <- Sys.Date()
+    })
+    # DC dictionary date
+    output$dicInfo <- renderUI({
+        uploadDictionary <- !is.null(input$pathInputDictionary)
+        userDicIcon <- ifelse(uploadDictionary > 0,"check", "unchecked") 
+        if (uploadDictionary) {
+            userDicFile <- paste0("(",
+                                 sub(".csv$", "", 
+                                     basename(input$pathInputDictionary$name)),
+                                  ")")
+
+        } else {
+            userDicFile <- NULL
+        }
+        res <- paste0(
+            "<b>Used dictionaries:</b>
+            <br/>
+            <i class='glyphicon glyphicon-check fa-1x'></i>
+            Darwin Cloud (version: ", format(rv$info_DCdate, "%d-%B-%Y"),")
+
+            <button class='btn btn-default action-button' id='popDC'
+                    style='width: 1px; border-color: #ffffff; 
+                           background-color: #ffffff; 
+                           font-size:100%' type='button'>
+                <i class='glyphicon glyphicon-question-sign'></i>
+            </button>
+
+            <br/>
+            <i class='glyphicon glyphicon-", userDicIcon," fa-1x'></i>
+            Personal Dictionary ", userDicFile,
+            "<button class='btn btn-default action-button' id='popDic'
+                    style='width: 1px; border-color: #ffffff; 
+                           background-color: #ffffff; 
+                           font-size:100%' type='button'>
+                <i class='glyphicon glyphicon-question-sign'></i>
+            </button>"
+        )
+        HTML(res)
+    })
+    observeEvent(input$popDC, {
+        showModal(modalDialog(
+            title = h3("Darwin Cloud Data"),
+            tags$p("bdDwC uses Darwin Core Dictionary which is stored on official",
+                   tags$a(href = "https://github.com/kurator-org/kurator-validation", 
+                          "Kurator's repository."),
+                   br(),
+                   "If you want to update Darwin Core version for your analysis click",
+                   tags$b("Update DC"), "button bellow."),
+            size = "m",
+            easyClose = TRUE
+        ))
+    })
+    observeEvent(input$popDic, {
+        showModal(modalDialog(
+            title = h3("Personal Dictionary File"),
+            tags$p("File with columns that contain fieldname and standard name"),
+            size = "m",
+            easyClose = TRUE
+        ))
+    })
+    output$userDicText <- renderUI({
+        if (!is.null(input$pathInputDictionary)) {
+            tags$b("Select field and standard names")
+        } else {
+            NULL
+        }
+    })
+
+
+
+    # --------------------------
     # DARWINIZER
     # --------------------------
     # Run Darwinizer
@@ -239,7 +322,7 @@ shinyServer(function(input, output, session) {
         updateTabItems(session, "myTabs", "darwinizer")
 
         # Download Darwin Core information
-        rv$data_DarwinCore <- bdDwC:::getDarwinCoreInfo()
+        rv$data_DarwinCloudInfo <- bdDwC:::getDarwinCoreInfo()
 
         # If user has uploaded dictionary
         if (nrow(rv$dic_UserRaw) > 0) {
@@ -249,12 +332,13 @@ shinyServer(function(input, output, session) {
         }
 
         # Get all standard names
-        rv$names_Standard <- unique(bdDwC:::dataDarwinCloud$data$standard)
-        rv$names_StandardAfter <- unique(bdDwC:::dataDarwinCloud$data$standard)
+        rv$names_Standard <- unique(rv$data_DarwinCloud$standard)
+        rv$names_StandardAfter <- unique(rv$data_DarwinCloud$standard)
 
         # Run Darwinizer with user and reference dictionary
-        rv$data_Darwinized <- bdDwC:::darwinazeNames(
-            rv$data_User, rbind(rv$dic_User, bdDwC:::dataDarwinCloud$data))
+        rv$data_Darwinized <- 
+            bdDwC:::darwinazeNames(rv$data_User, 
+                                   rbind(rv$dic_User, rv$data_DarwinCloud))
 
         # Checkboxes
         # Update if something was darwinized
@@ -468,7 +552,7 @@ shinyServer(function(input, output, session) {
         # For each name extract Darwin Core information
         for(i in rv$names_StandardAfter) {
             # Extract information
-            info <- subset(rv$data_DarwinCore, name == i)$definition
+            info <- subset(rv$data_DarwinCloudInfo, name == i)$definition
             if (length(info) == 0) {
                 info <- NULL
             }
@@ -476,18 +560,6 @@ shinyServer(function(input, output, session) {
             result[[i]] <- shinyBS::bsTooltip(paste0("DWC_", i), info, "right", "hover")
         }
         do.call(tagList, result)
-    })
-
-
-
-    # --------------------------
-    # POP UP FOR DICTIONARY
-    # --------------------------
-
-    output$submitToDarwinizer_Pop <- renderUI({
-        text <- paste("bdDwC uses references dictionary downloaded from the github.com/kurator-org/kurator-validation, last update at",
-                      bdDwC:::dataDarwinCloud[[2]], ". But you can also add your own dictionary to the bdDwC using file input slot bellow.")
-        shinyBS::bsPopover("submitToDarwinizer", title = "Add you own dictionary", text)
     })
 
 

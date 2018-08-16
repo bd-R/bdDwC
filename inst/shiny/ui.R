@@ -59,8 +59,10 @@ dashboardPage(
                 fluidRow(
                     # Upload user data
                     box(title = "Upload Data", status = "warning", width = 5,
+                        # Using shinyBS collapse as we want ONLY
+                        # one selection
                         bsCollapse(multiple = FALSE, open = "From a Local File",
-                               bsCollapsePanel("From a Local File", 
+                               shinyBS::bsCollapsePanel("From a Local File", 
                                                fileInput("pathInputData",
                                                          "Choose a csv file",
                                                          multiple = FALSE,
@@ -71,7 +73,7 @@ dashboardPage(
                                                style = "info"
 
                                ),
-                               bsCollapsePanel("From a Database",
+                               shinyBS::bsCollapsePanel("From a Database",
                                                textInput("scientificName",
                                                          h3("Scientific Name:"),
                                                          "Puma concolor"),
@@ -94,36 +96,42 @@ dashboardPage(
                                                    class = "activeButton",
                                                    actionButton("queryDatabase", 
                                                                 "Query Database", 
-                                                                icon("download"))), 
-                                               style = "success"
+                                                                icon("download")
+                                                    )
+                                               ), 
+                                               style = "info"
                                )
                         )
                     ),
 
-                    # Upload user dictionary
-                    box(title = "Upload Dictionary", width = 3,
-                        fileInput("pathInputDictionary", "Choose a dictionary file",
+                    # Upload dictionaries
+                    box(title = "Dictionaries", status = "warning", width = 5,
+                        uiOutput("dicInfo"),
+                        br(),
+                        # Darwin Cloud dictionary
+                        tags$b("Update Darwin Cloud dictionary"), br(),
+                        actionButton("updateDarwinCloud", "Update DC"),
+                        br(),
+                        br(),
+                        # Upload user dictionary
+                        fileInput("pathInputDictionary", 
+                                  "Choose a personal dictionary file",
                                   multiple = FALSE,
                                   c("text/csv", ".csv", "text/comma-separated-values,text/plain")
                         ),
-                        shinyBS::bsCollapsePanel(
-                            "Select field and standard names",
-                            splitLayout(uiOutput("names_User_Field"), 
-                                        uiOutput("names_User_Standard"),
-                                        cellWidths = 200,
-                                        cellArgs = list(style = "padding: 6px")
-                            )
+                        uiOutput("userDicText"),
+                        splitLayout(uiOutput("names_User_Field"), 
+                                    uiOutput("names_User_Standard"),
+                                    cellWidths = 200,
+                                    cellArgs = list(style = "padding: 6px")
                         )
                     )
                 ),
-
                 actionButton("submitToDarwinizer", "Submit to Darwinizer", width = 250,
                              style = "background: url('Darwin.svg'); background-position: left center; 
                                       background-repeat: no-repeat; background-color: #ffffff;
                                       color: #000000; border-color: #091520;
-                                      padding:10px; font-size:120%"),
-
-                uiOutput("submitToDarwinizer_Pop")
+                                      padding:10px; font-size:120%")
             ),
 
 
