@@ -3,9 +3,9 @@ Version: 0.1.2
 Date: 2018-08-16
 Title: Darwinizer: Darwin Core (DwC) field names standardization
 Description: The 'shiny' application 'bdDwC' maks biodiversity data field names Darwin Core compatible.
-Author: Tomer Gueta <tomer.gu@gmail.com>, 
+Author: Povilas Gibas <povilasgibas@gmail.com>, 
+    Tomer Gueta <tomer.gu@gmail.com>, 
     Vijay Barve <vijay.barve@gmail.com>, 
-    Povilas Gibas <povilasgibas@gmail.com>, 
     Thiloshon Nagarajah <thiloshon@gmail.com>, 
     Carmel Yohay <yohay@cv.technion.ac.il>
 Maintainer: Povilas Gibas <povilasgibas@gmail.com>
