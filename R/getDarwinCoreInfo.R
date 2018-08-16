@@ -8,10 +8,6 @@
 #' @return data.frame that contains name and definition for each available
 #' Darwin Cloud term.
 #' 
-#' @examples \dontrun{
-#'     getDarwinCoreInfo()
-#' }
-#' 
 getDarwinCoreInfo <- function(pathDarwinCloud = "http://tdwg.github.io/dwc/terms/") {
     # Catching error as if there's no internet connection app wouldn't run
     data <- tryCatch({

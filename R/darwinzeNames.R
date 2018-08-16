@@ -9,10 +9,6 @@
 #' 
 #' @return data.frame of darwinized user names.
 #' 
-#' @examples \dontrun{
-#'     darwinazeNames(dataUser, bdDwC:::dataDarwinCloud[[1]])
-#' }
-#' 
 darwinazeNames <- function(dataUser, dataDWC) {
 
     # Prepare reference data
