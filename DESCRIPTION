@@ -1,20 +1,45 @@
 Package: bdDwC
-Version: 0.1.1
-Date: 2018-08-14
+Version: 0.1.2
+Date: 2018-08-16
 Title: Darwinizer: Darwin Core (DwC) field names standardization
-Description: The 'shiny' application 'bdDwC' makes biodiversity data field names Darwin Core compatible.
-Author: 
+Description: The 'shiny' application 'bdDwC' maks biodiversity data field names Darwin Core compatible.
+Author: Povilas Gibas <povilasgibas@gmail.com>, 
     Tomer Gueta <tomer.gu@gmail.com>, 
     Vijay Barve <vijay.barve@gmail.com>, 
-    Povilas Gibas <povilasgibas@gmail.com>, 
     Thiloshon Nagarajah <thiloshon@gmail.com>, 
-    Ashwin Agrawal <ashwin.agrawal.met14@itbhu.ac.in>,
     Carmel Yohay <yohay@cv.technion.ac.il>
 Maintainer: Povilas Gibas <povilasgibas@gmail.com>
+Authors@R: c(
+    person(
+        "Povilas", "Gibas",
+        email = "povilasgibas@gmail.com",
+        role = c("aut", "cre"),
+        comment = c(ORCID = '0000-0001-5311-6021')),
+    person(
+        "Tomer", "Gueta", 
+        email = "tomer.gu@gmail.com",
+        role = c("aut"),
+        comment = c(ORCID = '0000-0003-1557-8596')),
+    person(
+        "Vijay", "Barve", ,
+        email = "vijay.barve@gmail.com", 
+        role = c("aut"),
+        comment = c(ORCID = '0000-0002-4852-2567')),
+    person(
+        "Thiloshon", "Nagarajah",
+        email = "thiloshon@gmail.com",
+        role = c("aut")),
+    person(
+        "Yohay", "Carmel",
+        email = "yohay@cv.technion.ac.il",
+        role = c("aut"))
+    )
 Depends: R (>= 2.10)
-Imports: 
-    shiny, shinyBS, shinydashboard, shinyjs, 
-    data.table
+Imports: shiny,
+         shinyBS,
+         shinydashboard,
+         shinyjs, 
+         data.table
 LazyData: true
 RoxygenNote: 6.1.0
 License: GPL-3
