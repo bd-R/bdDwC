@@ -1,20 +1,39 @@
 Package: bdDwC
-Version: 0.1.1
-Date: 2018-08-14
-Title: Darwinizer 
-Description: Darwinizer makes biodiversity data Darwin Core compatible.  
+Version: 0.1.2
+Date: 2018-08-16
+Title: Darwinizer: Darwin Core (DwC) field names standardization
+Description: The 'shiny' application 'bdDwC' maks biodiversity data field names Darwin Core compatible.
 Author: Tomer Gueta <tomer.gu@gmail.com>, 
     Vijay Barve <vijay.barve@gmail.com>, 
     Povilas Gibas <povilasgibas@gmail.com>, 
     Thiloshon Nagarajah <thiloshon@gmail.com>, 
-    Ashwin Agrawal <ashwin.agrawal.met14@itbhu.ac.in>,
     Carmel Yohay <yohay@cv.technion.ac.il>
 Maintainer: Povilas Gibas <povilasgibas@gmail.com>
+Authors@R: c(
+    person("Tomer", "Gueta", 
+    email = "tomer.gu@gmail.com",
+    role = c("aut")),
+    person("Vijay", "Barve", ,
+    email = "vijay.barve@gmail.com", 
+    role = c("aut"),
+    comment = c(ORCID = '0000-0002-4852-2567')),
+    person("Povilas", "Gibas",
+    email = "povilasgibas@gmail.com",
+    role = c("aut", "cre")),
+    person("Thiloshon", "Nagarajah",
+    email = "thiloshon@gmail.com",
+    role = c("aut")),
+    person("Yohay", "Carmel",
+    email = "yohay@cv.technion.ac.il",
+    role = c("aut"))
+    )
 Depends: R (>= 2.10)
-Imports: 
-    shiny, shinyBS, shinydashboard, shinyjs, 
-    data.table
+Imports: shiny,
+         shinyBS,
+         shinydashboard,
+         shinyjs, 
+         data.table
 LazyData: true
 RoxygenNote: 6.1.0
-License: MIT + file LICENSE
+License: GPL-3
 Encoding: UTF-8
