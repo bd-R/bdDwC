@@ -1,8 +1,9 @@
-# Not import even though in DESCRIPTION
+# Not imported even specified though in DESCRIPTION
 library(shinydashboard)
 library(shinyBS)
 
 dashboardPage(
+
     # --------------------------
     # HEADER
     # --------------------------
@@ -62,6 +63,7 @@ dashboardPage(
                         # Using shinyBS collapse as we want ONLY
                         # one selection
                         bsCollapse(multiple = FALSE, open = "From a Local File",
+                               # USER FILE
                                shinyBS::bsCollapsePanel("From a Local File", 
                                                fileInput("pathInputData",
                                                          "Choose a csv file",
@@ -73,6 +75,7 @@ dashboardPage(
                                                style = "info"
 
                                ),
+                               # QUERY FROM A DATABASE
                                shinyBS::bsCollapsePanel("From a Database",
                                                textInput("scientificName",
                                                          h3("Scientific Name:"),
@@ -106,6 +109,8 @@ dashboardPage(
 
                     # Upload dictionaries
                     box(title = "Dictionaries", status = "warning", width = 5,
+                        # Dictionary information render in server
+                        # Because of HTML and reactive object mix
                         uiOutput("dicInfo"),
                         br(),
                         # Darwin Cloud dictionary
@@ -119,6 +124,7 @@ dashboardPage(
                                   multiple = FALSE,
                                   c("text/csv", ".csv", "text/comma-separated-values,text/plain")
                         ),
+                        # Text that tells to select columns if dictionary added
                         uiOutput("userDicText"),
                         splitLayout(uiOutput("names_User_Field"), 
                                     uiOutput("names_User_Standard"),

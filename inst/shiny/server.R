@@ -1,6 +1,7 @@
-# Not import even though in DESCRIPTION
+# Not imported even specified though in DESCRIPTION
 library(shinydashboard)
 library(shinyBS)
+
 shinyServer(function(input, output, session) {
 
     # --------------------------
@@ -241,11 +242,15 @@ shinyServer(function(input, output, session) {
         rv$data_DarwinCloud <- downloadCloudData()
         rv$info_DCdate <- Sys.Date()
     })
-    # DC dictionary date
+    # Information about dictionaries
+    # This code is in server part because of mix of reactive and html text
     output$dicInfo <- renderUI({
+        # Is user dictionary uploaded
         uploadDictionary <- !is.null(input$pathInputDictionary)
+        # Select icon
         userDicIcon <- ifelse(uploadDictionary > 0,"check", "unchecked") 
         if (uploadDictionary) {
+            # Get name for user dictionary
             userDicFile <- paste0("(",
                                  sub(".csv$", "", 
                                      basename(input$pathInputDictionary$name)),
@@ -279,6 +284,7 @@ shinyServer(function(input, output, session) {
         )
         HTML(res)
     })
+    # Information about Darwin Cloud
     observeEvent(input$popDC, {
         showModal(modalDialog(
             title = h3("Darwin Cloud Data"),
@@ -292,6 +298,7 @@ shinyServer(function(input, output, session) {
             easyClose = TRUE
         ))
     })
+    # Information about User dictionary
     observeEvent(input$popDic, {
         showModal(modalDialog(
             title = h3("Personal Dictionary File"),
@@ -300,6 +307,7 @@ shinyServer(function(input, output, session) {
             easyClose = TRUE
         ))
     })
+    # Text that shows up if user uploaded dictionary
     output$userDicText <- renderUI({
         if (!is.null(input$pathInputDictionary)) {
             tags$b("Select field and standard names")
@@ -543,6 +551,7 @@ shinyServer(function(input, output, session) {
     })
 
 
+
     # --------------------------
     # DARWIN CORE INFO
     # --------------------------
@@ -571,7 +580,7 @@ shinyServer(function(input, output, session) {
     observeEvent(input$citation, {
         showModal(modalDialog(
             title = "Cite us",
-            HTML(paste("Cite as at ...\nBibtex")),
+            HTML(paste("bdverse will be published soon!")),
             easyClose = TRUE
             )
         )
