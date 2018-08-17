@@ -27,12 +27,6 @@ dashboardPage(
             menuItem("Darwinizer", tabName = "darwinizer"),
             # Horizontal line
             tags$hr(style = "border-color: #bfbfbf;"),
-            # Restart shiny session
-            tags$a(href = "javascript:history.go(0)", 
-                   shinyBS::popify(tags$i(class = "fa fa-refresh fa-1x"),
-                   title = NULL, 
-                   content = "Click here to restart bdDwC shiny session",
-                   placement = "right")),
             # Citation
             actionButton("citation", "Cite us", 
                          style = "border-color: #091520;

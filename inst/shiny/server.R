@@ -4,6 +4,10 @@ library(shinyBS)
 
 shinyServer(function(input, output, session) {
 
+    # Automatically stop a Shiny app when closing the browser tab
+    session$onSessionEnded(stopApp)
+
+
     # --------------------------
     # MODAL
     # --------------------------
