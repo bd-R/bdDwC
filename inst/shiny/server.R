@@ -78,8 +78,8 @@ shinyServer(function(input, output, session) {
     # --------------------------
 
     # Disable darwinizer tab
-    # shinyjs::addCssClass(selector = "a[data-value='darwinizer']", 
-    #                      class = "inactiveLink")
+    shinyjs::addCssClass(selector = "a[data-value='darwinizer']", 
+                         class = "inactiveLink")
 
     # Disable Darwinize button if no user data uploaded
     observe({
