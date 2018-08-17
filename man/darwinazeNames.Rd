@@ -19,9 +19,3 @@ data.frame of darwinized user names.
 (ie, Darwin Cloud) dataset. It returns $Old$ and $New$ ($fieldname$ and $standard$)
 name (ie, name from given user dataset that had a match in reference dataset).
 }
-\examples{
-\dontrun{
-    darwinazeNames(dataUser, bdDwC:::dataDarwinCloud[[1]])
-}
-
-}

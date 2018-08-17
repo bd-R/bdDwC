@@ -17,9 +17,3 @@ Darwin Cloud term.
 `getDarwinCoreInfo()` is a function (not exported) to download
 Darwin Core Terms. This information is displayed when using manually renaming.
 }
-\examples{
-\dontrun{
-    getDarwinCoreInfo()
-}
-
-}

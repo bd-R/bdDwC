@@ -20,9 +20,3 @@ renames data.frame.
 `renameUserData()` is a function (not exported) to rename given dataset
 (usually given user data) according previously Darwinized Names.
 }
-\examples{
-\dontrun{
-    renameUserData(rv$data_User, rv$data_Rename)
-}
-
-}

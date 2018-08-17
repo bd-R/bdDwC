@@ -12,9 +12,3 @@ runDwC()
 \description{
 `bdDwC` is a function that starts bdverse Darwin Cloud cleaning `shiny` app.
 }
-\examples{
-\dontrun{
-    runDwC()
-}
-
-}
