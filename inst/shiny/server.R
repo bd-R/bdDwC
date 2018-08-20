@@ -96,8 +96,8 @@ shinyServer(function(input, output, session) {
     })
     # Disable all other buttons if not submitted to Darwinizer
     observeEvent(input$submitToDarwinizer, {
-        # shinyjs::removeCssClass(selector = "a[data-value='darwinizer']", 
-        #                         class = "inactiveLink")
+        shinyjs::removeCssClass(selector = "a[data-value='darwinizer']", 
+                                class = "inactiveLink")
         shinyjs::enable("names_Rename") 
         shinyjs::enable("names_Remove") 
         shinyjs::enable("names_Clean") 
