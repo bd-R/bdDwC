@@ -15,7 +15,7 @@
 #' @examples
 #' downloadCloudData()
 #' 
-#' @importFrom data.table fread
+#' @import data.table
 #' 
 #' @export
 #' 
