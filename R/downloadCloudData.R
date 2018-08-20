@@ -23,7 +23,7 @@ downloadCloudData <- function(pathRemote  = "https://raw.githubusercontent.com/k
                               columnField = "fieldname",
                               columnStand = "standard") {
     pathCloud <- paste0(pathRemote, pathGithub, pathFile)
-    data <- read.delim2(pathCloud)
+    data <- read.csv(pathCloud, sep = "\t")
     # Subset only used columns
     data <- subset(data, select = c(columnField, columnStand))
     # Rename to match names in shiny server 
