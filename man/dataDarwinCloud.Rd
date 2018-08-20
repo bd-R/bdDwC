@@ -3,11 +3,15 @@
 \docType{data}
 \name{dataDarwinCloud}
 \alias{dataDarwinCloud}
-\title{Retrieve Darwin Cloud Data}
+\title{Darwin Cloud Data}
+\format{A list of length two. First entry contains a data frame with 
+422 rows and 2 columns. Second entry contains a `Date` class object.}
+\usage{
+dataDarwinCloud
+}
 \description{
-Darwin Cloud data used to Darwinize
+Darwin Cloud data used to Darwinize. Darwin Cloud data was retrieved using 
+`bdDwC::downloadCloudData()` function. This dataset contains Darwin Cloud data
+and download date.
 }
-\details{
-Data was retrieved using `bdDwC:::getCloudData()` function and contains
-Darwin Cloud data and download date.
-}
+\keyword{datasets}
