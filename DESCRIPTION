@@ -1,5 +1,5 @@
 Package: bdDwC
-Version: 0.1.9
+Version: 0.1.10
 Date: 2018-08-20
 Title: Darwinizer: Darwin Core (DwC) field names standardization
 Description: The 'shiny' application 'bdDwC' maks biodiversity data field names Darwin Core compatible.
@@ -44,3 +44,4 @@ LazyData: true
 RoxygenNote: 6.1.0
 License: GPL-3
 Encoding: UTF-8
+Suggests: testthat
