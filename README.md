@@ -26,3 +26,31 @@ Run `bdDwC` `shiny` app with:
     
     library(bdDwC)
     runDwC()
+
+---
+
+To use `bdDwC` from the command line:
+
+Load `bdDwC` package
+
+    library(bdDwC)
+
+`bdDwC` contains Indian Reptile dataset `bdDwC:::dataReptiles`.  
+Darwinize data with `darwinizeNames` (replace `bdDwC:::dataReptiles` with wanted dataset):
+
+    result <- darwinizeNames(dataUser = bdDwC:::dataReptiles,
+                            dataDWC   = bdDwC:::dataDarwinCloud$data)
+
+
+Rename your data using `bdDwC` with `renameUserData`:
+
+    # Replace `bdDwC:::dataReptiles` with wanted dataset
+    renameUserData(bdDwC:::dataReptiles, result)
+
+To get newest version of Darwin Cloud Data run:
+
+    downloadCloudData()
+
+which will download data from the remote repository and extract field and standard names.
+
+
