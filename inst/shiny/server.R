@@ -135,7 +135,7 @@ shinyServer(function(input, output, session) {
                 return(NULL)
             }
             # Load user data
-            rv$data_User <- data.table::fread(input$pathInputData$datapath)
+            rv$data_User <- read.csv(input$pathInputData$datapath)
         })
         # Get column names (used for Darwinizer)
         rv$names_User <- rv$names_UserAfter <- colnames(rv$data_User)
@@ -159,7 +159,7 @@ shinyServer(function(input, output, session) {
     # Upload user dictionary
     observeEvent(input$pathInputDictionary, {
         # Dictionary
-        rv$dic_UserRaw <- data.table::fread(input$pathInputDictionary$datapath)
+        rv$dic_UserRaw <- read.csv(input$pathInputDictionary$datapath)
         # Columns
         rv$names_UserRaw <- sort(colnames(rv$dic_UserRaw))
     })

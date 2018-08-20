@@ -15,21 +15,15 @@
 #' @examples
 #' downloadCloudData()
 #' 
-#' @import data.table
-#' 
 #' @export
 #' 
 downloadCloudData <- function(pathRemote  = "https://raw.githubusercontent.com/kurator-org", 
                               pathGithub  = "/kurator-validation/master/packages/kurator_dwca/data/vocabularies/",
                               pathFile    = "darwin_cloud.txt",
-                              columnField = "fieldname", 
+                              columnField = "fieldname",
                               columnStand = "standard") {
-    # Using data.table::fread for speed
     pathCloud <- paste0(pathRemote, pathGithub, pathFile)
-    data <- data.table::fread(pathCloud, 
-                              data.table = FALSE,
-                              verbose = FALSE,
-                              showProgress = FALSE)
+    data <- read.delim2(pathCloud)
     # Subset only used columns
     data <- subset(data, select = c(columnField, columnStand))
     # Rename to match names in shiny server 
