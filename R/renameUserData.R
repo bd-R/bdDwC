@@ -1,14 +1,21 @@
 #' Rename Dataset According Darwinized Names
 #' 
-#' `renameUserData()` is a function (not exported) to rename given dataset
+#' `renameUserData()` is a function used to rename given dataset
 #' (usually given user data) according previously Darwinized Names.
 #' 
 #' @param dataUser data.frame of be renamed.
-#' @param dataRenamed data.frame that was created using `bdDwC:::darwinazeNames()`
+#' @param dataRenamed data.frame that was created using `bdDwC:::darwinizeNames()`
 #' function using same `dataUser`.
 #' 
 #' @return data.frame of submitted user data, but renamed according given 
 #' renames data.frame.
+#' 
+#' @examples
+#' result <- darwinizeNames(dataUser = bdDwC:::dataReptiles, 
+#'                          dataDWC =  bdDwC:::dataDarwinCloud$data)
+#' renameUserData(bdDwC:::dataReptiles, result)
+#' 
+#' @export
 #' 
 renameUserData <- function(dataUser, dataRenamed) {
     # Extract user names (we don't need all data just to rename)

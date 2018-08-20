@@ -9,7 +9,7 @@ renameUserData(dataUser, dataRenamed)
 \arguments{
 \item{dataUser}{data.frame of be renamed.}
 
-\item{dataRenamed}{data.frame that was created using `bdDwC:::darwinazeNames()`
+\item{dataRenamed}{data.frame that was created using `bdDwC:::darwinizeNames()`
 function using same `dataUser`.}
 }
 \value{
@@ -17,6 +17,12 @@ data.frame of submitted user data, but renamed according given
 renames data.frame.
 }
 \description{
-`renameUserData()` is a function (not exported) to rename given dataset
+`renameUserData()` is a function used to rename given dataset
 (usually given user data) according previously Darwinized Names.
+}
+\examples{
+result <- darwinizeNames(dataUser = bdDwC:::dataReptiles, 
+                         dataDWC =  bdDwC:::dataDarwinCloud$data)
+renameUserData(bdDwC:::dataReptiles, result)
+
 }

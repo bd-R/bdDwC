@@ -44,7 +44,7 @@ shinyServer(function(input, output, session) {
         # User data used in Darwinizer
         # Uploaded by user (csv)
         data_User            = data.frame(), 
-        # Darwinized data (created with darwinazeNames)
+        # Darwinized data (created with darwinizeNames)
         data_Darwinized      = data.frame(),
         # Data that contains all renamings
         data_Rename          = data.frame(),
@@ -348,9 +348,8 @@ shinyServer(function(input, output, session) {
         rv$names_StandardAfter <- unique(rv$data_DarwinCloud$standard)
 
         # Run Darwinizer with user and reference dictionary
-        rv$data_Darwinized <- 
-            bdDwC:::darwinazeNames(rv$data_User, 
-                                   rbind(rv$dic_User, rv$data_DarwinCloud))
+        rv$data_Darwinized <- darwinizeNames(rv$data_User, 
+                                             rbind(rv$dic_User, rv$data_DarwinCloud))
 
         # Checkboxes
         # Update if something was darwinized
@@ -516,7 +515,7 @@ shinyServer(function(input, output, session) {
         },
         content = function(con) {
             # Rename user data using current renaming dataset
-            saveRDS(bdDwC:::renameUserData(rv$data_User, rv$data_Rename), con)
+            saveRDS(renameUserData(rv$data_User, rv$data_Rename), con)
         }
     )
 

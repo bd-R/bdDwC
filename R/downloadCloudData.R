@@ -1,6 +1,6 @@
 #' Download Darwin Cloud Data
 #' 
-#' `downloadCloudData()` is a function (not exported) to download Darwin Cloud 
+#' `downloadCloudData()` is a function used to download Darwin Cloud 
 #' data. First it downloads data, then it subsets informative columns and 
 #' renames them so they could be used in `shiny` app.
 #' 
@@ -11,6 +11,9 @@
 #' @param columnStand Name of the column that contains standard information.
 #' 
 #' @return data.frame of Darwin Cloud data.
+#' 
+#' @examples
+#' downloadCloudData()
 #' 
 #' @export
 #' 
