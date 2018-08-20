@@ -15,6 +15,8 @@
 #' @examples
 #' downloadCloudData()
 #' 
+#' @importFrom utils read.csv
+#' 
 #' @export
 #' 
 downloadCloudData <- function(pathRemote  = "https://raw.githubusercontent.com/kurator-org", 
