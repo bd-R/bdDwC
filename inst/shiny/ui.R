@@ -1,6 +1,7 @@
 # Not imported even specified though in DESCRIPTION
 library(shinydashboard)
 library(shinyBS)
+library(bdDwC)
 
 dashboardPage(
 
