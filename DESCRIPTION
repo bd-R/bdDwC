@@ -1,6 +1,6 @@
 Package: bdDwC
-Version: 0.1.11
-Date: 2018-08-20
+Version: 0.1.12
+Date: 2018-08-21
 Title: Darwinizer: Darwin Core (DwC) field names standardization
 Description: The 'shiny' application 'bdDwC' maks biodiversity data field names Darwin Core compatible.
 Author: Povilas Gibas <povilasgibas@gmail.com>, 
@@ -38,7 +38,8 @@ Depends: R (>= 2.10)
 Imports: shiny,
          shinyBS,
          shinydashboard,
-         shinyjs
+         shinyjs,
+         shinyFiles
 LazyData: true
 RoxygenNote: 6.1.0
 License: GPL-3

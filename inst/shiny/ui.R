@@ -178,9 +178,11 @@ dashboardPage(
                             offset = 2
                         ),
                         column(2,
-                            shinyjs::disabled(downloadButton("downloadData", "Download Darwinized data",
-                                                             with = 210,
-                                                             style = "color: #000000; background-color: #71a879; border-color: #091520")),
+                            shinyjs::disabled(shinyFiles::shinySaveButton("downloadData", 
+                                                                          "Download Darwinized data", 
+                                                                          "Select Download Path",
+                                                                          filetype = list(RDS = "RDS"),
+                                                                          icon = icon("download"))),
                             offset = 0
                         ),
                         style = "margin-bottom:30px; border-bottom:2px solid; padding: 20px"

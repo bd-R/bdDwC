@@ -7,6 +7,7 @@
 #' @import shinydashboard
 #' @import shiny
 #' @import shinyBS
+#' @import shinyFiles
 #' @importFrom shinyjs addCssClass disable disabled enable useShinyjs removeCssClass
 #' 
 #' @export
