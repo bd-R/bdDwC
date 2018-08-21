@@ -1,4 +1,5 @@
 [![Travis CI Build Status](https://img.shields.io/travis/bd-R/bdDwC.svg?branch=master?style=flat-square&label=Travis+CI)](https://travis-ci.org/bd-R/bdDwC) 
+[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/bd-R/bdDwC?branch=master&svg=true)](https://ci.appveyor.com/project/bd-R/bdDwC) 
 [![Coverage Status](https://img.shields.io/codecov/c/github/bd-R/bdDwC/master.svg)](https://codecov.io/github/bd-R/bdDwC?branch=master)  
 
 # bdDwC
