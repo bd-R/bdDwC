@@ -1,4 +1,4 @@
-[![Travis CI Build Status](https://travis-ci.org/bd-R/bdDwC.svg?branch=master)](https://travis-ci.org/bd-R/bdDwC)  
+[![Travis CI Build Status](https://img.shields.io/travis/bd-R/bdDwC.svg?branch=master?style=flat-square&label=Travis+CI) 
 [![Coverage Status](https://img.shields.io/codecov/c/github/bd-R/bdDwC/master.svg)](https://codecov.io/github/bd-R/bdDwC?branch=master)  
 
 # bdDwC
@@ -14,7 +14,7 @@ This package lets user to:
 
 - Upload users dataset.  
 - Upload users dictionary.  
-- Run automatic $Darwinizer$.  
+- Run automatic *Darwinizer*.  
 - Perform manual renaming.
 
 All these actions are done within reactive `shiny` environment. 
