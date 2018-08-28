@@ -1,6 +1,6 @@
 Package: bdDwC
 Version: 0.1.15
-Date: 2018-08-23
+Date: 2018-08-28
 Title: Darwinizer: Darwin Core (DwC) Field Names Standardization
 Description: The 'shiny' application 'bdDwC' makes biodiversity data field names Darwin Core compatible.
 Authors@R: c(
