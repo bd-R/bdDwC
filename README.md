@@ -1,6 +1,9 @@
 [![Travis CI Build Status](https://img.shields.io/travis/bd-R/bdDwC.svg?branch=master?style=flat-square&label=Travis+CI)](https://travis-ci.org/bd-R/bdDwC) 
 [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/bd-R/bdDwC?branch=master&svg=true)](https://ci.appveyor.com/project/bd-R/bdDwC) 
-[![Coverage Status](https://img.shields.io/codecov/c/github/bd-R/bdDwC/master.svg)](https://codecov.io/github/bd-R/bdDwC?branch=master)  
+[![Coverage Status](https://img.shields.io/codecov/c/github/bd-R/bdDwC/master.svg)](https://codecov.io/github/bd-R/bdDwC?branch=master)   
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/bdDwC)](https://cran.r-project.org/package=bdDwC) 
+[![CRAN_Download_Badge](https://cranlogs.r-pkg.org/badges/grand-total/bdDwC)](https://cran.r-project.org/package=bdDwC) 
+
 
 # bdDwC
 
@@ -8,7 +11,7 @@ Darwinazing biodiversity data in R (this package is in preparation stage and soo
 
 "Darwin Core is a standard maintained by the Darwin Core maintenance group. It includes a glossary of terms intended to facilitate the sharing of information about biological diversity by providing identifiers, labels, and definitions." [Darwin Core](https://github.com/tdwg/dwc)
 
-`bdDwC` is R package (soon to be submitted to CRAN) that user can Darwinize given data using `shiny` application interface.  This package is part of [`bd-R`](https://github.com/bd-R) and soon will be implemented into two other packages [`bdchecks`](https://github.com/bd-R/bdchecks) and [`bdclean`](https://github.com/bd-R/bdclean)
+`bdDwC` is R package that user can Darwinize given data using `shiny` application interface.  This package is part of [`bd-R`](https://github.com/bd-R) and soon will be implemented into two other packages [`bdchecks`](https://github.com/bd-R/bdchecks) and [`bdclean`](https://github.com/bd-R/bdclean)
 
 
 This package lets user to:
