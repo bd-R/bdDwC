@@ -2,6 +2,7 @@
 library(shinydashboard)
 library(shinyBS)
 library(bdDwC)
+options(shiny.maxRequestSize = 50 * 1024 ^ 2)
 
 shinyServer(function(input, output, session) {
 
