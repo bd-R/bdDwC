@@ -1,8 +1,12 @@
 Package: bdDwC
+Title: field names conversion to Darwin Core (DwC) format
+Description: bdDwC supplies a Shiny app and a set of functions to standardize field names 
+    according to Darwin Core (DwC) format. Darwinize your data easily.
 Version: 0.1.16
 Date: 2018-09-04
-Title: Darwinizer: Darwin Core (DwC) Field Names Standardization
-Description: The 'shiny' application 'bdDwC' makes biodiversity data field names Darwin Core compatible.
+License: GPL-3
+URL: https://github.com/bd-R/bdDwC
+BugReports: https://github.com/bd-R/bdDwC/issues
 Authors@R: c(
     person(
         "Povilas", "Gibas",
@@ -12,7 +16,7 @@ Authors@R: c(
     person(
         "Tomer", "Gueta", 
         email = "tomer.gu@gmail.com",
-        role = c("aut", "cre"),
+        role = c("aut"),
         comment = c(ORCID = '0000-0003-1557-8596')),
     person(
         "Vijay", "Barve", ,
@@ -26,7 +30,8 @@ Authors@R: c(
     person(
         "Yohay", "Carmel",
         email = "yohay@cv.technion.ac.il",
-        role = c("aut"))
+        role = c("aut"),
+        comment = c(ORCID = '0000-0002-5883-0184'))
     )
 Depends: R (>= 2.10)
 Imports: shiny,
@@ -36,7 +41,6 @@ Imports: shiny,
          shinyFiles
 LazyData: true
 RoxygenNote: 6.1.0
-License: GPL-3
 Encoding: UTF-8
 Suggests: testthat,
     covr
