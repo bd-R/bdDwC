@@ -28,7 +28,6 @@ Authors@R: c(
         email = "yohay@cv.technion.ac.il",
         role = c("aut"))
     )
-Maintainer: Povilas Gibas <povilasgibas@gmail.com>
 Depends: R (>= 2.10)
 Imports: shiny,
          shinyBS,
