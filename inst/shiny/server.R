@@ -18,10 +18,10 @@ shinyServer(function(input, output, session) {
         title = h3("Welcome to Darwinizer!"),
         p("Darwinize Your Data"),
         img(src = "bdverse.png", align = "center", width = "570"),
-        helpText("MIT License ©Tomer Gueta, Vijay Barve, Povilas Gibas, 
+        helpText("GPL-3 License ©Tomer Gueta, Vijay Barve, Povilas Gibas, 
                   Thiloshon Nagarajah, Ashwin Agrawal and Carmel Yohay (2018).",
                  br(),
-                 "bdDwC. R package version 1.0.0"
+                 "bdDwC. R package version 0.1.16"
         ),
         helpText("Contribute: ",
                  a("https://github.com/bd-R/bdDwC", 
