@@ -7,7 +7,7 @@
 
 # bdDwC
 
-Darwinazing biodiversity data in R (this package is in preparation stage and soon will be submitted to CRAN).
+Darwinazing biodiversity data in R.  
 
 "Darwin Core is a standard maintained by the Darwin Core maintenance group. It includes a glossary of terms intended to facilitate the sharing of information about biological diversity by providing identifiers, labels, and definitions." [Darwin Core](https://github.com/tdwg/dwc)
 
