@@ -511,16 +511,12 @@ shinyServer(function(input, output, session) {
     })
 
     # DONWLOAD
-    observe({
-        volumes <- c(wd = ".", desktop = "~/Desktop/", Ddisc = "D:/", Cdisc = "C:/")
-        shinyFiles::shinyFileSave(input, "downloadData", roots = volumes, session = session)
-        fileinfo <- shinyFiles::parseSavePath(volumes, input$save)
-        if (nrow(fileinfo) > 0) {
-            saveRDS(renameUserData(rv$data_User, rv$data_Rename), 
-                    as.character(fileinfo$datapath))
+    output$downloadData <- downloadHandler(
+        filename = function() {format(Sys.time(), "darwinizedData_%Y_%b_%d_%X.RDS")},
+        content = function(file) {
+            saveRDS(renameUserData(rv$data_User, rv$data_Rename), file)
         }
-    })
-
+    )
 
 
     # --------------------------
