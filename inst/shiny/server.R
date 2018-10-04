@@ -21,7 +21,7 @@ shinyServer(function(input, output, session) {
         helpText("GPL-3 License ©Tomer Gueta, Vijay Barve, Povilas Gibas, 
                   Thiloshon Nagarajah, Ashwin Agrawal and Carmel Yohay (2018).",
                  br(),
-                 "bdDwC. R package version 0.1.16"
+                 "bdDwC. R package version 0.1.19"
         ),
         helpText("Contribute: ",
                  a("https://github.com/bd-R/bdDwC", 
@@ -131,21 +131,53 @@ shinyServer(function(input, output, session) {
 
     # Upload local file
     observeEvent(input$pathInputData, {
-        withProgress(message = paste("Loading", input$pathInputData, "..."), {
+        withProgress(message = paste("Reading", input$pathInputData$name, "..."), {
             if (is.null(input$pathInputData)) {
-                return(NULL)
+                return("No data to view")
             }
-            # Load user data
-            rv$data_User <- data.table::fread(input$pathInputData$datapath, data.table = FALSE)
+            if (grepl("zip", tolower(input$pathInputData$type))) {
+                message("Reading DWCA ZIP...")
+                rv$data_User <- finch::dwca_read(input$pathInputData$datapath, read = TRUE)$data[[1]]
+            } else {
+                rv$data_User <- data.table::fread(input$pathInputData$datapath, data.table = FALSE)
+            }
         })
-        # Get column names (used for Darwinizer)
         rv$names_User <- rv$names_UserAfter <- colnames(rv$data_User)
     })
+
     # Download from database
     observeEvent(input$queryDatabase, {
         withProgress(message = paste("Querying", input$queryDB, "..."), {
-            rv$data_User <- spocc::occ(input$scientificName, input$queryDB,
-                                       input$recordSize)[[input$queryDB]]$data[[1]]
+            if (input$queryDB == "gbif") {
+                rv$data_User <- rgbif::occ_search(
+                        scientificName = input$scientificName,
+                        limit = input$recordSize,
+                        hasCoordinate = switch(input$hasCoords,
+                                               "1" = TRUE,
+                                               "2" = FALSE,
+                                               "3" = NULL
+                       )
+                )$data
+            } else {
+                warnings <- capture.output(
+                    data <- spocc::occ(
+                                query = input$scientificName,
+                                from = input$queryDB,
+                                limit = input$recordSize,
+                                has_coords = switch(input$hasCoords,
+                                                    "1" = TRUE,
+                                                    "2" = FALSE,
+                                                    "3" = NULL
+                                )
+                            ),
+                    type = "message"
+                )
+                if (length(warnings) > 0) {
+                    showNotification(paste(warnings, collapse = " "),
+                                     duration = 6)
+                }
+                rv$data_User <- data[[input$queryDB]]$data[[1]]
+            }
         })
         # Get column names (used for Darwinizer)
         rv$names_User <- rv$names_UserAfter <- colnames(rv$data_User)

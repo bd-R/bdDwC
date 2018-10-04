@@ -8,7 +8,10 @@
 #' @import shiny
 #' @import shinyBS
 #' @importFrom data.table fread
+#' @importFrom finch dwca_read
+#' @importFrom rgbif occ_search
 #' @importFrom shinyjs addCssClass disable disabled enable useShinyjs removeCssClass
+#' @importFrom spocc occ
 #' 
 #' @export
 #' 
