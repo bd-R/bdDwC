@@ -9,7 +9,7 @@ dashboardPage(
     # HEADER
     # --------------------------
 
-    dashboardHeader(title = "bdDwC"),
+    dashboardHeader(title = span(img(src = "bdDwC.png", width = 20), "bdDwC")),
 
 
 

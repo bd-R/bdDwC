@@ -21,7 +21,7 @@ shinyServer(function(input, output, session) {
         helpText("GPL-3 License ©Tomer Gueta, Vijay Barve, Povilas Gibas, 
                   Thiloshon Nagarajah, Ashwin Agrawal and Carmel Yohay (2018).",
                  br(),
-                 "bdDwC. R package version 0.1.19"
+                 "bdDwC. R package version 0.1.20"
         ),
         helpText("Contribute: ",
                  a("https://github.com/bd-R/bdDwC", 
