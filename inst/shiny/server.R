@@ -136,7 +136,7 @@ shinyServer(function(input, output, session) {
                 return(NULL)
             }
             # Load user data
-            rv$data_User <- read.csv(input$pathInputData$datapath)
+            rv$data_User <- data.table::fread(input$pathInputData$datapath, data.table = FALSE)
         })
         # Get column names (used for Darwinizer)
         rv$names_User <- rv$names_UserAfter <- colnames(rv$data_User)
