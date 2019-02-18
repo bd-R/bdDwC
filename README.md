@@ -27,6 +27,10 @@ All these actions are done within reactive `shiny` environment.
 
 Install `bdDwC` with: 
 
+    install.package("bdDwC")
+
+Or for development version:
+
     devtools::install_github("bd-R/bdDwC")
 
 Run `bdDwC` `shiny` app with:
@@ -59,5 +63,3 @@ To get newest version of Darwin Cloud Data run:
     downloadCloudData()
 
 which will download data from the remote repository and extract field and standard names.
-
-
