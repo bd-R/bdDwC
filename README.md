@@ -27,7 +27,7 @@ All these actions are done within reactive `shiny` environment.
 
 Install `bdDwC` with: 
 
-    install.package("bdDwC")
+    install.packages("bdDwC")
 
 Or for development version:
 
