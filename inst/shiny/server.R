@@ -212,8 +212,8 @@ shinyServer(function(input, output, session) {
             # We need individual IDs so we can disable them with shinyjs
             # We need to disable them as same ID can't be field and standard
             for(i in rv$names_UserRaw) {
-                RAW <- gsub(paste0('<span>', i, '</span>'), 
-                            paste0('<span id="userField_', i, '">', i, '</span>'), 
+                RAW <- gsub(paste0("<span>", i, "</span>"), 
+                            paste0("<span id=\"userField_", i, "\">", i, "</span>"), 
                             RAW)
             }
             HTML(RAW)
@@ -235,8 +235,8 @@ shinyServer(function(input, output, session) {
             # We need individual IDs so we can disable them with shinyjs
             # We need to disable them as same ID can't be field and standard
             for(i in rv$names_UserRaw) {
-                RAW <- gsub(paste0('<span>', i, '</span>'), 
-                            paste0('<span id="userStandard_', i, '">', i, '</span>'), 
+                RAW <- gsub(paste0("<span>", i, "</span>"), 
+                            paste0("<span id=\"userStandard_", i, "\">", i, "</span>"), 
                             RAW)
             }
             HTML(RAW)
@@ -423,8 +423,8 @@ shinyServer(function(input, output, session) {
                                sort(rv$names_StandardAfter))
             # Adding unique ID so we can add info boxes with additional info
             for(i in sort(rv$names_StandardAfter)) {
-                RAW <- gsub(paste0('<span>', i, '</span>'), 
-                            paste0('<span id="DWC_', i, '">', i, '</span>'), 
+                RAW <- gsub(paste0("<span>", i, "</span>"), 
+                            paste0("<span id=\"DWC_", i, "\">", i, "</span>"), 
                             RAW)
             }
             HTML(RAW)
