@@ -32,10 +32,5 @@ downloadCloudData <- function(pathRemote  = "https://raw.githubusercontent.com/k
     colnames(data) <- c(columnField, columnStand)
 
     # Add values for missing standard
-    # Don't know why they are not there
-    # Had to go through the list manually check them
-    # how many missing values:
-    # sum(data$stand == "")
-    # data
     return(data)
 }
