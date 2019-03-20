@@ -87,7 +87,6 @@ dashboardPage(
                                          accept = upload_local_file
                                         ),
                                style = "info"
-
                            ),
                            # QUERY FROM A DATABASE
                            shinyBS::bsCollapsePanel(
@@ -108,8 +107,7 @@ dashboardPage(
                                 ),
                                 radioButtons("queryDB",
                                              h3("Online Database:"),
-                                             onlineDatabases
-                                            ),
+                                             online_databases,
                                             "gbif"
                                 ),
                                 br(),
@@ -138,7 +136,7 @@ dashboardPage(
                         fileInput("pathInputDictionary",
                                   "Choose a personal dictionary file",
                                   multiple = FALSE,
-                                  c("text/csv", ".csv", 
+                                  c("text/csv", ".csv",
                                     "text/comma-separated-values,text/plain")
                         ),
                         # Text that tells to select columns if dictionary added
@@ -150,15 +148,15 @@ dashboardPage(
                         )
                     )
                 ),
-                actionButton("submitToDarwinizer", "Submit to Darwinizer", 
+                actionButton("submitToDarwinizer", "Submit to Darwinizer",
                              width = 250,
                              style = "background: url('Darwin.svg');
                                       background-position: left center;
                                       background-repeat: no-repeat;
                                       background-color: #ffffff;
-                                      color: #000000; 
+                                      color: #000000;
                                       border-color: #091520;
-                                      padding:10px; 
+                                      padding:10px;
                                       font-size:120%"
                 )
             ),
@@ -180,7 +178,7 @@ dashboardPage(
                             valueBoxOutput("vb_DWCident", width = 2),
                             offset = 1),
                         # Adds lines belowe value boxes
-                        column(12, style = 
+                        column(12, style =
                                "margin-bottom:10px; border-bottom:2px solid"
                         )
                     ),
@@ -191,10 +189,10 @@ dashboardPage(
                                 actionButton("names_Rename", "Rename",
                                     icon = icon("arrow-circle-right"),
                                     width = 210,
-                                    style = "color: #000000; 
-                                             background-color: #71a879; 
-                                             border-color: #091520; 
-                                             padding:10px; 
+                                    style = "color: #000000;
+                                             background-color: #71a879;
+                                             border-color: #091520;
+                                             padding:10px;
                                              font-size:120%"
                                 )
                             ),
@@ -202,7 +200,7 @@ dashboardPage(
                         column(2, verticalLayout(
                             shinyjs::disabled(
                                 actionButton(
-                                    "names_Remove", 
+                                    "names_Remove",
                                     "Remove selected rename",
                                     icon = icon("times"), width = 210,
                                     style = "color: #000000;
@@ -213,7 +211,7 @@ dashboardPage(
                             br(),
                             shinyjs::disabled(
                                 actionButton(
-                                    "names_Clean", 
+                                    "names_Clean",
                                     "Remove all renames",
                                     icon = icon("times"), width = 210,
                                     style = "color: #000000;
@@ -224,7 +222,7 @@ dashboardPage(
                             br(),
                             shinyjs::disabled(
                                 actionButton(
-                                    "names_Rollback", 
+                                    "names_Rollback",
                                     "Rollback to Darwinizer",
                                     icon = icon("fast-backward"), width = 210,
                                     style = "color: #000000;
@@ -237,7 +235,7 @@ dashboardPage(
                         column(2,
                             shinyjs::disabled(
                                 downloadButton(
-                                    "downloadData", 
+                                    "downloadData",
                                     "Download final data",
                                     icon = icon("check"),
                                     width = 210,

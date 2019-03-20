@@ -131,17 +131,17 @@ shinyServer(function(input, output, session) {
 
     # Upload local file
     observeEvent(input$pathInputData, {
-        withProgress(message = paste("Reading", 
+        withProgress(message = paste("Reading",
                                      input$pathInputData$name, "..."), {
             if (is.null(input$pathInputData)) {
                 return("No data to view")
             }
             if (grepl("zip", tolower(input$pathInputData$type))) {
                 message("Reading DWCA ZIP...")
-                rv$data_User <- finch::dwca_read(input$pathInputData$datapath, 
+                rv$data_User <- finch::dwca_read(input$pathInputData$datapath,
                                                  read = TRUE)$data[[1]]
             } else {
-                rv$data_User <- data.table::fread(input$pathInputData$datapath, 
+                rv$data_User <- data.table::fread(input$pathInputData$datapath,
                                                   data.table = FALSE)
             }
         })
@@ -216,7 +216,7 @@ shinyServer(function(input, output, session) {
             # We need to disable them as same ID can't be field and standard
             for (i in rv$names_UserRaw) {
                 RAW <- gsub(paste0("<span>", i, "</span>"),
-                            paste0("<span id=\"userField_", i, "\">", i, 
+                            paste0("<span id=\"userField_", i, "\">", i,
                                    "</span>"),
                             RAW)
             }
@@ -240,7 +240,7 @@ shinyServer(function(input, output, session) {
             # We need to disable them as same ID can't be field and standard
             for (i in rv$names_UserRaw) {
                 RAW <- gsub(paste0("<span>", i, "</span>"),
-                            paste0("<span id=\"userStandard_", i, "\">", i, 
+                            paste0("<span id=\"userStandard_", i, "\">", i,
                                    "</span>"),
                             RAW)
             }
@@ -334,7 +334,7 @@ shinyServer(function(input, output, session) {
         showModal(modalDialog(
             title = h3("Darwin Cloud Data"),
             tags$p("bdDwC uses Darwin Core Dictionary (stored on official",
-                   tags$a(href = 
+                   tags$a(href =
                         "https://github.com/kurator-org/kurator-validation",
                         "Kurator's repository)."
                     ),
@@ -383,7 +383,7 @@ shinyServer(function(input, output, session) {
         if (nrow(rv$dic_UserRaw) > 0) {
             # Update reactive user dictionary
             rv$dic_User <- subset(
-                rv$dic_UserRaw, 
+                rv$dic_UserRaw,
                 select = c(input$names_User_Field, input$names_User_Standard))
             colnames(rv$dic_User) <- c("fieldname", "standard")
         }
@@ -394,7 +394,7 @@ shinyServer(function(input, output, session) {
 
         # Run Darwinizer with user and reference dictionary
         rv$data_Darwinized <- darwinizeNames(rv$data_User,
-                                             rbind(rv$dic_User, 
+                                             rbind(rv$dic_User,
                                                    rv$data_DarwinCloud))
 
         # Checkboxes
@@ -631,7 +631,7 @@ shinyServer(function(input, output, session) {
                 info <- NULL
             }
             # Append information as a tool tip
-            result[[i]] <- shinyBS::bsTooltip(paste0("DWC_", i), 
+            result[[i]] <- shinyBS::bsTooltip(paste0("DWC_", i),
                                               info, "right", "hover")
         }
         do.call(tagList, result)

@@ -28,8 +28,8 @@ getDarwinCoreInfo <- function(
         resultName <- gsub(".*Term Name: dcterms:([A-z]+).*", "\\1", data)
         resultName <- gsub(".*Term Name: ([A-z]+).*", "\\1", resultName)
         # Definition
-        resultDefinition <- 
-        gsub(".*<TD>Definition:</TD><TD>(.*)</TD></TR>.*<TR><TD>Comment:.*", 
+        resultDefinition <-
+        gsub(".*<TD>Definition:</TD><TD>(.*)</TD></TR>.*<TR><TD>Comment:.*",
              "\\1", data)
         resultDefinition <- gsub("'|\"", "", resultDefinition)
     }

@@ -27,8 +27,8 @@ darwinizeNames <- function(dataUser, dataDWC) {
 
     # Find identical matches
     # Given user fieldname matches Darwin standard name
-    matchIdentical <- merge(dataUser, dataDWC, 
-                            by.x = "fieldnameOrig", 
+    matchIdentical <- merge(dataUser, dataDWC,
+                            by.x = "fieldnameOrig",
                             by.y = "standard")
     if (nrow(matchIdentical) > 0) {
         matchIdentical <- data.frame(
@@ -55,9 +55,9 @@ darwinizeNames <- function(dataUser, dataDWC) {
                                  stringsAsFactors = FALSE)
     }
 
-    result <- data.frame(nameOld = c(matchIdentical$fieldname, 
+    result <- data.frame(nameOld = c(matchIdentical$fieldname,
                                      matchLower$fieldname),
-                         nameNew = c(matchIdentical$standard, 
+                         nameNew = c(matchIdentical$standard,
                                      matchLower$standard),
                          matchType = c(matchIdentical$matchType,
                                        matchLower$matchType),
