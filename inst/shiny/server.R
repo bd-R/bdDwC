@@ -211,7 +211,7 @@ shinyServer(function(input, output, session) {
             # For each name change ID
             # We need individual IDs so we can disable them with shinyjs
             # We need to disable them as same ID can't be field and standard
-            for(i in rv$names_UserRaw) {
+            for (i in rv$names_UserRaw) {
                 RAW <- gsub(paste0("<span>", i, "</span>"), 
                             paste0("<span id=\"userField_", i, "\">", i, "</span>"), 
                             RAW)
@@ -234,7 +234,7 @@ shinyServer(function(input, output, session) {
             # For each name change ID
             # We need individual IDs so we can disable them with shinyjs
             # We need to disable them as same ID can't be field and standard
-            for(i in rv$names_UserRaw) {
+            for (i in rv$names_UserRaw) {
                 RAW <- gsub(paste0("<span>", i, "</span>"), 
                             paste0("<span id=\"userStandard_", i, "\">", i, "</span>"), 
                             RAW)
@@ -422,7 +422,7 @@ shinyServer(function(input, output, session) {
                                "Stand Names",
                                sort(rv$names_StandardAfter))
             # Adding unique ID so we can add info boxes with additional info
-            for(i in sort(rv$names_StandardAfter)) {
+            for (i in sort(rv$names_StandardAfter)) {
                 RAW <- gsub(paste0("<span>", i, "</span>"), 
                             paste0("<span id=\"DWC_", i, "\">", i, "</span>"), 
                             RAW)
@@ -594,7 +594,7 @@ shinyServer(function(input, output, session) {
     output$names_Standard_Hover <- renderUI({
         result <- list()
         # For each name extract Darwin Core information
-        for(i in rv$names_StandardAfter) {
+        for (i in rv$names_StandardAfter) {
             # Extract information
             info <- subset(rv$data_DarwinCloudInfo, name == i)$definition
             if (length(info) == 0) {
