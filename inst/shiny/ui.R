@@ -29,7 +29,7 @@ dashboardPage(
             # Horizontal line
             tags$hr(style = "border-color: #bfbfbf;"),
             # Citation
-            actionButton("citation", "Cite us", 
+            actionButton("citation", "Cite us",
                          style = "border-color: #091520;
                                   background-color: #e5e5e5")
         )
@@ -59,7 +59,7 @@ dashboardPage(
                         # one selection
                         bsCollapse(multiple = FALSE, open = "From a Local File",
                                # USER FILE
-                               shinyBS::bsCollapsePanel("Upload Local File", 
+                               shinyBS::bsCollapsePanel("Upload Local File",
                                                fileInput("pathInputData",
                                                          h3("CSV / DWCA ZIP file input"),
                                                          FALSE,
@@ -106,9 +106,9 @@ dashboardPage(
                                             br(),
                                             div(id = "queryDatabaseDiv",
                                                 class = "activeButton",
-                                                actionButton("queryDatabase", 
-                                                             "Query Database", 
-                                                             icon("download"))), 
+                                                actionButton("queryDatabase",
+                                                             "Query Database",
+                                                             icon("download"))),
                                             style = "success"
                                )
                         )
@@ -126,14 +126,14 @@ dashboardPage(
                         br(),
                         br(),
                         # Upload user dictionary
-                        fileInput("pathInputDictionary", 
+                        fileInput("pathInputDictionary",
                                   "Choose a personal dictionary file",
                                   multiple = FALSE,
                                   c("text/csv", ".csv", "text/comma-separated-values,text/plain")
                         ),
                         # Text that tells to select columns if dictionary added
                         uiOutput("userDicText"),
-                        splitLayout(uiOutput("names_User_Field"), 
+                        splitLayout(uiOutput("names_User_Field"),
                                     uiOutput("names_User_Standard"),
                                     cellWidths = 200,
                                     cellArgs = list(style = "padding: 6px")
@@ -141,7 +141,7 @@ dashboardPage(
                     )
                 ),
                 actionButton("submitToDarwinizer", "Submit to Darwinizer", width = 250,
-                             style = "background: url('Darwin.svg'); background-position: left center; 
+                             style = "background: url('Darwin.svg'); background-position: left center;
                                       background-repeat: no-repeat; background-color: #ffffff;
                                       color: #000000; border-color: #091520;
                                       padding:10px; font-size:120%")
@@ -156,10 +156,10 @@ dashboardPage(
             tabItem("darwinizer",
                 fluidRow(
                     fluidRow(
-                        column(12, 
-                            valueBoxOutput("vb_allNames", width = 2), 
-                            valueBoxOutput("vb_DWCNames", width = 2), 
-                            valueBoxOutput("vb_DWCmatch", width = 2), 
+                        column(12,
+                            valueBoxOutput("vb_allNames", width = 2),
+                            valueBoxOutput("vb_DWCNames", width = 2),
+                            valueBoxOutput("vb_DWCmatch", width = 2),
                             valueBoxOutput("vb_Manual",   width = 2),
                             valueBoxOutput("vb_DWCident", width = 2),
                             offset = 1),
@@ -167,34 +167,34 @@ dashboardPage(
                         column(12, style = "margin-bottom:10px; border-bottom:2px solid")
                     ),
                     fluidRow(
-                        column(2, 
+                        column(2,
                             br(), br(),
                             shinyjs::disabled(actionButton("names_Rename", "Rename",
-                                              icon = icon("arrow-circle-right"), 
+                                              icon = icon("arrow-circle-right"),
                                               width = 210,
                                               style = "color: #000000; background-color: #71a879; border-color: #091520;
-                                                       padding:10px; font-size:120%")), 
+                                                       padding:10px; font-size:120%")),
                             offset = 1),
                         column(2, verticalLayout(
                             shinyjs::disabled(actionButton("names_Remove", "Remove selected rename",
                                                            icon = icon("times"), width = 210,
-                                                           style = "color: #000000; background-color: #a188bd; border-color: #091520")), 
+                                                           style = "color: #000000; background-color: #a188bd; border-color: #091520")),
                             br(),
                             shinyjs::disabled(actionButton("names_Clean", "Remove all renames",
-                                                          icon = icon("times"), width = 210,
-                                                          style = "color: #000000; background-color: #a188bd; border-color: #091520")), 
+                                                           icon = icon("times"), width = 210,
+                                                           style = "color: #000000; background-color: #a188bd; border-color: #091520")),
                             br(),
                             shinyjs::disabled(actionButton("names_Rollback", "Rollback to Darwinizer",
                                                            icon = icon("fast-backward"), width = 210,
-                                                           style = "color: #000000; background-color: #c4cc6d; border-color: #091520"))), 
+                                                           style = "color: #000000; background-color: #c4cc6d; border-color: #091520"))),
                             offset = 2
                         ),
                         column(2,
                             shinyjs::disabled(downloadButton("downloadData", "Download final data",
-                                                             icon = icon("check"), 
+                                                             icon = icon("check"),
                                                              width = 210,
-                                                             style = "color: #000000; 
-                                                                      background-color: #71a879; 
+                                                             style = "color: #000000;
+                                                                      background-color: #71a879;
                                                                       border-color: #091520;
                                                                       padding:10px; font-size:120%")),
                             offset = 0
@@ -203,18 +203,18 @@ dashboardPage(
                     ),
                     br(), br(),
                     column(2, uiOutput("names_User")),
-                    column(2, uiOutput("names_Standard"), 
+                    column(2, uiOutput("names_Standard"),
                               uiOutput("names_Standard_Hover"), offset = 1),
-                    box(title = "Darwinized Names", width = 2, 
-                        status = "success", collapsible = TRUE, 
+                    box(title = "Darwinized Names", width = 2,
+                        status = "success", collapsible = TRUE,
                         solidHeader = TRUE,
                         uiOutput("names_Renamed_Darwinized")),
-                    box(title = "Manually Renamed", width = 2, 
-                        status = "success", collapsible = TRUE, 
+                    box(title = "Manually Renamed", width = 2,
+                        status = "success", collapsible = TRUE,
                         solidHeader = TRUE,
                         uiOutput("names_Renamed_Manual")),
-                    box(title = "Identical matches", width = 2, 
-                        status = "success", collapsible = TRUE, 
+                    box(title = "Identical matches", width = 2,
+                        status = "success", collapsible = TRUE,
                         solidHeader = TRUE,
                         uiOutput("names_Renamed_Identical"))
                 )

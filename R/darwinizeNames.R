@@ -29,7 +29,7 @@ darwinizeNames <- function(dataUser, dataDWC) {
     # Given user fieldname matches Darwin standard name
     matchIdentical <- merge(dataUser, dataDWC, by.x = "fieldnameOrig", by.y = "standard")
     if (nrow(matchIdentical) > 0) {
-        matchIdentical <- data.frame(fieldname = unique(matchIdentical$fieldnameOrig), 
+        matchIdentical <- data.frame(fieldname = unique(matchIdentical$fieldnameOrig),
                                      standard = unique(matchIdentical$fieldnameOrig),
                                      matchType = "Identical",
                                      stringsAsFactors = FALSE)
@@ -42,7 +42,7 @@ darwinizeNames <- function(dataUser, dataDWC) {
     # Match user lower cases
     matchLower <- merge(dataUserSub, dataDWCSub, "fieldnameLow")
     if (nrow(matchLower) > 0) {
-        matchLower <- data.frame(fieldname = matchLower$fieldnameOrig.x, 
+        matchLower <- data.frame(fieldname = matchLower$fieldnameOrig.x,
                                  standard = matchLower$standard,
                                  matchType = "Darwinized",
                                  stringsAsFactors = FALSE)

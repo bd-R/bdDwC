@@ -19,7 +19,7 @@
 #' 
 #' @export
 #' 
-downloadCloudData <- function(pathRemote  = "https://raw.githubusercontent.com/kurator-org", 
+downloadCloudData <- function(pathRemote  = "https://raw.githubusercontent.com/kurator-org",
                               pathGithub  = "/kurator-validation/master/packages/kurator_dwca/data/vocabularies/",
                               pathFile    = "darwin_cloud.txt",
                               columnField = "fieldname",
@@ -28,7 +28,7 @@ downloadCloudData <- function(pathRemote  = "https://raw.githubusercontent.com/k
     data <- read.csv(pathCloud, sep = "\t")
     # Subset only used columns
     data <- subset(data, select = c(columnField, columnStand))
-    # Rename to match names in shiny server 
+    # Rename to match names in shiny server
     colnames(data) <- c(columnField, columnStand)
 
     # Add values for missing standard

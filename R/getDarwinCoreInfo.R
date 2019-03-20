@@ -30,8 +30,8 @@ getDarwinCoreInfo <- function(pathDarwinCloud = "http://tdwg.github.io/dwc/terms
         resultDefinition <- gsub(".*<TD>Definition:</TD><TD>(.*)</TD></TR>.*<TR><TD>Comment:.*", "\\1", data)
         resultDefinition <- gsub("'|\"", "", resultDefinition)
     }
-    result <- data.frame(name = resultName, 
-                         definition = resultDefinition, 
+    result <- data.frame(name = resultName,
+                         definition = resultDefinition,
                          stringsAsFactors = FALSE)
     return(result)
 }

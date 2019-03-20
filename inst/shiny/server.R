@@ -18,19 +18,19 @@ shinyServer(function(input, output, session) {
         title = h3("Welcome to Darwinizer!"),
         p("Darwinize Your Data"),
         img(src = "bdverse.png", align = "center", width = "570"),
-        helpText("GPL-3 License ©Tomer Gueta, Vijay Barve, Povilas Gibas, 
+        helpText("GPL-3 License ©Tomer Gueta, Vijay Barve, Povilas Gibas,
                   Thiloshon Nagarajah, Ashwin Agrawal and Carmel Yohay (2018).",
                  br(),
                  "bdDwC. R package version 0.1.21"
         ),
         helpText("Contribute: ",
-                 a("https://github.com/bd-R/bdDwC", 
+                 a("https://github.com/bd-R/bdDwC",
                    href = "https://github.com/bd-R/bdDwC"),
-                 br(), 
+                 br(),
                  "Join: ",
-                 a("https://bd-r-group.slack.com", 
+                 a("https://bd-r-group.slack.com",
                    href = "https://bd-r-group.slack.com")
-        ), 
+        ),
         size = "m",
         easyClose = TRUE
     ))
@@ -45,7 +45,7 @@ shinyServer(function(input, output, session) {
     rv <- reactiveValues(
         # User data used in Darwinizer
         # Uploaded by user (csv)
-        data_User            = data.frame(), 
+        data_User            = data.frame(),
         # Darwinized data (created with darwinizeNames)
         data_Darwinized      = data.frame(),
         # Data that contains all renamings
@@ -63,16 +63,16 @@ shinyServer(function(input, output, session) {
         # Set of Darwin Cloud names after renaming
         names_StandardAfter  = c(),
         # ------
-        # DC DICTIONARY 
+        # DC DICTIONARY
         # ------
         info_DCdate          = bdDwC:::dataDarwinCloud$date,
         # USER DICTIONARY
-        # User original dictionary 
+        # User original dictionary
         # Uploaded by user (csv)
         dic_UserRaw          = data.frame(),
         # Names in user original dictionary used to create radio buttons
         names_UserRaw        = c(),
-        # Subset of users dictionary 
+        # Subset of users dictionary
         # Subset made using column names specified by user
         dic_User             = data.frame()
     )
@@ -84,7 +84,7 @@ shinyServer(function(input, output, session) {
     # --------------------------
 
     # # Disable darwinizer tab
-    shinyjs::addCssClass(selector = "a[data-value='darwinizer']", 
+    shinyjs::addCssClass(selector = "a[data-value='darwinizer']",
                          class = "inactiveLink")
 
     # Disable Darwinize button if no user data uploaded
@@ -92,34 +92,34 @@ shinyServer(function(input, output, session) {
         if (nrow(rv$data_User) == 0) {
             shinyjs::disable("submitToDarwinizer")
         } else {
-            shinyjs::enable("submitToDarwinizer") 
+            shinyjs::enable("submitToDarwinizer")
         }
     })
     # Disable all other buttons if not submitted to Darwinizer
     observeEvent(input$submitToDarwinizer, {
-        shinyjs::removeCssClass(selector = "a[data-value='darwinizer']", 
+        shinyjs::removeCssClass(selector = "a[data-value='darwinizer']",
                                 class = "inactiveLink")
-        shinyjs::enable("names_Rename") 
-        shinyjs::enable("names_Remove") 
-        shinyjs::enable("names_Clean") 
-        shinyjs::enable("names_Rollback") 
-        shinyjs::enable("downloadData") 
+        shinyjs::enable("names_Rename")
+        shinyjs::enable("names_Remove")
+        shinyjs::enable("names_Clean")
+        shinyjs::enable("names_Rollback")
+        shinyjs::enable("downloadData")
     })
     # Disable renaming when no names left
     observe({
-        if ((length(rv$names_UserAfter) == 0 | 
+        if ((length(rv$names_UserAfter) == 0 |
             length(rv$names_StandardAfter) == 0) &
             nrow(rv$data_Rename > 0)) {
-            shinyjs::disable("names_Rename") 
+            shinyjs::disable("names_Rename")
         }
         if (length(rv$names_UserAfter) > 0) {
-            shinyjs::enable("names_Rename") 
+            shinyjs::enable("names_Rename")
         }
     })
     # Disable rollback when no nothing was darwinized
     observe({
         if (length(rv$data_Darwinized$nameOld) == 0) {
-            shinyjs::disable("names_Rollback") 
+            shinyjs::disable("names_Rollback")
         }
     })
 
@@ -204,7 +204,7 @@ shinyServer(function(input, output, session) {
             return(NULL)
         } else {
             # Main function to create radio buttons
-            RAW <- radioButtons("names_User_Field", 
+            RAW <- radioButtons("names_User_Field",
                                 "Field Names",
                                 rv$names_UserRaw,
                                 rv$names_UserRaw[1])
@@ -212,8 +212,8 @@ shinyServer(function(input, output, session) {
             # We need individual IDs so we can disable them with shinyjs
             # We need to disable them as same ID can't be field and standard
             for (i in rv$names_UserRaw) {
-                RAW <- gsub(paste0("<span>", i, "</span>"), 
-                            paste0("<span id=\"userField_", i, "\">", i, "</span>"), 
+                RAW <- gsub(paste0("<span>", i, "</span>"),
+                            paste0("<span id=\"userField_", i, "\">", i, "</span>"),
                             RAW)
             }
             HTML(RAW)
@@ -227,7 +227,7 @@ shinyServer(function(input, output, session) {
             return(NULL)
         } else {
             # Main function to create radio buttons
-            RAW <- radioButtons("names_User_Standard", 
+            RAW <- radioButtons("names_User_Standard",
                                 "Standard Names",
                                 rv$names_UserRaw,
                                 rv$names_UserRaw[2])
@@ -235,8 +235,8 @@ shinyServer(function(input, output, session) {
             # We need individual IDs so we can disable them with shinyjs
             # We need to disable them as same ID can't be field and standard
             for (i in rv$names_UserRaw) {
-                RAW <- gsub(paste0("<span>", i, "</span>"), 
-                            paste0("<span id=\"userStandard_", i, "\">", i, "</span>"), 
+                RAW <- gsub(paste0("<span>", i, "</span>"),
+                            paste0("<span id=\"userStandard_", i, "\">", i, "</span>"),
                             RAW)
             }
             HTML(RAW)
@@ -249,10 +249,10 @@ shinyServer(function(input, output, session) {
         result <- grepl(input$names_User_Standard, rv$names_UserRaw)
         # We need double action (PG: I don't know why)
         # Disable marked button in opposite box
-        shinyjs::disable(selector = paste0("#names_User_Field .radio:nth-child(", 
+        shinyjs::disable(selector = paste0("#names_User_Field .radio:nth-child(",
                                            which(result), ") label"))
         # Enable all non marked buttons in current box
-        shinyjs::enable(selector = paste0("#names_User_Field .radio:nth-child(", 
+        shinyjs::enable(selector = paste0("#names_User_Field .radio:nth-child(",
                                            which(!result), ") label"))
 
     })
@@ -262,10 +262,10 @@ shinyServer(function(input, output, session) {
         result <- grepl(input$names_User_Field, rv$names_UserRaw)
         # We need double action (PG: I don't know why)
         # Disable marked button in opposite box
-        shinyjs::disable(selector = paste0("#names_User_Standard .radio:nth-child(", 
+        shinyjs::disable(selector = paste0("#names_User_Standard .radio:nth-child(",
                                            which(result), ") label"))
         # Enable all non marked buttons in current box
-        shinyjs::enable(selector = paste0("#names_User_Standard .radio:nth-child(", 
+        shinyjs::enable(selector = paste0("#names_User_Standard .radio:nth-child(",
                                            which(!result), ") label"))
     })
 
@@ -286,11 +286,11 @@ shinyServer(function(input, output, session) {
         # Is user dictionary uploaded
         uploadDictionary <- !is.null(input$pathInputDictionary)
         # Select icon
-        userDicIcon <- ifelse(uploadDictionary > 0, "check", "unchecked") 
+        userDicIcon <- ifelse(uploadDictionary > 0, "check", "unchecked")
         if (uploadDictionary) {
             # Get name for user dictionary
             userDicFile <- paste0("(",
-                                 sub(".csv$", "", 
+                                 sub(".csv$", "",
                                      basename(input$pathInputDictionary$name)),
                                   ")")
 
@@ -304,8 +304,8 @@ shinyServer(function(input, output, session) {
             Darwin Cloud (version: ", format(rv$info_DCdate, "%d-%B-%Y"), ")
 
             <button class='btn btn-default action-button' id='popDC'
-                    style='width: 1px; border-color: #ffffff; 
-                           background-color: #ffffff; 
+                    style='width: 1px; border-color: #ffffff;
+                           background-color: #ffffff;
                            font-size:100%' type='button'>
                 <i class='glyphicon glyphicon-question-sign'></i>
             </button>
@@ -314,8 +314,8 @@ shinyServer(function(input, output, session) {
             <i class='glyphicon glyphicon-", userDicIcon, " fa-1x'></i>
             Personal Dictionary ", userDicFile,
             "<button class='btn btn-default action-button' id='popDic'
-                    style='width: 1px; border-color: #ffffff; 
-                           background-color: #ffffff; 
+                    style='width: 1px; border-color: #ffffff;
+                           background-color: #ffffff;
                            font-size:100%' type='button'>
                 <i class='glyphicon glyphicon-question-sign'></i>
             </button>"
@@ -327,7 +327,7 @@ shinyServer(function(input, output, session) {
         showModal(modalDialog(
             title = h3("Darwin Cloud Data"),
             tags$p("bdDwC uses Darwin Core Dictionary which is stored on official",
-                   tags$a(href = "https://github.com/kurator-org/kurator-validation", 
+                   tags$a(href = "https://github.com/kurator-org/kurator-validation",
                           "Kurator's repository."),
                    br(),
                    "If you want to update Darwin Core version for your analysis click",
@@ -382,7 +382,7 @@ shinyServer(function(input, output, session) {
         rv$names_StandardAfter <- unique(rv$data_DarwinCloud$standard)
 
         # Run Darwinizer with user and reference dictionary
-        rv$data_Darwinized <- darwinizeNames(rv$data_User, 
+        rv$data_Darwinized <- darwinizeNames(rv$data_User,
                                              rbind(rv$dic_User, rv$data_DarwinCloud))
 
         # Checkboxes
@@ -408,9 +408,9 @@ shinyServer(function(input, output, session) {
         if (length(rv$names_UserAfter) == 0) {
             return(NULL)
         } else {
-            radioButtons("names_User_radio", 
-                               "User Names",
-                               sort(rv$names_UserAfter))
+            radioButtons("names_User_radio",
+                         "User Names",
+                         sort(rv$names_UserAfter))
         }
     })
     # Create checkbox with current standard names
@@ -418,13 +418,13 @@ shinyServer(function(input, output, session) {
         if (length(rv$names_StandardAfter) == 0) {
             return(NULL)
         } else {
-            RAW <- radioButtons("names_Standard_radio", 
-                               "Stand Names",
-                               sort(rv$names_StandardAfter))
+            RAW <- radioButtons("names_Standard_radio",
+                                "Stand Names",
+                                sort(rv$names_StandardAfter))
             # Adding unique ID so we can add info boxes with additional info
             for (i in sort(rv$names_StandardAfter)) {
-                RAW <- gsub(paste0("<span>", i, "</span>"), 
-                            paste0("<span id=\"DWC_", i, "\">", i, "</span>"), 
+                RAW <- gsub(paste0("<span>", i, "</span>"),
+                            paste0("<span id=\"DWC_", i, "\">", i, "</span>"),
                             RAW)
             }
             HTML(RAW)
@@ -436,7 +436,7 @@ shinyServer(function(input, output, session) {
         } else {
             foo <- subset(rv$data_Rename, matchType == "Manual")$nameRename
             if (length(foo) > 0) {
-                checkboxGroupInput("names_Renamed_Manual", 
+                checkboxGroupInput("names_Renamed_Manual",
                                    NULL,
                                    # Use rev to have newest on top
                                    rev(foo)
@@ -452,7 +452,7 @@ shinyServer(function(input, output, session) {
         } else {
             foo <- subset(rv$data_Rename, matchType == "Darwinized")$nameRename
             if (length(foo) > 0) {
-                checkboxGroupInput("names_Renamed_Darwinized", 
+                checkboxGroupInput("names_Renamed_Darwinized",
                                    NULL,
                                    # Use rev to have newest on top
                                    foo
@@ -468,7 +468,7 @@ shinyServer(function(input, output, session) {
         } else {
             foo <- subset(rv$data_Rename, matchType == "Identical")$nameRename
             if (length(foo) > 0) {
-                checkboxGroupInput("names_Renamed_Identical", 
+                checkboxGroupInput("names_Renamed_Identical",
                                    NULL,
                                    # Use rev to have newest on top
                                    foo
@@ -492,7 +492,7 @@ shinyServer(function(input, output, session) {
         # Update renamed dataset
         rv$data_Rename$nameRename <- NULL
         rv$data_Rename <- rbind(rv$data_Rename,
-                                data.frame(nameOld = input$names_User_radio, 
+                                data.frame(nameOld = input$names_User_radio,
                                            nameNew = input$names_Standard_radio,
                                            matchType = "Manual",
                                            stringsAsFactors = FALSE))
@@ -559,29 +559,29 @@ shinyServer(function(input, output, session) {
 
     output$vb_allNames <- renderValueBox({
         valueBox(length(rv$names_User),
-                 "Names Submitted", 
+                 "Names Submitted",
                  color = "light-blue")
     })
     output$vb_DWCNames <- renderValueBox({
-        valueBox(paste0(nrow(rv$data_Rename), 
-                        "  (", round(nrow(rv$data_Rename) * 100 / 
+        valueBox(paste0(nrow(rv$data_Rename),
+                        "  (", round(nrow(rv$data_Rename) * 100 /
                                      length(rv$names_User)), "%)"),
-                 "Names Darwinized", 
+                 "Names Darwinized",
                  color = "olive")
     })
     output$vb_DWCident <- renderValueBox({
-        valueBox(sum(rv$data_Rename$matchType == "Identical"), 
-                 "Darwinized: Identical", 
+        valueBox(sum(rv$data_Rename$matchType == "Identical"),
+                 "Darwinized: Identical",
                  color = "green")
     })
     output$vb_DWCmatch <- renderValueBox({
-        valueBox(sum(rv$data_Rename$matchType == "Darwinized"), 
-                 "Darwinized: Matched", 
+        valueBox(sum(rv$data_Rename$matchType == "Darwinized"),
+                 "Darwinized: Matched",
                  color = "green")
     })
     output$vb_Manual <- renderValueBox({
-        valueBox(sum(rv$data_Rename$matchType == "Manual"), 
-                 "Darwinized: Manually", 
+        valueBox(sum(rv$data_Rename$matchType == "Manual"),
+                 "Darwinized: Manually",
                  color = "green")
     })
 
