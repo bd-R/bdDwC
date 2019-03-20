@@ -250,10 +250,10 @@ shinyServer(function(input, output, session) {
         # We need double action (PG: I don't know why)
         # Disable marked button in opposite box
         shinyjs::disable(selector = paste0("#names_User_Field .radio:nth-child(", 
-                                           which(result),") label"))
+                                           which(result), ") label"))
         # Enable all non marked buttons in current box
         shinyjs::enable(selector = paste0("#names_User_Field .radio:nth-child(", 
-                                           which(!result),") label"))
+                                           which(!result), ") label"))
 
     })
     # If button in field is marked
@@ -263,10 +263,10 @@ shinyServer(function(input, output, session) {
         # We need double action (PG: I don't know why)
         # Disable marked button in opposite box
         shinyjs::disable(selector = paste0("#names_User_Standard .radio:nth-child(", 
-                                           which(result),") label"))
+                                           which(result), ") label"))
         # Enable all non marked buttons in current box
         shinyjs::enable(selector = paste0("#names_User_Standard .radio:nth-child(", 
-                                           which(!result),") label"))
+                                           which(!result), ") label"))
     })
 
 
@@ -286,7 +286,7 @@ shinyServer(function(input, output, session) {
         # Is user dictionary uploaded
         uploadDictionary <- !is.null(input$pathInputDictionary)
         # Select icon
-        userDicIcon <- ifelse(uploadDictionary > 0,"check", "unchecked") 
+        userDicIcon <- ifelse(uploadDictionary > 0, "check", "unchecked") 
         if (uploadDictionary) {
             # Get name for user dictionary
             userDicFile <- paste0("(",
@@ -301,7 +301,7 @@ shinyServer(function(input, output, session) {
             "<b>Used dictionaries:</b>
             <br/>
             <i class='glyphicon glyphicon-check fa-1x'></i>
-            Darwin Cloud (version: ", format(rv$info_DCdate, "%d-%B-%Y"),")
+            Darwin Cloud (version: ", format(rv$info_DCdate, "%d-%B-%Y"), ")
 
             <button class='btn btn-default action-button' id='popDC'
                     style='width: 1px; border-color: #ffffff; 
@@ -311,7 +311,7 @@ shinyServer(function(input, output, session) {
             </button>
 
             <br/>
-            <i class='glyphicon glyphicon-", userDicIcon," fa-1x'></i>
+            <i class='glyphicon glyphicon-", userDicIcon, " fa-1x'></i>
             Personal Dictionary ", userDicFile,
             "<button class='btn btn-default action-button' id='popDic'
                     style='width: 1px; border-color: #ffffff; 
@@ -565,7 +565,7 @@ shinyServer(function(input, output, session) {
     output$vb_DWCNames <- renderValueBox({
         valueBox(paste0(nrow(rv$data_Rename), 
                         "  (", round(nrow(rv$data_Rename) * 100 / 
-                                     length(rv$names_User)),"%)"),
+                                     length(rv$names_User)), "%)"),
                  "Names Darwinized", 
                  color = "olive")
     })
