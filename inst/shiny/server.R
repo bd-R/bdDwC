@@ -544,7 +544,9 @@ shinyServer(function(input, output, session) {
 
     # DONWLOAD
     output$downloadData <- downloadHandler(
-        filename = function() {format(Sys.time(), "darwinizedData_%Y_%b_%d_%X.RDS")},
+        filename = function() {
+            format(Sys.time(), "darwinizedData_%Y_%b_%d_%X.RDS")
+        },
         content = function(file) {
             saveRDS(renameUserData(rv$data_User, rv$data_Rename), file)
         }
