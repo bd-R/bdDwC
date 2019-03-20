@@ -3,6 +3,27 @@ library(shinydashboard)
 library(shinyBS)
 library(bdDwC)
 
+upload_local_file <- c(
+    "text/csv",
+    "text/comma-separated-values,text/plain",
+    ".csv",
+    ".zip",
+    "application/zip"
+)
+
+online_databases <- list(
+    "GBIF (Global Biodiversity Information Facility)" = "gbif",
+    "iDigBio (Integrated Digitized Biocollections)" = "idigbio",
+    "EcoEngine (Berkeley Ecoinformatics Engine)" = "ecoengine",
+    "Vertnet (Vertebrate Network)" = "vertnet",
+    "BISON (Biodiversity Information Serving Our Nation)" = "bison",
+    "iNaturalist" = "inat",
+    "ALA (Atlas of Living Australia)" = "ala",
+    "OBIS (Ocean Biogeographic Information System)" = "obis",
+    "AntWeb" = "antweb"
+)
+
+
 dashboardPage(
 
     # --------------------------
@@ -58,59 +79,47 @@ dashboardPage(
                         # Using shinyBS collapse as we want ONLY
                         # one selection
                         bsCollapse(multiple = FALSE, open = "From a Local File",
-                               # USER FILE
-                               shinyBS::bsCollapsePanel("Upload Local File",
-                                               fileInput("pathInputData",
-                                                         h3("CSV / DWCA ZIP file input"),
-                                                         FALSE,
-                                                         accept = c("text/csv",
-                                                                    "text/comma-separated-values,text/plain",
-                                                                    ".csv",
-                                                                    ".zip",
-                                                                    "application/zip"
-                                                                    )
-                                                        ),
-                                               style = "info"
+                           # USER FILE
+                           shinyBS::bsCollapsePanel("Upload Local File",
+                               fileInput("pathInputData",
+                                         h3("CSV / DWCA ZIP file input"),
+                                         FALSE,
+                                         accept = upload_local_file
+                                        ),
+                               style = "info"
 
-                               ),
-                               # QUERY FROM A DATABASE
-                               shinyBS::bsCollapsePanel("Query Data From a Database",
-                                               textInput("scientificName",
-                                                         h3("Scientific Name:"),
-                                                         "Puma concolor"),
-                                               numericInput("recordSize",
-                                                           h3("Record Size:"),
-                                                           500),
-                                               selectInput("hasCoords",
-                                                           h3("Records Filter:"),
-                                                           list("With Coordinates" = "1",
-                                                                "Without Coordinates" = "2",
-                                                                "No Filter" = "3"
-                                                            ),
-                                                            3
-                                                ),
-                                            radioButtons("queryDB",
-                                                         h3("Online Database:"),
-                                                         list("GBIF (Global Biodiversity Information Facility)" = "gbif",
-                                                              "iDigBio (Integrated Digitized Biocollections)" = "idigbio",
-                                                              "EcoEngine (Berkeley Ecoinformatics Engine)" = "ecoengine",
-                                                              "Vertnet (Vertebrate Network)" = "vertnet",
-                                                              "BISON (Biodiversity Information Serving Our Nation)" = "bison",
-                                                              "iNaturalist" = "inat",
-                                                              "ALA (Atlas of Living Australia)" = "ala",
-                                                              "OBIS (Ocean Biogeographic Information System)" = "obis",
-                                                              "AntWeb" = "antweb"
-                                                        ),
-                                                        "gbif"
+                           ),
+                           # QUERY FROM A DATABASE
+                           shinyBS::bsCollapsePanel(
+                                "Query Data From a Database",
+                               textInput("scientificName",
+                                         h3("Scientific Name:"),
+                                         "Puma concolor"),
+                               numericInput("recordSize",
+                                           h3("Record Size:"),
+                                           500),
+                               selectInput("hasCoords",
+                                           h3("Records Filter:"),
+                                           list("With Coordinates" = "1",
+                                                "Without Coordinates" = "2",
+                                                "No Filter" = "3"
                                             ),
-                                            br(),
-                                            div(id = "queryDatabaseDiv",
-                                                class = "activeButton",
-                                                actionButton("queryDatabase",
-                                                             "Query Database",
-                                                             icon("download"))),
-                                            style = "success"
-                               )
+                                            3
+                                ),
+                                radioButtons("queryDB",
+                                             h3("Online Database:"),
+                                             onlineDatabases
+                                            ),
+                                            "gbif"
+                                ),
+                                br(),
+                                div(id = "queryDatabaseDiv",
+                                    class = "activeButton",
+                                    actionButton("queryDatabase",
+                                                 "Query Database",
+                                                 icon("download"))),
+                                style = "success"
+                           )
                         )
                     ),
 
@@ -129,7 +138,8 @@ dashboardPage(
                         fileInput("pathInputDictionary",
                                   "Choose a personal dictionary file",
                                   multiple = FALSE,
-                                  c("text/csv", ".csv", "text/comma-separated-values,text/plain")
+                                  c("text/csv", ".csv", 
+                                    "text/comma-separated-values,text/plain")
                         ),
                         # Text that tells to select columns if dictionary added
                         uiOutput("userDicText"),
@@ -140,11 +150,17 @@ dashboardPage(
                         )
                     )
                 ),
-                actionButton("submitToDarwinizer", "Submit to Darwinizer", width = 250,
-                             style = "background: url('Darwin.svg'); background-position: left center;
-                                      background-repeat: no-repeat; background-color: #ffffff;
-                                      color: #000000; border-color: #091520;
-                                      padding:10px; font-size:120%")
+                actionButton("submitToDarwinizer", "Submit to Darwinizer", 
+                             width = 250,
+                             style = "background: url('Darwin.svg');
+                                      background-position: left center;
+                                      background-repeat: no-repeat;
+                                      background-color: #ffffff;
+                                      color: #000000; 
+                                      border-color: #091520;
+                                      padding:10px; 
+                                      font-size:120%"
+                )
             ),
 
 
@@ -164,42 +180,78 @@ dashboardPage(
                             valueBoxOutput("vb_DWCident", width = 2),
                             offset = 1),
                         # Adds lines belowe value boxes
-                        column(12, style = "margin-bottom:10px; border-bottom:2px solid")
+                        column(12, style = 
+                               "margin-bottom:10px; border-bottom:2px solid"
+                        )
                     ),
                     fluidRow(
                         column(2,
                             br(), br(),
-                            shinyjs::disabled(actionButton("names_Rename", "Rename",
-                                              icon = icon("arrow-circle-right"),
-                                              width = 210,
-                                              style = "color: #000000; background-color: #71a879; border-color: #091520;
-                                                       padding:10px; font-size:120%")),
+                            shinyjs::disabled(
+                                actionButton("names_Rename", "Rename",
+                                    icon = icon("arrow-circle-right"),
+                                    width = 210,
+                                    style = "color: #000000; 
+                                             background-color: #71a879; 
+                                             border-color: #091520; 
+                                             padding:10px; 
+                                             font-size:120%"
+                                )
+                            ),
                             offset = 1),
                         column(2, verticalLayout(
-                            shinyjs::disabled(actionButton("names_Remove", "Remove selected rename",
-                                                           icon = icon("times"), width = 210,
-                                                           style = "color: #000000; background-color: #a188bd; border-color: #091520")),
+                            shinyjs::disabled(
+                                actionButton(
+                                    "names_Remove", 
+                                    "Remove selected rename",
+                                    icon = icon("times"), width = 210,
+                                    style = "color: #000000;
+                                             background-color: #a188bd;
+                                             border-color: #091520"
+                                )
+                            ),
                             br(),
-                            shinyjs::disabled(actionButton("names_Clean", "Remove all renames",
-                                                           icon = icon("times"), width = 210,
-                                                           style = "color: #000000; background-color: #a188bd; border-color: #091520")),
+                            shinyjs::disabled(
+                                actionButton(
+                                    "names_Clean", 
+                                    "Remove all renames",
+                                    icon = icon("times"), width = 210,
+                                    style = "color: #000000;
+                                             background-color: #a188bd;
+                                             border-color: #091520"
+                                )
+                            ),
                             br(),
-                            shinyjs::disabled(actionButton("names_Rollback", "Rollback to Darwinizer",
-                                                           icon = icon("fast-backward"), width = 210,
-                                                           style = "color: #000000; background-color: #c4cc6d; border-color: #091520"))),
+                            shinyjs::disabled(
+                                actionButton(
+                                    "names_Rollback", 
+                                    "Rollback to Darwinizer",
+                                    icon = icon("fast-backward"), width = 210,
+                                    style = "color: #000000;
+                                             background-color: #c4cc6d;
+                                             border-color: #091520"
+                                )
+                            )),
                             offset = 2
                         ),
                         column(2,
-                            shinyjs::disabled(downloadButton("downloadData", "Download final data",
-                                                             icon = icon("check"),
-                                                             width = 210,
-                                                             style = "color: #000000;
-                                                                      background-color: #71a879;
-                                                                      border-color: #091520;
-                                                                      padding:10px; font-size:120%")),
+                            shinyjs::disabled(
+                                downloadButton(
+                                    "downloadData", 
+                                    "Download final data",
+                                    icon = icon("check"),
+                                    width = 210,
+                                    style = "color: #000000;
+                                             background-color: #71a879;
+                                             border-color: #091520;
+                                             padding:10px; font-size:120%"
+                                )
+                            ),
                             offset = 0
                         ),
-                        style = "margin-bottom:30px; border-bottom:2px solid; padding: 20px"
+                        style = "margin-bottom:30px;
+                                 border-bottom:2px solid;
+                                 padding: 20px"
                     ),
                     br(), br(),
                     column(2, uiOutput("names_User")),

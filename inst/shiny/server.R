@@ -131,15 +131,18 @@ shinyServer(function(input, output, session) {
 
     # Upload local file
     observeEvent(input$pathInputData, {
-        withProgress(message = paste("Reading", input$pathInputData$name, "..."), {
+        withProgress(message = paste("Reading", 
+                                     input$pathInputData$name, "..."), {
             if (is.null(input$pathInputData)) {
                 return("No data to view")
             }
             if (grepl("zip", tolower(input$pathInputData$type))) {
                 message("Reading DWCA ZIP...")
-                rv$data_User <- finch::dwca_read(input$pathInputData$datapath, read = TRUE)$data[[1]]
+                rv$data_User <- finch::dwca_read(input$pathInputData$datapath, 
+                                                 read = TRUE)$data[[1]]
             } else {
-                rv$data_User <- data.table::fread(input$pathInputData$datapath, data.table = FALSE)
+                rv$data_User <- data.table::fread(input$pathInputData$datapath, 
+                                                  data.table = FALSE)
             }
         })
         rv$names_User <- rv$names_UserAfter <- colnames(rv$data_User)
@@ -213,7 +216,8 @@ shinyServer(function(input, output, session) {
             # We need to disable them as same ID can't be field and standard
             for (i in rv$names_UserRaw) {
                 RAW <- gsub(paste0("<span>", i, "</span>"),
-                            paste0("<span id=\"userField_", i, "\">", i, "</span>"),
+                            paste0("<span id=\"userField_", i, "\">", i, 
+                                   "</span>"),
                             RAW)
             }
             HTML(RAW)
@@ -236,7 +240,8 @@ shinyServer(function(input, output, session) {
             # We need to disable them as same ID can't be field and standard
             for (i in rv$names_UserRaw) {
                 RAW <- gsub(paste0("<span>", i, "</span>"),
-                            paste0("<span id=\"userStandard_", i, "\">", i, "</span>"),
+                            paste0("<span id=\"userStandard_", i, "\">", i, 
+                                   "</span>"),
                             RAW)
             }
             HTML(RAW)
@@ -249,8 +254,8 @@ shinyServer(function(input, output, session) {
         result <- grepl(input$names_User_Standard, rv$names_UserRaw)
         # We need double action (PG: I don't know why)
         # Disable marked button in opposite box
-        shinyjs::disable(selector = paste0("#names_User_Field .radio:nth-child(",
-                                           which(result), ") label"))
+        shinyjs::disable(selector = paste0(
+            "#names_User_Field .radio:nth-child(", which(result), ") label"))
         # Enable all non marked buttons in current box
         shinyjs::enable(selector = paste0("#names_User_Field .radio:nth-child(",
                                            which(!result), ") label"))
@@ -262,11 +267,13 @@ shinyServer(function(input, output, session) {
         result <- grepl(input$names_User_Field, rv$names_UserRaw)
         # We need double action (PG: I don't know why)
         # Disable marked button in opposite box
-        shinyjs::disable(selector = paste0("#names_User_Standard .radio:nth-child(",
-                                           which(result), ") label"))
+        shinyjs::disable(selector = paste0(
+            "#names_User_Standard .radio:nth-child(", which(result), ") label")
+        )
         # Enable all non marked buttons in current box
-        shinyjs::enable(selector = paste0("#names_User_Standard .radio:nth-child(",
-                                           which(!result), ") label"))
+        shinyjs::enable(selector = paste0(
+            "#names_User_Standard .radio:nth-child(", which(!result), ") label")
+        )
     })
 
 
@@ -326,11 +333,13 @@ shinyServer(function(input, output, session) {
     observeEvent(input$popDC, {
         showModal(modalDialog(
             title = h3("Darwin Cloud Data"),
-            tags$p("bdDwC uses Darwin Core Dictionary which is stored on official",
-                   tags$a(href = "https://github.com/kurator-org/kurator-validation",
-                          "Kurator's repository."),
+            tags$p("bdDwC uses Darwin Core Dictionary (stored on official",
+                   tags$a(href = 
+                        "https://github.com/kurator-org/kurator-validation",
+                        "Kurator's repository)."
+                    ),
                    br(),
-                   "If you want to update Darwin Core version for your analysis click",
+                   "Update Darwin Core version for your analysis by clicking",
                    tags$b("Update DC"), "button bellow."),
             size = "m",
             easyClose = TRUE
@@ -340,7 +349,7 @@ shinyServer(function(input, output, session) {
     observeEvent(input$popDic, {
         showModal(modalDialog(
             title = h3("Personal Dictionary File"),
-            tags$p("File with columns that contain fieldname and standard name"),
+            tags$p("File with columns fieldname and standard name"),
             size = "m",
             easyClose = TRUE
         ))
@@ -373,7 +382,9 @@ shinyServer(function(input, output, session) {
         # If user has uploaded dictionary
         if (nrow(rv$dic_UserRaw) > 0) {
             # Update reactive user dictionary
-            rv$dic_User <- subset(rv$dic_UserRaw, select = c(input$names_User_Field, input$names_User_Standard))
+            rv$dic_User <- subset(
+                rv$dic_UserRaw, 
+                select = c(input$names_User_Field, input$names_User_Standard))
             colnames(rv$dic_User) <- c("fieldname", "standard")
         }
 
@@ -383,7 +394,8 @@ shinyServer(function(input, output, session) {
 
         # Run Darwinizer with user and reference dictionary
         rv$data_Darwinized <- darwinizeNames(rv$data_User,
-                                             rbind(rv$dic_User, rv$data_DarwinCloud))
+                                             rbind(rv$dic_User, 
+                                                   rv$data_DarwinCloud))
 
         # Checkboxes
         # Update if something was darwinized
@@ -391,9 +403,13 @@ shinyServer(function(input, output, session) {
             rv$data_Rename <- rv$data_Darwinized
             rv$data_Rename$nameRename <- bdDwC:::combineOldNew(rv$data_Rename)
             # Updated (remove name) from standard names
-            rv$names_StandardAfter <- rv$names_Standard[!rv$names_Standard %in% rv$data_Rename$nameNew]
+            rv$names_StandardAfter <- rv$names_Standard[
+                !rv$names_Standard %in% rv$data_Rename$nameNew
+            ]
             # Updated (remove name) from user names
-            rv$names_UserAfter <- rv$names_User[!tolower(rv$names_User) %in% tolower(rv$data_Rename$nameOld)]
+            rv$names_UserAfter <- rv$names_User[
+                !tolower(rv$names_User) %in% tolower(rv$data_Rename$nameOld)
+            ]
         }
     })
 
@@ -499,9 +515,13 @@ shinyServer(function(input, output, session) {
         # Create (combine) renamed name
         rv$data_Rename$nameRename <- bdDwC:::combineOldNew(rv$data_Rename)
         # Updated (remove name) from standard names
-        rv$names_StandardAfter <- rv$names_Standard[!rv$names_Standard %in% rv$data_Rename$nameNew]
+        rv$names_StandardAfter <- rv$names_Standard[
+            !rv$names_Standard %in% rv$data_Rename$nameNew
+        ]
         # Updated (remove name) from user names
-        rv$names_UserAfter <- rv$names_User[!tolower(rv$names_User) %in% tolower(rv$data_Rename$nameOld)]
+        rv$names_UserAfter <- rv$names_User[
+            !tolower(rv$names_User) %in% tolower(rv$data_Rename$nameOld)
+        ]
     })
 
     # REMOVE
@@ -517,11 +537,17 @@ shinyServer(function(input, output, session) {
             rmNames <- c(rmNames, input$names_Renamed_Identical)
         }
         # Remove input from renamed names dataset
-        rv$data_Rename <- rv$data_Rename[!rv$data_Rename$nameRename %in% rmNames, ]
+        rv$data_Rename <- rv$data_Rename[
+            !rv$data_Rename$nameRename %in% rmNames,
+        ]
         # Update standard names checkbox
-        rv$names_StandardAfter <- rv$names_Standard[!rv$names_Standard %in% rv$data_Rename$nameNew]
+        rv$names_StandardAfter <- rv$names_Standard[
+            !rv$names_Standard %in% rv$data_Rename$nameNew
+        ]
         # Update user names checkbox
-        rv$names_UserAfter <- rv$names_User[!tolower(rv$names_User) %in% tolower(rv$data_Rename$nameOld)]
+        rv$names_UserAfter <- rv$names_User[
+            !tolower(rv$names_User) %in% tolower(rv$data_Rename$nameOld)
+        ]
     })
 
     # Clean all renamings
@@ -537,8 +563,12 @@ shinyServer(function(input, output, session) {
         if (nrow(rv$data_Darwinized) > 0) {
             rv$data_Rename <- rv$data_Darwinized
             rv$data_Rename$nameRename <- bdDwC:::combineOldNew(rv$data_Rename)
-            rv$names_StandardAfter <- rv$names_Standard[!rv$names_Standard %in% rv$data_Rename$nameNew]
-            rv$names_UserAfter <- rv$names_User[!tolower(rv$names_User) %in% tolower(rv$data_Rename$nameOld)]
+            rv$names_StandardAfter <- rv$names_Standard[
+                !rv$names_Standard %in% rv$data_Rename$nameNew
+            ]
+            rv$names_UserAfter <- rv$names_User[
+                !tolower(rv$names_User) %in% tolower(rv$data_Rename$nameOld)
+            ]
         }
     })
 
@@ -601,7 +631,8 @@ shinyServer(function(input, output, session) {
                 info <- NULL
             }
             # Append information as a tool tip
-            result[[i]] <- shinyBS::bsTooltip(paste0("DWC_", i), info, "right", "hover")
+            result[[i]] <- shinyBS::bsTooltip(paste0("DWC_", i), 
+                                              info, "right", "hover")
         }
         do.call(tagList, result)
     })

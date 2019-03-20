@@ -19,11 +19,12 @@
 #' 
 #' @export
 #' 
-downloadCloudData <- function(pathRemote  = "https://raw.githubusercontent.com/kurator-org",
-                              pathGithub  = "/kurator-validation/master/packages/kurator_dwca/data/vocabularies/",
-                              pathFile    = "darwin_cloud.txt",
-                              columnField = "fieldname",
-                              columnStand = "standard") {
+downloadCloudData <- function(
+    pathRemote  = "https://raw.githubusercontent.com/kurator-org",
+    pathGithub  = "/kurator-validation/master/packages/kurator_dwca/data/vocabularies/",
+    pathFile    = "darwin_cloud.txt",
+    columnField = "fieldname",
+    columnStand = "standard") {
     pathCloud <- paste0(pathRemote, pathGithub, pathFile)
     data <- read.csv(pathCloud, sep = "\t")
     # Subset only used columns
