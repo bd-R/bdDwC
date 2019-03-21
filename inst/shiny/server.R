@@ -1,7 +1,3 @@
-# Not imported even specified though in DESCRIPTION
-#!!!!! library(shinydashboard)
-#!!!!! library(shinyBS)
-#!!!!!! library(bdDwC)
 options(shiny.maxRequestSize = 50 * 1024 ^ 2)
 
 shiny::shinyServer(function(input, output, session) {
@@ -380,7 +376,7 @@ shiny::shinyServer(function(input, output, session) {
     rv$names_standard_after <- unique(rv$data_darwin_cloud$standard)
 
     # Run Darwinizer with user and reference dictionary
-    rv$data_darwinized <- darwinize_names(
+    rv$data_darwinized <- bdDwC::darwinize_names(
       rv$data_user, rbind(rv$dic_user, rv$data_darwin_cloud)
     )
 
@@ -433,14 +429,14 @@ shiny::shinyServer(function(input, output, session) {
       shiny::HTML(res)
     }
   })
-  output$names_renamed_Manual <- shiny::renderUI({
+  output$names_renamed_manual <- shiny::renderUI({
     if (length(rv$data_rename$name_rename) == 0) {
       shiny::h5("Nothing was renamed")
     } else {
       foo <- subset(rv$data_rename, match_type == "Manual")$name_rename
       if (length(foo) > 0) {
         # Use rev to have newest on top
-        shiny::checkboxGroupInput( "names_renamed_Manual", NULL, rev(foo))
+        shiny::checkboxGroupInput( "names_renamed_manual", NULL, rev(foo))
       } else {
         shiny::h5("Nothing was renamed")
       }
@@ -506,8 +502,8 @@ shiny::shinyServer(function(input, output, session) {
   # REMOVE
   shiny::observeEvent(input$names_remove, {
     remove_names <- c()
-    if (length(input$names_renamed_Manual) > 0) {
-      remove_names <- c(remove_names, input$names_renamed_Manual)
+    if (length(input$names_renamed_manual) > 0) {
+      remove_names <- c(remove_names, input$names_renamed_manual)
     }
     if (length(input$names_renamed_darwinized) > 0) {
       remove_names <- c(remove_names, input$names_renamed_darwinized)

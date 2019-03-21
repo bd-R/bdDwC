@@ -1,8 +1,3 @@
-# Not imported even specified though in DESCRIPTION
-# !!!!!!!! library(shinydashboard)
-# !!!!!!!! library(shinyBS)
-# !!!!!!!! library(bdDwC)
-
 upload_local_file <- c(
   "text/csv",
   "text/comma-separated-values,text/plain",
@@ -184,11 +179,11 @@ shinydashboard::dashboardPage(
       shiny::fluidRow(
         shiny::fluidRow(
           shiny::column(12,
-            shiny::valueBoxOutput("vb_all_names", width = 2),
-            shiny::valueBoxOutput("vb_dwc_names", width = 2),
-            shiny::valueBoxOutput("vb_dwc_match", width = 2),
-            shiny::valueBoxOutput("vb_manual", width = 2),
-            shiny::valueBoxOutput("vb_dwc_ident", width = 2),
+            shinydashboard::valueBoxOutput("vb_all_names", width = 2),
+            shinydashboard::valueBoxOutput("vb_dwc_names", width = 2),
+            shinydashboard::valueBoxOutput("vb_dwc_match", width = 2),
+            shinydashboard::valueBoxOutput("vb_manual", width = 2),
+            shinydashboard::valueBoxOutput("vb_dwc_ident", width = 2),
             offset = 1
           ),
           # Adds lines belowe value boxes
