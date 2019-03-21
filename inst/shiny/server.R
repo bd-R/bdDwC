@@ -18,7 +18,7 @@ shiny::shinyServer(function(input, output, session) {
       "GPL-3 License ©Tomer Gueta, Vijay Barve, Povilas Gibas,
        Thiloshon Nagarajah, Ashwin Agrawal and Carmel Yohay (2019).",
        shiny::br(),
-       "bdDwC. R package version 0.1.21"
+       "bdDwC. R package version 0.1.22"
     ),
     shiny::helpText(
       "Contribute: ",

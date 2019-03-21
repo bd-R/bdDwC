@@ -36,7 +36,7 @@ Or for development version:
 Run `bdDwC` `shiny` app with:
     
     library(bdDwC)
-    runDwC()
+    run_dwc()
 
 ---
 
@@ -46,20 +46,20 @@ Load `bdDwC` package
 
     library(bdDwC)
 
-`bdDwC` contains Indian Reptile dataset `bdDwC:::dataReptiles`.  
-Darwinize data with `darwinizeNames` (replace `bdDwC:::dataReptiles` with wanted dataset):
+`bdDwC` contains Indian Reptile dataset `bdDwC:::data_reptiles`.  
+Darwinize data with `darwinize_names` (replace `bdDwC:::data_reptiles` with wanted dataset):
 
-    result <- darwinizeNames(dataUser = bdDwC:::dataReptiles,
-                            dataDWC   = bdDwC:::dataDarwinCloud$data)
+    result <- darwinize_names(dataUser = bdDwC:::data_reptiles,
+                              dataDWC  = bdDwC:::data_darwin_cloud$data)
 
 
-Rename your data using `bdDwC` with `renameUserData`:
+Rename your data using `bdDwC` with `rename_user_data`:
 
-    # Replace `bdDwC:::dataReptiles` with wanted dataset
-    renameUserData(bdDwC:::dataReptiles, result)
+    # Replace `bdDwC:::data_reptiles` with wanted dataset
+    rename_user_data(bdDwC:::data_reptiles, result)
 
 To get newest version of Darwin Cloud Data run:
 
-    downloadCloudData()
+    download_cloud_data()
 
 which will download data from the remote repository and extract field and standard names.
