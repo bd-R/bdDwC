@@ -152,7 +152,7 @@ rename_user_data <- function(data_user, data_renamed) {
 #' Retrieve Information about Darwin Core Terms
 #'
 #' `get_darwin_core_info()` is a function (not exported) to download
-#' Darwin Core Terms. This information is displayed when using manually 
+#' Darwin Core Terms. This information is displayed when using manually
 #' renaming.
 #'
 #' @param path_darwin_cloud Path to Darwin Cloud data.
