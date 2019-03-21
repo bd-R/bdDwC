@@ -6,7 +6,7 @@ test_that("Darwinizer", {
   if (bdDwC:::data_darwin_cloud$date == "2018-08-20") {
     result <- darwinize_names(
       data_user = bdDwC:::data_reptiles,
-      data_dwc  = bdDwC:::data_darwin_cloud$data
+      data_dwc = bdDwC:::data_darwin_cloud$data
     )
     # Darwinized type
     expect_equal(unique(result$match_type), "Darwinized")

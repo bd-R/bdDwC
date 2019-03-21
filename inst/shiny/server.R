@@ -436,7 +436,7 @@ shiny::shinyServer(function(input, output, session) {
       foo <- subset(rv$data_rename, match_type == "Manual")$name_rename
       if (length(foo) > 0) {
         # Use rev to have newest on top
-        shiny::checkboxGroupInput( "names_renamed_manual", NULL, rev(foo))
+        shiny::checkboxGroupInput("names_renamed_manual", NULL, rev(foo))
       } else {
         shiny::h5("Nothing was renamed")
       }
