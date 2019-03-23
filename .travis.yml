@@ -4,5 +4,12 @@ language: R
 sudo: false
 cache: packages
 
+r:
+  - oldrel
+  - release
+  - devel
+
+r_check_args: "--as-cran"
+
 after_success:
   - Rscript -e 'covr::codecov()'
