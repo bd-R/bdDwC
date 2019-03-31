@@ -16,5 +16,6 @@ Darwin Cloud term.
 }
 \description{
 `get_darwin_core_info()` is a function (not exported) to download
-Darwin Core Terms. This information is displayed when using manually renaming.
+Darwin Core Terms. This information is displayed when using manually
+renaming.
 }

@@ -4,14 +4,14 @@
 \name{data_darwin_cloud}
 \alias{data_darwin_cloud}
 \title{Darwin Cloud Data}
-\format{A list of length two. First entry contains a data frame with 
+\format{A list of length two. First entry contains a data frame with
 422 rows and 2 columns. Second entry contains a `Date` class object.}
 \usage{
 data_darwin_cloud
 }
 \description{
-Darwin Cloud data used to Darwinize. Darwin Cloud data was retrieved using 
-`bdDwC::download_cloud_data()` function. 
+Darwin Cloud data used to Darwinize. Darwin Cloud data was retrieved using
+`bdDwC::download_cloud_data()` function.
 This dataset contains Darwin Cloud data and download date.
 }
 \keyword{datasets}

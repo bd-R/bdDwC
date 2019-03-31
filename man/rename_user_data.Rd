@@ -4,16 +4,16 @@
 \alias{rename_user_data}
 \title{Rename Dataset According Darwinized Names}
 \usage{
-rename_user_data(data_user, data_renamed)
+rename_user_data(data_user = NULL, data_renamed = NULL)
 }
 \arguments{
 \item{data_user}{data.frame of be renamed.}
 
-\item{data_renamed}{data.frame that was created using 
+\item{data_renamed}{data.frame that was created using
 `bdDwC::darwinize_names()` function using same `data_user`.}
 }
 \value{
-data.frame of submitted user data, but renamed according given 
+data.frame of submitted user data, but renamed according given
 renames data.frame.
 }
 \description{
@@ -21,8 +21,9 @@ renames data.frame.
 (usually given user data) according previously Darwinized Names.
 }
 \examples{
-result <- darwinize_names(data_user = bdDwC:::data_reptiles, 
-                          data_dwc  = bdDwC:::data_darwin_cloud$data)
+result <- darwinize_names(
+  data_user = bdDwC:::data_reptiles,
+  data_dwc = bdDwC:::data_darwin_cloud$data
+)
 rename_user_data(bdDwC:::data_reptiles, result)
-
 }

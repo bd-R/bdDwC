@@ -4,23 +4,26 @@
 \alias{darwinize_names}
 \title{Darwinize names}
 \usage{
-darwinize_names(data_user, data_dwc)
+darwinize_names(data_user = NULL, data_dwc = NULL)
 }
 \arguments{
 \item{data_user}{data.frame with user data}
 
-\item{data_dwc}{data.frame with Darwin Cloud data}
+\item{data_dwc}{data.frame with Darwin Cloud data that contains at least two
+columns (fieldname and standard)}
 }
 \value{
 data.frame of darwinized user names.
 }
 \description{
-`darwinize_names()` is a function to darwinize given names using reference 
-(ie, Darwin Cloud) dataset. It returns $Old$ and $New$ ($fieldname$ and $standard$)
-name (ie, name from given user dataset that had a match in reference dataset).
+`darwinize_names()` is a function to darwinize given names using reference
+(ie, Darwin Cloud) dataset. It returns $Old$ and $New$ ($fieldname$ and
+$standard$) name (ie, name from given user dataset that had a match in
+reference dataset).
 }
 \examples{
-darwinize_names(data_user = bdDwC:::data_reptiles, 
-                data_dwc  = bdDwC:::data_darwin_cloud$data)
-
+darwinize_names(
+  data_user = bdDwC:::data_reptiles,
+  data_dwc = bdDwC:::data_darwin_cloud$data
+)
 }

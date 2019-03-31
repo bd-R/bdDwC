@@ -9,7 +9,7 @@
 data_reptiles
 }
 \description{
-Dataset that contains subsample of Indian reptile observations 
+Dataset that contains subsample of Indian reptile observations
 from the iNaturalist platform.
 }
 \keyword{datasets}

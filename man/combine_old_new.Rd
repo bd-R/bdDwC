@@ -9,7 +9,7 @@ combine_old_new(data, symbol_arrow = "->", symbol_space = " ")
 \arguments{
 \item{data}{data.frame of matched names (`darwinize_names()` output)}
 
-\item{symbol_arrow}{character string for symbol that is used in `paste0` 
+\item{symbol_arrow}{character string for symbol that is used in `paste0`
 to connect old and new name}
 
 \item{symbol_space}{character string for symbol used instead of white space}
@@ -18,7 +18,7 @@ to connect old and new name}
 data.frame of darwinized user names.
 }
 \description{
-`combine_old_new()` is a function that combines (`paste`) 
+`combine_old_new()` is a function that combines (`paste`)
 fieldname and standard
 names with unicode characters to present in checkboxes.
 }
