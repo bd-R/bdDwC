@@ -1,7 +1,7 @@
 Package: bdDwC
 Title: Field Names Conversion to Darwin Core (DwC) Format
 Description: Supplies a Shiny app and a set of functions to standardize field names according to Darwin Core (DwC) format. Darwinize your data easily.
-Version: 0.1.23
+Version: 0.1.24
 Date: 2018-03-21
 License: GPL-3 | file LICENSE
 URL: https://github.com/bd-R/bdDwC
@@ -32,7 +32,7 @@ Authors@R: c(
         role = c("aut"),
         comment = c(ORCID = '0000-0002-5883-0184'))
     )
-Depends: R (>= 2.10)
+Depends: R (>= 3.4)
 Imports: data.table,
          finch,
          rgbif,
