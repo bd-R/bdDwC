@@ -2,9 +2,9 @@
 options(
   # let bigget input files
   shiny.maxRequestSize = 50 * 1024 ^ 2,
-  # debug - text (full path)
+  # debug text (full path)
   shiny.fullstacktrace = TRUE,
-  # debug - visual
+  # debug visual
   shiny.reactlog = TRUE
 )
 
@@ -183,7 +183,7 @@ shiny::shinyServer(function(input, output, session) {
     if (is.null(rv$data_user)) {
       rv$data_user <- data.frame()
       foo <- paste(
-        "There are not entries with",
+        "There are no entries with",
         input$scientific_name,
         "scientific name. Please try another one"
       )
