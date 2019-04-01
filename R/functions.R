@@ -212,7 +212,7 @@ download_cloud_data <- function(
 #' @import shinydashboard
 #' @import shiny
 #' @import shinyBS
-#' @importFrom data.table fread
+#' @importFrom data.table fread fwrite
 #' @importFrom finch dwca_read
 #' @importFrom rgbif occ_search
 #' @importFrom shinyjs addCssClass disable disabled enable useShinyjs removeCssClass

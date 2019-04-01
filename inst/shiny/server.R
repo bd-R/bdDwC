@@ -566,10 +566,13 @@ shiny::shinyServer(function(input, output, session) {
   # DONWLOAD
   output$download_data <- shiny::downloadHandler(
     filename = function() {
-      format(Sys.time(), "darwinizedData_%Y_%b_%d_%X.RDS")
+      format(Sys.time(), "darwinizedData_%Y_%b_%d_%X.csv")
     },
     content = function(file) {
-      saveRDS(bdDwC::rename_user_data(rv$data_user, rv$data_rename), file)
+      data.table::fwrite(
+        bdDwC::rename_user_data(rv$data_user, rv$data_rename),
+        file
+    )
     }
   )
 
