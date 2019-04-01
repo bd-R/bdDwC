@@ -145,8 +145,7 @@ shiny::shinyServer(function(input, output, session) {
 
   # Download from database
   shiny::observeEvent(input$query_database, {
-    shiny::withProgress(message =
-      paste("Querying", input$query_db, "..."), {
+    shiny::withProgress(message = paste("Querying", input$query_db, "..."), {
         if (input$query_db == "gbif") {
           rv$data_user <- rgbif::occ_search(
             scientificName = input$scientific_name,
@@ -173,6 +172,15 @@ shiny::shinyServer(function(input, output, session) {
           rv$data_user <- data[[input$query_db]]$data[[1]]
         }
     })
+    if (is.null(rv$data_user)) {
+      rv$data_user <- data.frame()
+      foo <- paste(
+        "There are not entries with",
+        input$scientific_name,
+        "scientific name. Please try another one"
+      )
+      shiny::showNotification(foo)
+    }
     # Get column names (used for Darwinizer)
     rv$names_user <- rv$names_user_after <- colnames(rv$data_user)
   })
