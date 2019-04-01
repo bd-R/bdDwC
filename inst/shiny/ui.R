@@ -35,13 +35,13 @@ shinydashboard::dashboardPage(
   shinydashboard::dashboardSidebar(
     shinydashboard::sidebarMenu(
       id = "my_tabs",
-      tags$head(tags$style(
+      shiny::tags$head(shiny::tags$style(
         ".inactiveLink {pointer-events: none;cursor: default;}"
       )),
       shinydashboard::menuItem("Upload Data", tabName = "upload"),
       shinydashboard::menuItem("Darwinizer", tabName = "darwinizer"),
       # Horizontal line
-      tags$hr(style = "border-color: #bfbfbf;"),
+      shiny::tags$hr(style = "border-color: #bfbfbf;"),
       # Citation
       shiny::actionButton(
         "citation", "Cite us", style = "border-color: #091520;
@@ -133,7 +133,7 @@ shinydashboard::dashboardPage(
           shiny::uiOutput("dic_info"),
           shiny::br(),
           # Darwin Cloud dictionary
-          tags$b("Update Darwin Cloud dictionary"),
+          shiny::tags$b("Update Darwin Cloud dictionary"),
           shiny::br(),
           shiny::actionButton("update_darwin_cloud", "Update DC"),
           shiny::br(),
