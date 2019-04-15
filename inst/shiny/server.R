@@ -151,8 +151,6 @@ shiny::shinyServer(function(input, output, session) {
       rv$data_user <- data.table::fread(input$path_input_data$datapath,
                                         data.table = FALSE)
     }
-    rv$names_user <- rv$names_user_after <- colnames(rv$data_user)
-
     if (nrow(rv$data_user) > 0) {
       shiny::showNotification(
         "Data successfully uploaded",
@@ -160,6 +158,8 @@ shiny::shinyServer(function(input, output, session) {
         type = "message"
       )
     }
+    rv$names_user <- rv$names_user_after <- colnames(rv$data_user)
+    rv$data_user <- as.data.frame(rv$data_user)
   })
 
   # Download from database
@@ -229,6 +229,7 @@ shiny::shinyServer(function(input, output, session) {
       }
       # Get column names (used for Darwinizer)
       rv$names_user <- rv$names_user_after <- colnames(rv$data_user)
+      rv$data_user <- as.data.frame(rv$data_user)
     }
   })
 
@@ -429,7 +430,6 @@ shiny::shinyServer(function(input, output, session) {
     # Get all standard names
     rv$names_standard <- unique(rv$data_darwin_cloud$standard)
     rv$names_standard_after <- unique(rv$data_darwin_cloud$standard)
-
     # Run Darwinizer with user and reference dictionary
     rv$data_darwinized <- bdDwC::darwinize_names(
       rv$data_user, rbind(rv$dic_user, rv$data_darwin_cloud)
@@ -439,7 +439,7 @@ shiny::shinyServer(function(input, output, session) {
     # Update if something was darwinized
     if (nrow(rv$data_darwinized) > 0) {
       rv$data_rename <- rv$data_darwinized
-      rv$data_rename$name_rename <- bdDwC:::combine_old_new(rv$data_rename)
+      rv$data_rename$name_rename <- bdDwC:::link_old_new(rv$data_rename)
       # Updated (remove name) from standard names
       rv$names_standard_after <- rv$names_standard[
         !rv$names_standard %in% rv$data_rename$name_new
@@ -543,7 +543,7 @@ shiny::shinyServer(function(input, output, session) {
                  stringsAsFactors = FALSE)
     )
     # Create (combine) renamed name
-    rv$data_rename$name_rename <- bdDwC:::combine_old_new(rv$data_rename)
+    rv$data_rename$name_rename <- bdDwC:::link_old_new(rv$data_rename)
     # Updated (remove name) from standard names
     rv$names_standard_after <- rv$names_standard[
       !rv$names_standard %in% rv$data_rename$name_new
@@ -592,7 +592,7 @@ shiny::shinyServer(function(input, output, session) {
   shiny::observeEvent(input$names_rollback, {
     if (nrow(rv$data_darwinized) > 0) {
       rv$data_rename <- rv$data_darwinized
-      rv$data_rename$name_rename <- bdDwC:::combine_old_new(rv$data_rename)
+      rv$data_rename$name_rename <- bdDwC:::link_old_new(rv$data_rename)
       rv$names_standard_after <- rv$names_standard[
         !rv$names_standard %in% rv$data_rename$name_new
       ]

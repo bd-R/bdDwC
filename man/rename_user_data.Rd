@@ -2,19 +2,19 @@
 % Please edit documentation in R/darwinizer.R
 \name{rename_user_data}
 \alias{rename_user_data}
-\title{Rename Dataset According Darwinized Names}
+\title{Rename Dataset According to Darwinized Names}
 \usage{
 rename_user_data(data_user = NULL, data_renamed = NULL)
 }
 \arguments{
-\item{data_user}{data.frame of be renamed.}
+\item{data_user}{a data.frame to be renamed}
 
-\item{data_renamed}{data.frame that was created using
-`bdDwC::darwinize_names()` function using same `data_user`.}
+\item{data_renamed}{a data.frame that was created using
+`bdDwC::darwinize_names()` function using same `data_user`}
 }
 \value{
 data.frame of submitted user data, but renamed according given
-renames data.frame.
+renames data.frame
 }
 \description{
 `rename_user_data()` is a function used to rename given dataset
@@ -26,4 +26,10 @@ result <- darwinize_names(
   data_dwc = bdDwC:::data_darwin_cloud$data
 )
 rename_user_data(bdDwC:::data_reptiles, result)
+
 }
+\seealso{
+Other darwinizer functions: \code{\link{darwinize_names}},
+  \code{\link{link_old_new}}
+}
+\concept{darwinizer functions}

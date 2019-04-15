@@ -9,7 +9,6 @@
 #'
 "data_darwin_cloud"
 
-
 #' Indian Reptiles
 #'
 #' Dataset that contains subsample of Indian reptile observations

@@ -7,13 +7,13 @@
 darwinize_names(data_user = NULL, data_dwc = NULL)
 }
 \arguments{
-\item{data_user}{data.frame with user data}
+\item{data_user}{a data.frame with user data}
 
-\item{data_dwc}{data.frame with Darwin Cloud data that contains at least two
+\item{data_dwc}{a data.frame with Darwin Cloud data that contains at least two
 columns (fieldname and standard)}
 }
 \value{
-data.frame of darwinized user names.
+data.frame of darwinized user names
 }
 \description{
 `darwinize_names()` is a function to darwinize given names using a reference
@@ -26,4 +26,10 @@ darwinize_names(
   data_user = bdDwC:::data_reptiles,
   data_dwc = bdDwC:::data_darwin_cloud$data
 )
+
 }
+\seealso{
+Other darwinizer functions: \code{\link{link_old_new}},
+  \code{\link{rename_user_data}}
+}
+\concept{darwinizer functions}
