@@ -164,56 +164,72 @@ shiny::shinyServer(function(input, output, session) {
 
   # Download from database
   shiny::observeEvent(input$query_database, {
-    shiny::showNotification(
-      "Started downloading data",
-      closeButton = FALSE,
-      type = "message"
-    )
 
-    if (input$query_db == "gbif") {
-      rv$data_user <- rgbif::occ_search(
-        scientificName = input$scientific_name,
-        limit = input$record_size,
-        hasCoordinate = switch(input$has_coords,
-                               "1" = TRUE, "2" = FALSE, "3" = NULL)
-      )$data
-    } else {
-      warnings <- capture.output(
-        data <- spocc::occ(
-          query = input$scientific_name,
-          from = input$query_db,
-          limit = input$record_size,
-          has_coords = switch(input$has_coords,
-                              "1" = TRUE, "2" = FALSE, "3" = NULL)
-        ),
-          type = "message"
-      )
-      if (length(warnings) > 0) {
-        shiny::showNotification(
-          paste(warnings, collapse = " "), duration = 5
-        )
-      }
-      rv$data_user <- data[[input$query_db]]$data[[1]]
-    }
-    if (is.null(rv$data_user)) {
-      rv$data_user <- data.frame()
-      foo <- paste(
-        "There are no entries with",
-        input$scientific_name,
-        "scientific name. Please try another one"
-      )
+    # Defensive tests
+    # Check if user entered valid value
+    if (trimws(input$scientific_name) == "") {
+
+      foo <- paste("Please enter a valid scientific name")
       shiny::showNotification(foo, type = "error")
+
+    } else if (input$record_size <= 0) {
+
+      foo <- paste("Please enter a valid number of records")
+      shiny::showNotification(foo, type = "error")
+
     } else {
-      if (nrow(rv$data_user) > 0) {
-        shiny::showNotification(
-          "Data successfully downloaded",
-          closeButton = FALSE,
-          type = "message"
+
+      shiny::showNotification(
+        "Started downloading data",
+        closeButton = FALSE,
+        type = "message"
+      )
+
+      if (input$query_db == "gbif") {
+        rv$data_user <- rgbif::occ_search(
+          scientificName = input$scientific_name,
+          limit = input$record_size,
+          hasCoordinate = switch(input$has_coords,
+                                 "1" = TRUE, "2" = FALSE, "3" = NULL)
+        )$data
+      } else {
+        warnings <- capture.output(
+          data <- spocc::occ(
+            query = input$scientific_name,
+            from = input$query_db,
+            limit = input$record_size,
+            has_coords = switch(input$has_coords,
+                                "1" = TRUE, "2" = FALSE, "3" = NULL)
+          ),
+            type = "message"
         )
+        if (length(warnings) > 0) {
+          shiny::showNotification(
+            paste(warnings, collapse = " "), duration = 5
+          )
+        }
+        rv$data_user <- data[[input$query_db]]$data[[1]]
       }
+      if (is.null(rv$data_user)) {
+        rv$data_user <- data.frame()
+        foo <- paste(
+          "There are no entries with",
+          input$scientific_name,
+          "scientific name. Please try another one"
+        )
+        shiny::showNotification(foo, type = "error")
+      } else {
+        if (nrow(rv$data_user) > 0) {
+          shiny::showNotification(
+            "Data successfully downloaded",
+            closeButton = FALSE,
+            type = "message"
+          )
+        }
+      }
+      # Get column names (used for Darwinizer)
+      rv$names_user <- rv$names_user_after <- colnames(rv$data_user)
     }
-    # Get column names (used for Darwinizer)
-    rv$names_user <- rv$names_user_after <- colnames(rv$data_user)
   })
 
 
