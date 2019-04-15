@@ -202,7 +202,7 @@ rename_user_data <- function(data_user = NULL, data_renamed = NULL) {
 #' 
 #' @keywords internal
 #'
-link_old_new <- function(data, linker = "to\n") {
+link_old_new <- function(data, linker = " ->\n") {
   # Test if dictionary data is good
   test_data_renamed(data)
   if (!is.character(linker)) {
