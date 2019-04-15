@@ -1,8 +1,8 @@
 #' Darwinize names
 #'
-#' `darwinize_names()` is a function to darwinize given names using reference
+#' `darwinize_names()` is a function to darwinize given names using a reference
 #' (ie, Darwin Cloud) dataset. It returns $Old$ and $New$ ($fieldname$ and
-#' $standard$) name (ie, name from given user dataset that had a match in
+#' $standard$) name (ie, name from a given user dataset that had a match in
 #' reference dataset).
 #'
 #' @param data_user data.frame with user data
@@ -20,81 +20,126 @@
 #'
 darwinize_names <- function(data_user = NULL, data_dwc = NULL) {
 
-  if (is.null(data_user) | is.null(data_dwc)) {
-    warning("Please provide two data.frames")
-    return(NULL)
-  }
-  if (ncol(data_user) < 1 | ncol(data_dwc) < 2) {
-    warning(
-      "Data to be Darwinized should contain at least one column ",
-      "and Darwin Cloud data should contain at least two columns"
-    )
-    return(NULL)
-  }
-  if (!all(c("fieldname", "standard") %in% colnames(data_dwc))) {
-    "Darwin Cloud data should contain fieldname and standard columns"
-    return(NULL)
+  # Test for a valid user data
+  if (is.null(data_user)) {
+    stop("Specify data_user")
+  } else if (class(data_user) != "data.frame") {
+    stop("data_user should be a data.frame")
+  } else if (nrow(data_user) < 1 | ncol(data_user) < 1) {
+    stop("data_user should contain at least one column and one row")
+  } else if (length(colnames(data_user)) == 0) {
+    stop("data_user dataset contains no names (nothing to Darwinize)")
+  } else if (any(duplicated(data_user))) {
+    warning("Some of the names in data_user are duplicated")
   }
 
-  # Prepare reference data
-  # Original dwc name
-  data_dwc$fieldname_orig <- data_dwc$fieldname
-  # dwc name used for merging
-  data_dwc$fieldname_low <- tolower(data_dwc$fieldname)
+  # Test for a valid dictionary data
+  if (is.null(data_dwc)) {
+    stop("Specify data_dwc")
+  } else if (class(data_dwc) != "data.frame") {
+    stop("data_dwc should be a data.frame")
+  } else if (nrow(data_dwc) < 1 | ncol(data_dwc) < 2) {
+    stop("data_dwc should contain at least two columns and one row")
+  } else if (!all(c("fieldname", "standard") %in% colnames(data_dwc))) {
+    stop("Darwin Cloud data should contain fieldname and standard columns")
+  } else if (sum(colnames(data_dwc) %in% "fieldname") > 1) {
+    stop("There is more than one column named fieldname in data_dwc")
+  } else if (sum(colnames(data_dwc) %in% "standard") > 1) {
+    stop("There is more than one column named standard in data_dwc")
+  }
+
+  # Subset data_dwc
+  data_dwc <- data_dwc[, colnames(data_dwc) %in% c("fieldname", "standard")]
+  if (ncol(data_dwc) != 2) {
+    warning(
+      "Something is wrong with Darwin Cloud data, ", 
+      "please check column names"
+    )
+  }
+  # Filter out missing fields in the reference dictionary
+  row_idx <- rowSums(apply(data_dwc, 2, function(x) x != "" & !is.na(x))) == 2
+  data_dwc <- data_dwc[row_idx, ]
+  if (nrow(data_dwc) == 0) {
+    stop("Darwin Cloud data contained only missing fields")
+  }
 
   # Prepare user data
-  data_user <- data.frame(
-    # Original name
-    fieldname_orig = names(data_user),
-    # name used for merging
-    fieldname_low = tolower(names(data_user)),
+  # Extract names to be Darwinized
+  data_user_name <- data.frame(
+    fieldname = trimws(unique(colnames(data_user))),
     stringsAsFactors = FALSE
   )
 
-  # Find identical matches
-  # Given user fieldname matches Darwin standard name
-  match_identical <- merge(
-    data_user, data_dwc,
-    by.x = "fieldname_orig", by.y = "standard"
+  # Create object to store final result
+  result <- list()
+
+  # First Darwinization: Find identical matches
+  # Given that user fieldname matches Darwin standard name
+  result[["identical_raw"]] <- merge(
+    data_user_name, data_dwc,
+    by.x = "fieldname", by.y = "standard"
   )
-  if (nrow(match_identical) > 0) {
-    match_identical <- data.frame(
+  if (nrow(result[["identical_raw"]]) > 0) {
+    result[["identical_clean"]] <- data.frame(
       # This is identical match so assigning twice
-      fieldname = unique(match_identical$fieldname_orig),
-      standard = unique(match_identical$fieldname_orig),
+      name_old = unique(result[["identical_raw"]]$fieldname),
+      name_new = unique(result[["identical_raw"]]$fieldname),
       match_type = "Identical",
       stringsAsFactors = FALSE
     )
+  } else {
+    warning("No names had identical matches")
+    result[["identical_clean"]] <- data.frame()
+  }
+  if (nrow(result[["identical_clean"]]) == nrow(data_user_name)) {
+    # Return result if all fields were matched
+    message("All names had identical matches")
+    return(result[["identical_clean"]])
   }
 
   # Subset data for further filtering
-  # These columns weren't matched
-  data_user_sub <- data_user[
-    !data_user$fieldname_orig %in% match_identical$fieldname,
+  # These user columns weren't matched
+  data_user_name_sub <- data_user_name[
+    !data_user_name$fieldname %in% result[["identical_clean"]]$name_new,
   ]
-  # These columns weren't used
-  data_dwc_sub <- data_dwc[
-    !data_dwc$standard %in% match_identical$standard,
-  ]
+  # Transform names into lowercase
+  data_user_name_sub <- data.frame(
+    fieldname_low = tolower(data_user_name_sub),
+    fieldname_orig = data_user_name_sub,
+    stringsAsFactors = FALSE
+  )
 
-  # Match user lower cases
-  match_lower <- merge(data_user_sub, data_dwc_sub, "fieldname_low")
-  if (nrow(match_lower) > 0) {
-    match_lower <- data.frame(
-      fieldname = match_lower$fieldname_orig.x,
-      standard = match_lower$standard,
+  # These reference fields weren't used
+  data_dwc_sub <- data_dwc[
+    !data_dwc$standard %in% result[["identical_clean"]]$name_new,
+  ]
+  data_dwc_sub$fieldname_low <- tolower(data_dwc$fieldname)
+
+  # Match using lowecase
+  result[["lower_raw"]] <- merge(
+    data_user_name_sub,
+    data_dwc_sub,
+    "fieldname_low"
+  )
+  if (nrow(result[["lower_raw"]]) > 0) {
+    result[["lower_clean"]] <- data.frame(
+      name_old = result[["lower_raw"]]$fieldname_orig,
+      name_new = result[["lower_raw"]]$standard,
       match_type = "Darwinized",
       stringsAsFactors = FALSE
     )
+  } else {
+    warning("No names had lower case matches")
+    result[["lower_clean"]] <- data.frame()
   }
-
-  result <- data.frame(
-    name_old = c(match_identical$fieldname, match_lower$fieldname),
-    name_new = c(match_identical$standard, match_lower$standard),
-    match_type = c(match_identical$match_type, match_lower$match_type),
-    stringsAsFactors = FALSE
+  result[["final"]] <- rbind(
+    result[["lower_clean"]],
+    result[["identical_clean"]]
   )
-  return(result)
+  if (nrow(result[["final"]]) == 0) {
+    warning("No names were Darwinized")
+  }
+  return(result[["final"]])
 }
 
 #' Rename Dataset According Darwinized Names
@@ -203,28 +248,6 @@ download_cloud_data <- function(
   return(result)
 }
 
-#' Launch bdDwC Shiny Application
-#'
-#' `run_dwc` is a function that starts bdverse Darwin Cloud cleaning `shiny` app.
-#'
-#' @return `shiny::runApp()` result within browser.
-#'
-#' @import shinydashboard
-#' @import shiny
-#' @import shinyBS
-#' @importFrom data.table fread fwrite
-#' @importFrom finch dwca_read
-#' @importFrom rgbif occ_search
-#' @importFrom shinyjs addCssClass disable disabled enable useShinyjs removeCssClass
-#' @importFrom spocc occ
-#'
-#' @export
-#'
-run_dwc <- function() {
-  path_app <- system.file("shiny", package = "bdDwC")
-  return(shiny::runApp(path_app, launch.browser = TRUE))
-}
-
 #' Combine old/new name for checkboxes
 #'
 #' `combine_old_new()` is a function that combines (`paste`)
@@ -289,4 +312,26 @@ get_darwin_core_info <- function(
     stringsAsFactors = FALSE
   )
   return(result)
+}
+
+#' Launch bdDwC Shiny Application
+#'
+#' `run_dwc` is a function that starts bdverse Darwin Cloud cleaning `shiny` app.
+#'
+#' @return `shiny::runApp()` result within browser.
+#'
+#' @import shinydashboard
+#' @import shiny
+#' @import shinyBS
+#' @importFrom data.table fread fwrite
+#' @importFrom finch dwca_read
+#' @importFrom rgbif occ_search
+#' @importFrom shinyjs addCssClass disable disabled enable useShinyjs removeCssClass
+#' @importFrom spocc occ
+#'
+#' @export
+#'
+run_dwc <- function() {
+  path_app <- system.file("shiny", package = "bdDwC")
+  return(shiny::runApp(path_app, launch.browser = TRUE))
 }

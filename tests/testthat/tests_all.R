@@ -10,7 +10,7 @@ test_that("Darwinizer", {
     # Darwinized type
     expect_equal(unique(result$match_type), "Darwinized")
     # Number of records darwinized
-    expect_equal(nrow(result), 4)
+    expect_equal(nrow(result), 3)
     # Number of columns
     expect_equal(ncol(result), 3)
   }
