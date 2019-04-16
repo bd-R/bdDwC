@@ -210,8 +210,5 @@ link_old_new <- function(data, linker = "->") {
   }
   result <- apply(data, 1, function(x) {paste(x[1], linker, "\n", x[2])})
   result <- as.character(result)
-  if (nrow(data) != length(result)) {
-    stop("Something went wrong in linking process (lengths don't match)")
-  }
   return(result)
 }
