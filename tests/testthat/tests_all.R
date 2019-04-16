@@ -76,8 +76,8 @@ test_that("Linking names", {
   )
   expect_equal(length(bdDwC:::link_old_new(input)), nrow(input))
   # Test wrong linker
-  expect_erroe(bdDwC:::link_old_new(input, 0))
-  expect_erroe(bdDwC:::link_old_new(input, NA))
+  expect_error(bdDwC:::link_old_new(input, 0))
+  expect_error(bdDwC:::link_old_new(input, NA))
 })
 
 
