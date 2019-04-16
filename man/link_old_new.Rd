@@ -4,7 +4,7 @@
 \alias{link_old_new}
 \title{Link Old/New Name for Checkboxes}
 \usage{
-link_old_new(data, linker = "to\\n")
+link_old_new(data, linker = "->")
 }
 \arguments{
 \item{data}{a data.frame of matched names (`darwinize_names()` output)}
