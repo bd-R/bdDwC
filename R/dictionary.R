@@ -4,17 +4,22 @@
 #' data. First it downloads data, then it subsets informative columns and
 #' renames them so they could be used in `shiny` app.
 #'
-#' @param path_remote Path to remote repository (Kurator in Github).
-#' @param path_github Path within given repository.
-#' @param path_file Name of a file.
-#' @param column_field Name of the column that contains field information.
-#' @param column_stand Name of the column that contains standard information.
+#' @param path_remote a character string that specifies path to remote
+#' repository (Kurator in Github)
+#' @param path_github a character string that specifies path
+#' within given repository
+#' @param path_file a character string that specifies name of a dictionary file
+#' @param column_field a character string that specifies name of the column
+#' that contains field information
+#' @param column_stand a character string that specifies name of the column
+#' that contains standard information
 #'
 #' @return data.frame of Darwin Cloud data.
 #'
 #' @examples
 #' download_cloud_data()
-#' @importFrom utils read.csv
+#' 
+#' @importFrom data.table fread
 #' 
 #' @family dictionary functions
 #'
@@ -27,38 +32,41 @@ download_cloud_data <- function(
   column_field = "fieldname",
   column_stand = "standard") {
 
+  # Test if path and columns are good
+  lapply(
+    list(path_remote, path_github, path_file, column_field, column_stand),
+    test_cloud
+  )
+  # Test if columns are good
+  test_columns_cloud(c(column_field, column_stand))
+
   # Create path to remote file
   path_cloud <- paste0(path_remote, path_github, path_file)
 
   # Read in remote file
-  # Catching error as if there's no internet connection app wouldn't run
+  # Catch error if there's no internet connection
   data <- tryCatch({
-    read.csv(path_cloud, sep = "\t", stringsAsFactors = FALSE)
+    data.table::fread(
+      path_cloud,
+      sep = "\t", showProgress = FALSE, data.table = FALSE)
   }, error = function(cond) {
     return(NULL)
   })
   if (is.null(data)) {
+    warning(
+      "Cloud data wasn't downloaded, ",
+      "probably due to the internet connection"
+    )
     return(NULL)
   }
 
-  # Check if wanted columns exist
-  foo <- column_field %in% colnames(data)
-  bar <- column_stand %in% colnames(data)
-  if (!foo) {
-    warning(column_field, " column is not present in Darwin Cloud data")
-  }
-  if (!bar) {
-    warning(column_field, " column is not present in Darwin Cloud data")
-  }
-  if (all(foo, bar)) {
-    # Subset only used columns
-    result <- subset(data, select = c(column_field, column_stand))
-    # Rename to match names in shiny server
-    colnames(result) <- c(column_field, column_stand)
-  }
+  # Test if downloaded data is valid
+  test_data_dwc(data)
+  # Prepare dictionary data
+  # Subset and remove missing fields
+  result <- clean_dwc(data, column_field, column_stand)
   return(result)
 }
-
 
 #' Retrieve Information about Darwin Core Terms
 #'
@@ -66,18 +74,34 @@ download_cloud_data <- function(
 #' Darwin Core Terms. This information is displayed when using manually
 #' renaming.
 #'
-#' @param path_darwin_cloud Path to Darwin Cloud data.
+#' @param path_darwin_cloud a character string that specifies path to Darwin
+#' @param regex_term a character string with regular expression to find
+#' positions of Darwin Core Terms
+#' @param regex_name a character string with regular expression to extract term
+#' @param regex_defition a character string with regular expression to extract
+#' terms definition
+#' @param name_to_def a single numeric value specifying in how many rows from
+#' the term name it's definition is stored
 #'
-#' @return data.frame that contains name and definition for each available
-#' Darwin Cloud term.
+#' @return a data.frame that contains name and definition for each available
+#' Darwin Cloud term
 #' 
 #' @family dictionary functions
 #'
 #' @keywords internal
 #' 
 get_darwin_core_info <- function(
-  path_darwin_cloud = "http://tdwg.github.io/dwc/terms/") {
-  # Catching error as if there's no internet connection app wouldn't run
+  path_darwin_cloud = "http://tdwg.github.io/dwc/terms/",
+  regex_term = "table-secondary",
+  regex_name = ".*>(.*)\\s<span.*",
+  regex_definition = ".*</td><td>(.*)</td></tr>.*",
+  name_to_def = 2) {
+
+  # Test if path is good
+  test_cloud(path_darwin_cloud)
+
+  # Catch error if there's no internet connection
+  # Return NA as it will be used if no result provided
   data <- tryCatch({
     readLines(path_darwin_cloud, warn = FALSE)
   }, error = function(cond) {
@@ -85,28 +109,30 @@ get_darwin_core_info <- function(
   })
 
   if (all(is.na(data))) {
-    result_definition <- NA
-    result_name <- NA
-  } else {
-    data <- grep("Term Name:", data, value = TRUE)
-
-    # Not very elegant, but works in base R
-    # Name
-    result_name <- gsub(".*Term Name: dcterms:([A-z]+).*", "\\1", data)
-    result_name <- gsub(".*Term Name: ([A-z]+).*", "\\1", result_name)
-    # Definition
-    result_definition <- gsub(
-      ".*<TD>Definition:</TD><TD>(.*)</TD></TR>.*<TR><TD>Comment:.*",
-      "\\1", data
+    result <- data.frame(
+      name = NA,
+      definition = NA,
+      stringsAsFactors = FALSE
     )
-    result_definition <- gsub("'|\"", "", result_definition)
+    return(result)
+  } else {
+    idx <- grep(regex_term, data)
+  }
+
+  if (length(idx) == 0) {
+    result_name <- NA
+    result_definition <- NA
+  } else {
+    result_name <- trimws(sub(regex_name, "\\1", data[idx]))
+    result_definition <- sub(regex_definition, "\\1", data[idx + name_to_def])
+    result_definition <- trimws(gsub("'|\"", "", result_definition))
   }
   result <- data.frame(
     name = result_name,
     definition = result_definition,
     stringsAsFactors = FALSE
   )
-  return(result)
+  return(unique(result))
 }
 
 #' Clean Dictionary Data
@@ -114,6 +140,10 @@ get_darwin_core_info <- function(
 #' Clean dictionary from unnecessary or empty fields
 #'
 #' @param data a data.frame with dictionary data
+#' @param column_field a character string that specifies name of the column
+#' that contains field information
+#' @param column_stand a character string that specifies name of the column
+#' that contains standard information
 #'
 #' @return a data.frame of cleaned dictionary data
 #'
@@ -121,12 +151,16 @@ get_darwin_core_info <- function(
 #' 
 #' @keywords internal
 #' 
-clean_dwc <- function(data) {
+clean_dwc <- function(
+  data,
+  column_field = "fieldname",
+  column_stand = "standard") {
+
   # Subset dictionary data only for needed columns
-  data <- data[, colnames(data) %in% c("fieldname", "standard")]
+  data <- data[, colnames(data) %in% c(column_field, column_stand)]
   if (ncol(data) != 2) {
     warning(
-      "Something is wrong with provided dictionary, ", 
+      "Something is wrong with provided dictionary, ",
       "please check column names"
     )
   }

@@ -5,14 +5,27 @@
 \title{Retrieve Information about Darwin Core Terms}
 \usage{
 
-  get_darwin_core_info(path_darwin_cloud = "http://tdwg.github.io/dwc/terms/")
+  get_darwin_core_info(path_darwin_cloud = "http://tdwg.github.io/dwc/terms/",
+  regex_term = "table-secondary", regex_name = ".*>(.*)\\\\s<span.*",
+  regex_definition = ".*</td><td>(.*)</td></tr>.*", name_to_def = 2)
 }
 \arguments{
-\item{path_darwin_cloud}{Path to Darwin Cloud data.}
+\item{path_darwin_cloud}{a character string that specifies path to Darwin}
+
+\item{regex_term}{a character string with regular expression to find
+positions of Darwin Core Terms}
+
+\item{regex_name}{a character string with regular expression to extract term}
+
+\item{name_to_def}{a single numeric value specifying in how many rows from
+the term name it's definition is stored}
+
+\item{regex_defition}{a character string with regular expression to extract
+terms definition}
 }
 \value{
-data.frame that contains name and definition for each available
-Darwin Cloud term.
+a data.frame that contains name and definition for each available
+Darwin Cloud term
 }
 \description{
 `get_darwin_core_info()` is a function (not exported) to download

@@ -14,7 +14,7 @@ test_that("Darwinizer", {
     expect_equal(nrow(result), 3)
     # Number of columns
     expect_equal(ncol(result), 3)
-    
+
     # Test identical match
     result <- darwinize_names(
       data_user = data.frame(year = 1, DIA = 1),
@@ -45,8 +45,7 @@ test_that("Darwinizer", {
     data_user = data.frame(year = 1, day = 1),
     data_dwc = data.frame(fieldname = letters[1:2], standard = LETTERS[1:2])
   )
-  expect_equal(nrow(result), 0)   
-    
+  expect_equal(nrow(result), 0)
 })
 
 test_that("Rename User Data", {

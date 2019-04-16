@@ -4,10 +4,17 @@
 \alias{test_data_dwc}
 \title{Test If Provided Dictionary Data is Valid}
 \usage{
-test_data_dwc(data)
+test_data_dwc(data, column_field = "fieldname",
+  column_stand = "standard")
 }
 \arguments{
 \item{data}{a data.frame with dictionary data}
+
+\item{column_field}{a character string that specifies name of the column
+that contains field information}
+
+\item{column_stand}{a character string that specifies name of the column
+that contains standard information}
 }
 \value{
 error or nothing
@@ -16,7 +23,9 @@ error or nothing
 Test If Provided Dictionary Data is Valid
 }
 \seealso{
-Other test functions: \code{\link{test_data_renamed}},
+Other test functions: \code{\link{test_cloud}},
+  \code{\link{test_columns_cloud}},
+  \code{\link{test_data_renamed}},
   \code{\link{test_data_user}}
 }
 \concept{test functions}

@@ -11,15 +11,19 @@
   column_field = "fieldname", column_stand = "standard")
 }
 \arguments{
-\item{path_remote}{Path to remote repository (Kurator in Github).}
+\item{path_remote}{a character string that specifies path to remote
+repository (Kurator in Github)}
 
-\item{path_github}{Path within given repository.}
+\item{path_github}{a character string that specifies path
+within given repository}
 
-\item{path_file}{Name of a file.}
+\item{path_file}{a character string that specifies name of a dictionary file}
 
-\item{column_field}{Name of the column that contains field information.}
+\item{column_field}{a character string that specifies name of the column
+that contains field information}
 
-\item{column_stand}{Name of the column that contains standard information.}
+\item{column_stand}{a character string that specifies name of the column
+that contains standard information}
 }
 \value{
 data.frame of Darwin Cloud data.
@@ -31,6 +35,7 @@ renames them so they could be used in `shiny` app.
 }
 \examples{
 download_cloud_data()
+
 }
 \seealso{
 Other dictionary functions: \code{\link{clean_dwc}},

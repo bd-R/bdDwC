@@ -4,10 +4,16 @@
 \alias{clean_dwc}
 \title{Clean Dictionary Data}
 \usage{
-clean_dwc(data)
+clean_dwc(data, column_field = "fieldname", column_stand = "standard")
 }
 \arguments{
 \item{data}{a data.frame with dictionary data}
+
+\item{column_field}{a character string that specifies name of the column
+that contains field information}
+
+\item{column_stand}{a character string that specifies name of the column
+that contains standard information}
 }
 \value{
 a data.frame of cleaned dictionary data

@@ -208,7 +208,9 @@ link_old_new <- function(data, linker = "->") {
   if (!is.character(linker)) {
     stop("Linker should be a character string")
   }
-  result <- apply(data, 1, function(x) {paste(x[1], linker, "\n", x[2])})
+  result <- apply(data, 1, function(x) {
+    paste(x[1], linker, "\n", x[2])
+  })
   result <- as.character(result)
   return(result)
 }

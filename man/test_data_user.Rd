@@ -16,7 +16,9 @@ error or nothing
 Test If Provided User Data is Valid
 }
 \seealso{
-Other test functions: \code{\link{test_data_dwc}},
+Other test functions: \code{\link{test_cloud}},
+  \code{\link{test_columns_cloud}},
+  \code{\link{test_data_dwc}},
   \code{\link{test_data_renamed}}
 }
 \concept{test functions}
