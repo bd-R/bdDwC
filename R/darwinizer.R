@@ -202,13 +202,13 @@ rename_user_data <- function(data_user = NULL, data_renamed = NULL) {
 #' 
 #' @keywords internal
 #'
-link_old_new <- function(data, linker = " ->\n") {
+link_old_new <- function(data, linker = "->") {
   # Test if dictionary data is good
   test_data_renamed(data)
   if (!is.character(linker)) {
     stop("Linker should be a character string")
   }
-  result <- apply(data, 1, function(x) {paste0(x[1], linker, x[2])})
+  result <- apply(data, 1, function(x) {paste(x[1], linker, "\n", x[2])})
   result <- as.character(result)
   if (nrow(data) != length(result)) {
     stop("Something went wrong in linking process (lengths don't match)")
