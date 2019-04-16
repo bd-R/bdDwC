@@ -68,13 +68,16 @@ test_that("Linking names", {
   expect_error(bdDwC:::link_old_new(mtcars))
   expect_error(bdDwC:::link_old_new(data.frame()))
   expect_error(bdDwC:::link_old_new(matrix(1:10)))
-
+  expect_error(bdDwC:::link_old_new(matrix(1:10)))
   # Expect correct input/output
   input <- darwinize_names(
     data_user = bdDwC:::data_reptiles,
     data_dwc = bdDwC:::data_darwin_cloud$data
   )
   expect_equal(length(bdDwC:::link_old_new(input)), nrow(input))
+  # Test wrong linker
+  expect_erroe(bdDwC:::link_old_new(input, 0))
+  expect_erroe(bdDwC:::link_old_new(input, NA))
 })
 
 
