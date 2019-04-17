@@ -2,7 +2,7 @@
 #'
 #' `run_dwc` is a function that starts bdverse Darwin Cloud cleaning `shiny` app.
 #'
-#' #' @param path_shiny a character string that specifies path within bdDwC
+#' @param path_shiny a character string that specifies path within bdDwC
 #' package to shiny app
 #' 
 #' @return `shiny::runApp()` result within browser.

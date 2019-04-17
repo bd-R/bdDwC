@@ -6,13 +6,13 @@
 \usage{
 run_dwc(path_shiny = "shiny")
 }
+\arguments{
+\item{path_shiny}{a character string that specifies path within bdDwC
+package to shiny app}
+}
 \value{
 `shiny::runApp()` result within browser.
 }
 \description{
 `run_dwc` is a function that starts bdverse Darwin Cloud cleaning `shiny` app.
-}
-\details{
-#' @param path_shiny a character string that specifies path within bdDwC
-package to shiny app
 }
