@@ -89,6 +89,7 @@ test_that("Download Cloud Data", {
   expect_gt(nrow(foo), 100)
   expect_equal(colnames(foo), c("fieldname", "standard"))
   expect_true(any(grepl("coordinateUncertaintyInMeters", foo$standard)))
+  expect_equal(unique(apply(foo, 2, class)), "character")
   # Test for wrong path to Cloud Data
   expect_error(download_cloud_data(1, 2, 3, 4))
   expect_warning(download_cloud_data("https://"))
@@ -146,16 +147,4 @@ test_that("Download Darwin Core Info", {
   expect_equal(class(foo$name), "character")
   expect_gt(length(foo$name), 10)
   expect_equal(length(unique(foo$definition)), 1)
-})
-
-context("Helper functions")
-
-test_that("Download Darwin cloud", {
-  result <- download_cloud_data()
-  # We should have only two columns
-  expect_equal(ncol(result), 2)
-  # Number of records
-  expect_gt(nrow(result), 10)
-  # Columns should be character
-  expect_equal(unique(apply(download_cloud_data(), 2, class)), "character")
 })
