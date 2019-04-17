@@ -4,7 +4,7 @@
 \alias{test_data_renamed}
 \title{Test If Provided Renaming Data is Valid}
 \usage{
-test_data_renamed(data)
+test_data_renamed(data = NULL)
 }
 \arguments{
 \item{data}{a data.frame with renaming data}

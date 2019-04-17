@@ -4,7 +4,7 @@
 \alias{test_data_user}
 \title{Test If Provided User Data is Valid}
 \usage{
-test_data_user(data)
+test_data_user(data = NULL)
 }
 \arguments{
 \item{data}{a data.frame with user data}

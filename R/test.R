@@ -8,7 +8,7 @@
 #' 
 #' @keywords internal
 #' 
-test_data_user <- function(data) {
+test_data_user <- function(data = NULL) {
   if (is.null(data)) {
     stop("Specify data_user")
   } else if (class(data) != "data.frame") {
@@ -17,7 +17,7 @@ test_data_user <- function(data) {
     stop("data_user should contain at least one column and one row")
   } else if (length(colnames(data)) == 0) {
     stop("data_user dataset contains no names (nothing to Darwinize)")
-  } else if (any(duplicated(data))) {
+  } else if (any(duplicated(colnames(data)))) {
     warning("Some of the names in data_user are duplicated")
   }
 }
@@ -37,7 +37,7 @@ test_data_user <- function(data) {
 #' @keywords internal
 #' 
 test_data_dwc <- function(
-  data,
+  data = NULL,
   column_field = "fieldname",
   column_stand = "standard") {
   if (is.null(data)) {
@@ -65,7 +65,7 @@ test_data_dwc <- function(
 #' 
 #' @keywords internal
 #' 
-test_data_renamed <- function(data) {
+test_data_renamed <- function(data = NULL) {
   if (is.null(data)) {
     stop("Specify data_renamed")
   } else if (class(data) != "data.frame") {
@@ -93,7 +93,7 @@ test_data_renamed <- function(data) {
 #' 
 #' @keywords internal
 #' 
-test_cloud <- function(string) {
+test_cloud <- function(string = NULL) {
   if (is.null(string)) {
     stop("Specify correct cloud path/columns")
   } else if (!is.character(string)) {
@@ -113,10 +113,12 @@ test_cloud <- function(string) {
 #' 
 #' @keywords internal
 #' 
-test_columns_cloud <- function(strings) {
+test_columns_cloud <- function(strings = NULL) {
   # Test if there are really two strings
   if (length(strings) != 2) {
     stop("There should be two cloud columns provided")
+  } else if (unique(sapply(strings, class)) != "character") {
+    stop("Provided strings should be character class")
   } else if (strings[1] == strings[2]) {
     stop("Cloud data column names should be different")
   }

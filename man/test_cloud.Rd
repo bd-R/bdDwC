@@ -4,7 +4,7 @@
 \alias{test_cloud}
 \title{Test If Provided Path to Cloud Data is Valid}
 \usage{
-test_cloud(string)
+test_cloud(string = NULL)
 }
 \arguments{
 \item{string}{a character string with path}

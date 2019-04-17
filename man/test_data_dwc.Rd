@@ -4,7 +4,7 @@
 \alias{test_data_dwc}
 \title{Test If Provided Dictionary Data is Valid}
 \usage{
-test_data_dwc(data, column_field = "fieldname",
+test_data_dwc(data = NULL, column_field = "fieldname",
   column_stand = "standard")
 }
 \arguments{

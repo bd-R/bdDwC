@@ -4,7 +4,7 @@
 \alias{test_columns_cloud}
 \title{Test If Provided Columns of Cloud Data are Valid}
 \usage{
-test_columns_cloud(strings)
+test_columns_cloud(strings = NULL)
 }
 \arguments{
 \item{string}{a vector that containts two character strings}
