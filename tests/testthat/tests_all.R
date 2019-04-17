@@ -1,4 +1,5 @@
 context("Darwinizer functions")
+
 test_that("Darwinizer", {
   # With given Darwin Cloud version
   # Sample data should return specific result
@@ -39,7 +40,6 @@ test_that("Darwinizer", {
   # Number of columns
   expect_equal(ncol(result), 3)
 
-
   # Test no lower case matches
   result <- darwinize_names(
     data_user = data.frame(year = 1, day = 1),
@@ -79,8 +79,33 @@ test_that("Linking names", {
   expect_error(bdDwC:::link_old_new(input, NA))
 })
 
+context("Dictionary functions")
+
+test_that("Download Cloud Data", {
+  # Test for wrong path to Cloud Data
+  expect_error(download_cloud_data(1, 2, 3, 4))
+  expect_warning(download_cloud_data("https://"))
+  expect_silent(download_cloud_data())
+  # Test for wrong columns
+  expect_silent(download_cloud_data(
+    column_field = "fieldname", column_stand = "standard"
+  ))
+  expect_error(download_cloud_data(
+    column_field = "fieldname", column_stand = "fieldname"
+  ))
+  expect_error(download_cloud_data(
+    column_field = "fieldname", column_stand = c("fieldname", "fieldname")
+  ))
+  expect_error(download_cloud_data(
+    column_field = "fieldname", column_stand = 1
+  ))
+  expect_error(download_cloud_data(
+    column_field = "fieldname", column_stand = "A"
+  ))
+})
 
 context("Helper functions")
+
 test_that("Download Darwin cloud", {
   result <- download_cloud_data()
   # We should have only two columns

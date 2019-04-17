@@ -55,7 +55,7 @@ download_cloud_data <- function(
   if (is.null(data)) {
     warning(
       "Cloud data wasn't downloaded, ",
-      "probably due to the internet connection"
+      "probably due to the wrong path or internet connection."
     )
     return(NULL)
   }
