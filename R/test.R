@@ -70,10 +70,10 @@ test_data_renamed <- function(data = NULL) {
     stop("Specify data_renamed")
   } else if (class(data) != "data.frame") {
     stop("data_renamed should be a data.frame")
-  } else if (ncol(data) < 2) {
-    stop("data_renamed should contain at least three colums")
   } else if (nrow(data) == 0) {
     stop("data_renamed should contain at least one row")
+  } else if (ncol(data) < 2) {
+    stop("data_renamed should contain at least two colums")
   } else if (!all(c("name_old", "name_new") %in% colnames(data))) {
     stop("Renaming data should contain name_new and name_old columns")
   } else if (sum(colnames(data) %in% "name_new") > 1) {
