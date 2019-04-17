@@ -105,6 +105,10 @@ get_darwin_core_info <- function(
   data <- tryCatch({
     readLines(path_darwin_cloud, warn = FALSE)
   }, error = function(cond) {
+    warning(
+      "Darwin core data wasn't downloaded, ",
+      "probably due to the wrong path or internet connection."
+    )
     return(NA)
   })
 
