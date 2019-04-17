@@ -32,6 +32,6 @@ run_dwc <- function(path_shiny = "shiny") {
   } else if (!interactive()) {
     stop("This shiny session is not interactive, can't run shiny")
   } else {
-    return(shiny::runApp(path_app))
+    return(shiny::runApp(path_app)) # nocov
   }
 }
