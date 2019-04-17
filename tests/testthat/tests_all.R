@@ -148,3 +148,12 @@ test_that("Download Darwin Core Info", {
   expect_gt(length(foo$name), 10)
   expect_equal(length(unique(foo$definition)), 1)
 })
+
+context("Utils")
+
+test_that("Launch Shiny App", {
+  expect_error(run_dwc(1))
+  expect_error(run_dwc(""))
+  expect_error(run_dwc(c("shiny", "bdDwC")))
+  expect_error(run_dwc("bdDwC"))
+})
