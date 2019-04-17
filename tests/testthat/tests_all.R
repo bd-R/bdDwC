@@ -156,4 +156,6 @@ test_that("Launch Shiny App", {
   expect_error(run_dwc(""))
   expect_error(run_dwc(c("shiny", "bdDwC")))
   expect_error(run_dwc("bdDwC"))
+  # Should work in interactive
+  expect_error(run_dwc())
 })
