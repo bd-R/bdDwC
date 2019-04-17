@@ -68,6 +68,44 @@ download_cloud_data <- function(
   return(result)
 }
 
+#' Clean Dictionary Data
+#'
+#' Clean dictionary from unnecessary or empty fields
+#'
+#' @param data a data.frame with dictionary data
+#' @param column_field a character string that specifies name of the column
+#' that contains field information
+#' @param column_stand a character string that specifies name of the column
+#' that contains standard information
+#'
+#' @return a data.frame of cleaned dictionary data
+#'
+#' @family dictionary functions
+#' 
+#' @keywords internal
+#' 
+clean_dwc <- function(
+  data,
+  column_field = "fieldname",
+  column_stand = "standard") {
+
+  # Subset dictionary data only for needed columns
+  data <- data[, colnames(data) %in% c(column_field, column_stand)]
+  if (ncol(data) != 2) {
+    stop(
+      "Something is wrong with provided dictionary, ",
+      "please check column names"
+    )
+  }
+  # Filter out missing fields in the reference dictionary
+  row_idx <- rowSums(apply(data, 2, function(x) x != "" & !is.na(x))) == 2
+  data <- data[row_idx, ]
+  if (nrow(data) == 0) {
+    stop("Dictionary data contained only missing fields")
+  }
+  return(data)
+}
+
 #' Retrieve Information about Darwin Core Terms
 #'
 #' `get_darwin_core_info()` is a function (not exported) to download
@@ -137,42 +175,4 @@ get_darwin_core_info <- function(
     stringsAsFactors = FALSE
   )
   return(unique(result))
-}
-
-#' Clean Dictionary Data
-#'
-#' Clean dictionary from unnecessary or empty fields
-#'
-#' @param data a data.frame with dictionary data
-#' @param column_field a character string that specifies name of the column
-#' that contains field information
-#' @param column_stand a character string that specifies name of the column
-#' that contains standard information
-#'
-#' @return a data.frame of cleaned dictionary data
-#'
-#' @family dictionary functions
-#' 
-#' @keywords internal
-#' 
-clean_dwc <- function(
-  data,
-  column_field = "fieldname",
-  column_stand = "standard") {
-
-  # Subset dictionary data only for needed columns
-  data <- data[, colnames(data) %in% c(column_field, column_stand)]
-  if (ncol(data) != 2) {
-    warning(
-      "Something is wrong with provided dictionary, ",
-      "please check column names"
-    )
-  }
-  # Filter out missing fields in the reference dictionary
-  row_idx <- rowSums(apply(data, 2, function(x) x != "" & !is.na(x))) == 2
-  data <- data[row_idx, ]
-  if (nrow(data) == 0) {
-    stop("Dictionary data contained only missing fields")
-  }
-  return(data)
 }

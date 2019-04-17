@@ -110,6 +110,22 @@ test_that("Download Cloud Data", {
   ))
 })
 
+test_that("Clean Cloud Data", {
+  # Test if works
+  expect_silent(clean_dwc(data_darwin_cloud$data))
+  foo <- clean_dwc(data_darwin_cloud$data)
+  expect_equal(ncol(foo), 2)
+  expect_equal(colnames(foo), c("fieldname", "standard"))
+  expect_lte(nrow(foo), nrow(data_darwin_cloud$data))
+  # Test for wrong columns
+  expect_error(clean_dwc(mtcars))
+  expect_error(clean_dwc(data_darwin_cloud$data, "a"))
+  # Test for wrong data
+  expect_error(
+    clean_dwc(data.frame(fieldname = c(NA, NA), standard = c(NA, NA)))
+  )
+})
+
 test_that("Download Darwin Core Info", {
   # Test if works
   expect_silent(get_darwin_core_info())
