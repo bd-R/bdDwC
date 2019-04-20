@@ -18,7 +18,6 @@
 #'
 "data_darwin_core_info"
 
-
 #' Indian Reptiles
 #'
 #' Dataset that contains subsample of Indian reptile observations

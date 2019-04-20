@@ -18,9 +18,8 @@
 #'
 #' @examples
 #' download_cloud_data()
-#' 
 #' @importFrom data.table fread
-#' 
+#'
 #' @family dictionary functions
 #'
 #' @export
@@ -48,7 +47,8 @@ download_cloud_data <- function(
   data <- tryCatch({
     data.table::fread(
       path_cloud,
-      sep = "\t", showProgress = FALSE, data.table = FALSE)
+      sep = "\t", showProgress = FALSE, data.table = FALSE
+    )
   }, error = function(cond) {
     return(NULL)
   })
@@ -81,11 +81,11 @@ download_cloud_data <- function(
 #' @return a data.frame of cleaned dictionary data
 #'
 #' @family dictionary functions
-#' 
+#'
 #' @keywords internal
-#' 
+#'
 clean_dwc <- function(
-  data,
+  data = NULL,
   column_field = "fieldname",
   column_stand = "standard") {
 
@@ -123,11 +123,11 @@ clean_dwc <- function(
 #'
 #' @return a data.frame that contains name and definition for each available
 #' Darwin Cloud term
-#' 
+#'
 #' @family dictionary functions
 #'
 #' @keywords internal
-#' 
+#'
 get_darwin_core_info <- function(
   path_darwin_cloud = "http://tdwg.github.io/dwc/terms/",
   regex_term = "table-secondary",

@@ -166,7 +166,9 @@ test_that("User Data", {
   expect_error(test_data_user())
   expect_error(test_data_user(matrix()))
   expect_error(test_data_user(data.frame()))
-  foo <- data.frame(1); names(foo) <- NULL; expect_error(test_data_user(foo))
+  foo <- data.frame(1)
+  names(foo) <- NULL
+  expect_error(test_data_user(foo))
   expect_warning(test_data_user(data.frame(a = 1, a = 2, check.names = FALSE)))
   expect_silent(mtcars)
 })

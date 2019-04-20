@@ -4,7 +4,8 @@
 \alias{clean_dwc}
 \title{Clean Dictionary Data}
 \usage{
-clean_dwc(data, column_field = "fieldname", column_stand = "standard")
+clean_dwc(data = NULL, column_field = "fieldname",
+  column_stand = "standard")
 }
 \arguments{
 \item{data}{a data.frame with dictionary data}

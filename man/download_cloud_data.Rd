@@ -35,7 +35,6 @@ renames them so they could be used in `shiny` app.
 }
 \examples{
 download_cloud_data()
-
 }
 \seealso{
 Other dictionary functions: \code{\link{clean_dwc}},

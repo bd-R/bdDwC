@@ -1,13 +1,13 @@
 #' Test If Provided User Data is Valid
 #'
 #' @param data a data.frame with user data
-#' 
+#'
 #' @return error or nothing
-#' 
+#'
 #' @family test functions
-#' 
+#'
 #' @keywords internal
-#' 
+#'
 test_data_user <- function(data = NULL) {
   if (is.null(data)) {
     stop("Specify data_user")
@@ -29,17 +29,17 @@ test_data_user <- function(data = NULL) {
 #' that contains field information
 #' @param column_stand a character string that specifies name of the column
 #' that contains standard information
-#' 
+#'
 #' @return error or nothing
-#' 
+#'
 #' @family test functions
-#' 
+#'
 #' @keywords internal
-#' 
+#'
 test_data_dwc <- function(
-  data = NULL,
-  column_field = "fieldname",
-  column_stand = "standard") {
+                          data = NULL,
+                          column_field = "fieldname",
+                          column_stand = "standard") {
   if (is.null(data)) {
     stop("Specify data_dwc")
   } else if (class(data) != "data.frame") {
@@ -58,13 +58,13 @@ test_data_dwc <- function(
 #' Test If Provided Renaming Data is Valid
 #'
 #' @param data a data.frame with renaming data
-#' 
+#'
 #' @return error or nothing
-#' 
+#'
 #' @family test functions
-#' 
+#'
 #' @keywords internal
-#' 
+#'
 test_data_renamed <- function(data = NULL) {
   if (is.null(data)) {
     stop("Specify data_renamed")
@@ -86,13 +86,13 @@ test_data_renamed <- function(data = NULL) {
 #' Test If Provided Path to Cloud Data is Valid
 #'
 #' @param string a character string with path
-#' 
+#'
 #' @return error or nothing
-#' 
+#'
 #' @family test functions
-#' 
+#'
 #' @keywords internal
-#' 
+#'
 test_cloud <- function(string = NULL) {
   if (is.null(string)) {
     stop("Specify correct cloud path/columns")
@@ -106,13 +106,13 @@ test_cloud <- function(string = NULL) {
 #' Test If Provided Columns of Cloud Data are Valid
 #'
 #' @param string a vector that containts two character strings
-#' 
+#'
 #' @return error or nothing
-#' 
+#'
 #' @family test functions
-#' 
+#'
 #' @keywords internal
-#' 
+#'
 test_columns_cloud <- function(strings = NULL) {
   # Test if there are really two strings
   if (length(strings) != 2) {

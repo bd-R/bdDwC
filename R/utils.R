@@ -4,7 +4,7 @@
 #'
 #' @param path_shiny a character string that specifies path within bdDwC
 #' package to shiny app
-#' 
+#'
 #' @return `shiny::runApp()` result within browser.
 #'
 #' @import shinydashboard
@@ -21,8 +21,8 @@
 run_dwc <- function(path_shiny = "shiny") {
   if (
     !is.character(path_shiny) |
-    nchar(path_shiny) < 1 |
-    length(path_shiny) != 1
+      nchar(path_shiny) < 1 |
+      length(path_shiny) != 1
   ) {
     stop("Specify correct path to shiny app (e.g. \"shiny\")")
   }

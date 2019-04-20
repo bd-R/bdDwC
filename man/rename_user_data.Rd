@@ -26,7 +26,6 @@ result <- darwinize_names(
   data_dwc = bdDwC:::data_darwin_cloud$data
 )
 rename_user_data(bdDwC:::data_reptiles, result)
-
 }
 \seealso{
 Other darwinizer functions: \code{\link{darwinize_names}},

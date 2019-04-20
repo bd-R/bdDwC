@@ -16,16 +16,15 @@
 #'   data_user = bdDwC:::data_reptiles,
 #'   data_dwc = bdDwC:::data_darwin_cloud$data
 #' )
-#' 
 #' @family darwinizer functions
-#' 
+#'
 #' @export
 #'
 darwinize_names <- function(data_user = NULL, data_dwc = NULL) {
 
-  #~~~~~~~~~~~~~~~~~~~~~
+  # ~~~~~~~~~~~~~~~~~~~~~
   # Data preparation
-  #~~~~~~~~~~~~~~~~~~~~~
+  # ~~~~~~~~~~~~~~~~~~~~~
 
   # Test if user data is good
   test_data_user(data_user)
@@ -46,9 +45,9 @@ darwinize_names <- function(data_user = NULL, data_dwc = NULL) {
   # Create object to store final result
   result <- list()
 
-  #~~~~~~~~~~~~~~~~~~~~~
+  # ~~~~~~~~~~~~~~~~~~~~~
   # Identical matching
-  #~~~~~~~~~~~~~~~~~~~~~
+  # ~~~~~~~~~~~~~~~~~~~~~
 
   # First Darwinization: Find identical matches
   # Given that user fieldname matches Darwin standard name
@@ -74,9 +73,9 @@ darwinize_names <- function(data_user = NULL, data_dwc = NULL) {
     return(result[["identical_clean"]])
   }
 
-  #~~~~~~~~~~~~~~~~~~~~~
+  # ~~~~~~~~~~~~~~~~~~~~~
   # Lowercase matching
-  #~~~~~~~~~~~~~~~~~~~~~
+  # ~~~~~~~~~~~~~~~~~~~~~
 
   # Subset data for further filtering
   # These user columns weren't matched
@@ -114,9 +113,9 @@ darwinize_names <- function(data_user = NULL, data_dwc = NULL) {
     result[["lower_clean"]] <- data.frame()
   }
 
-  #~~~~~~~~~~~~~~~~~~~~~
+  # ~~~~~~~~~~~~~~~~~~~~~
   # Output
-  #~~~~~~~~~~~~~~~~~~~~~
+  # ~~~~~~~~~~~~~~~~~~~~~
 
   result[["final"]] <- rbind(
     result[["lower_clean"]],
@@ -146,25 +145,24 @@ darwinize_names <- function(data_user = NULL, data_dwc = NULL) {
 #'   data_dwc = bdDwC:::data_darwin_cloud$data
 #' )
 #' rename_user_data(bdDwC:::data_reptiles, result)
-#' 
 #' @family darwinizer functions
-#' 
+#'
 #' @export
 #'
 rename_user_data <- function(data_user = NULL, data_renamed = NULL) {
 
-  #~~~~~~~~~~~~~~~~~~~~~
+  # ~~~~~~~~~~~~~~~~~~~~~
   # Data preparation
-  #~~~~~~~~~~~~~~~~~~~~~
+  # ~~~~~~~~~~~~~~~~~~~~~
 
   # Test if user data is good
   test_data_user(data_user)
   # Test if dictionary data is good
   test_data_renamed(data_renamed)
 
-  #~~~~~~~~~~~~~~~~~~~~~
+  # ~~~~~~~~~~~~~~~~~~~~~
   # Renaming
-  #~~~~~~~~~~~~~~~~~~~~~
+  # ~~~~~~~~~~~~~~~~~~~~~
 
   # Extract user names (we don't need all data)
   names_user <- data.frame(
@@ -197,12 +195,12 @@ rename_user_data <- function(data_user = NULL, data_renamed = NULL) {
 #' to connect old and new name
 #'
 #' @return a data.frame of darwinized user names
-#' 
+#'
 #' @family darwinizer functions
-#' 
+#'
 #' @keywords internal
 #'
-link_old_new <- function(data, linker = "->") {
+link_old_new <- function(data = NULL, linker = "->") {
   # Test if dictionary data is good
   test_data_renamed(data)
   if (!is.character(linker)) {
