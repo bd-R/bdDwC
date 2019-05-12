@@ -150,7 +150,7 @@ shinydashboard::dashboardPage(
           shiny::uiOutput("user_dic_text"),
           shiny::splitLayout(
             shiny::uiOutput("names_user_field"),
-            shiny::uiOutput("names_user_ftandard"),
+            shiny::uiOutput("names_user_standard"),
             cellWidths = 200,
             cellArgs = list(style = "padding: 6px")
           )

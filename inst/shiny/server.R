@@ -1,4 +1,3 @@
-# options
 options(
   # let bigget input files
   shiny.maxRequestSize = 50 * 1024 ^ 2,
@@ -13,42 +12,37 @@ shiny::shinyServer(function(input, output, session) {
   # Automatically stop a Shiny app when closing the browser tab
   session$onSessionEnded(shiny::stopApp)
 
+  output$dic_info <- bdDwC:::shiny_ui_dictionary(
+    input$path_input_dictionary$name,
+    rv$info_dc_date
+  )
+
 
   # --------------------------
-  # MODAL
+  # MODAL DIALOGS
   # --------------------------
-
-  shiny::showModal(shiny::modalDialog(
-    title = shiny::h3("Welcome to Darwinizer!"),
-    shiny::p("Darwinize Your Data"),
-    shiny::img(src = "bdverse.png", align = "center", width = "570"),
-    shiny::helpText(
-      "GPL-3 License ©Tomer Gueta, Vijay Barve, Povilas Gibas,
-       Thiloshon Nagarajah, Ashwin Agrawal and Carmel Yohay (2019).",
-       shiny::br(),
-       "bdDwC. R package version 0.1.22"
-    ),
-    shiny::helpText(
-      "Contribute: ",
-      shiny::a("https://github.com/bd-R/bdDwC",
-               href = "https://github.com/bd-R/bdDwC"),
-      shiny::br(), "Join: ",
-      shiny::a("https://bd-r-group.slack.com",
-               href = "https://bd-r-group.slack.com")
-    ),
-    size = "m",
-    easyClose = TRUE
-  ))
+  # Welcoming text
+  bdDwC:::shiny_server_modal_welcome()
+  # Citation
+  shiny::observeEvent(input$citation, {
+    bdDwC:::shiny_server_modal_citation()
+  })
+  # Information about Darwin Cloud
+  shiny::observeEvent(input$pop_dc, {
+    bdDwC:::shiny_server_modal_cloud()
+  })
+  # Information about User dictionary
+  shiny::observeEvent(input$pop_dic, {
+    bdDwC:::shiny_server_modal_dictionary()
+  })
 
 
   # --------------------------
   # REACTIVE VALUES
   # --------------------------
-  # Showing all reactive values that are used in app
-
+  # All reactive values that we use
   rv <- shiny::reactiveValues(
     # User data used in Darwinizer
-    # Uploaded by user (csv)
     data_user = data.frame(),
     # Darwinized data (created with darwinize_names)
     data_darwinized = data.frame(),
@@ -64,13 +58,9 @@ shiny::shinyServer(function(input, output, session) {
     names_standard = c(),
     # Set of Darwin Cloud names after renaming
     names_standard_after = c(),
-    # ------
-    # DC DICTIONARY
-    # ------
+    # Dictionary version (date)
     info_dc_date = bdDwC:::data_darwin_cloud$date,
-    # USER DICTIONARY
     # User original dictionary
-    # Uploaded by user (csv)
     dic_user_raw = data.frame(),
     # Names in user original dictionary used to create radio buttons
     names_user_raw = c(),
@@ -79,14 +69,16 @@ shiny::shinyServer(function(input, output, session) {
     dic_user = data.frame()
   )
 
+
   # --------------------------
   # DISABLE BUTTONS
   # --------------------------
 
-  # # Disable darwinizer tab
-  shinyjs::addCssClass(selector = "a[data-value='darwinizer']",
-                       class = "inactiveLink")
-
+  # Disable darwinizer tab
+  shinyjs::addCssClass(
+    selector = "a[data-value='darwinizer']",
+    class = "inactiveLink"
+  )
   # Disable Darwinize button if no user data uploaded
   shiny::observe({
     if (nrow(rv$data_user) == 0) {
@@ -97,8 +89,10 @@ shiny::shinyServer(function(input, output, session) {
   })
   # Disable all other buttons if not submitted to Darwinizer
   shiny::observeEvent(input$submit_to_darwinizer, {
-    shinyjs::removeCssClass(selector = "a[data-value='darwinizer']",
-                            class = "inactiveLink")
+    shinyjs::removeCssClass(
+      selector = "a[data-value='darwinizer']",
+      class = "inactiveLink"
+    )
     shinyjs::enable("names_rename")
     shinyjs::enable("names_remove")
     shinyjs::enable("names_clean")
@@ -132,103 +126,13 @@ shiny::shinyServer(function(input, output, session) {
 
   # Upload local file
   shiny::observeEvent(input$path_input_data, {
-    shiny::showNotification(
-      "Started uploading data",
-      closeButton = FALSE,
-      type = "message"
-    )
-
-    if (is.null(input$path_input_data)) {
-      return("No data to view")
-    }
-    if (grepl("zip", tolower(input$path_input_data$type))) {
-      message("Reading DWCA ZIP...")
-      rv$data_user <- finch::dwca_read(input$path_input_data$datapath,
-                                       read = TRUE)$data[[1]]
-    } else {
-      rv$data_user <- data.table::fread(input$path_input_data$datapath,
-                                        data.table = FALSE)
-    }
-    if (nrow(rv$data_user) > 0) {
-      shiny::showNotification(
-        "Data successfully uploaded",
-        closeButton = FALSE,
-        type = "message"
-      )
-    }
+    rv$data_user <- bdDwC:::shiny_server_upload_local(input$path_input_data)
     rv$names_user <- rv$names_user_after <- colnames(rv$data_user)
-    rv$data_user <- as.data.frame(rv$data_user)
   })
-
   # Download from database
   shiny::observeEvent(input$query_database, {
-
-    # Defensive tests
-    # Check if user entered valid value
-    if (trimws(input$scientific_name) == "") {
-
-      foo <- paste("Please enter a valid scientific name")
-      shiny::showNotification(foo, type = "error")
-
-    } else if (input$record_size <= 0) {
-
-      foo <- paste("Please enter a valid number of records")
-      shiny::showNotification(foo, type = "error")
-
-    } else {
-
-      shiny::showNotification(
-        "Started downloading data",
-        closeButton = FALSE,
-        type = "message"
-      )
-
-      if (input$query_db == "gbif") {
-        rv$data_user <- rgbif::occ_search(
-          scientificName = input$scientific_name,
-          limit = input$record_size,
-          hasCoordinate = switch(input$has_coords,
-                                 "1" = TRUE, "2" = FALSE, "3" = NULL)
-        )$data
-      } else {
-        warnings <- capture.output(
-          data <- spocc::occ(
-            query = input$scientific_name,
-            from = input$query_db,
-            limit = input$record_size,
-            has_coords = switch(input$has_coords,
-                                "1" = TRUE, "2" = FALSE, "3" = NULL)
-          ),
-            type = "message"
-        )
-        if (length(warnings) > 0) {
-          shiny::showNotification(
-            paste(warnings, collapse = " "), duration = 5
-          )
-        }
-        rv$data_user <- data[[input$query_db]]$data[[1]]
-      }
-      if (is.null(rv$data_user)) {
-        rv$data_user <- data.frame()
-        foo <- paste(
-          "There are no entries with",
-          input$scientific_name,
-          "scientific name. Please try another one"
-        )
-        shiny::showNotification(foo, type = "error")
-      } else {
-        if (nrow(rv$data_user) > 0) {
-          shiny::showNotification(
-            "Data successfully downloaded",
-            closeButton = FALSE,
-            type = "message"
-          )
-        }
-      }
-      # Get column names (used for Darwinizer)
-      rv$names_user <- rv$names_user_after <- colnames(rv$data_user)
-      rv$data_user <- as.data.frame(rv$data_user)
-    }
+    rv$data_user <- bdDwC:::shiny_server_upload_database(input)
+    rv$names_user <- rv$names_user_after <- colnames(rv$data_user)
   })
 
 
@@ -238,31 +142,24 @@ shiny::shinyServer(function(input, output, session) {
 
   # Upload user dictionary
   shiny::observeEvent(input$path_input_dictionary, {
-    # Dictionary
-    rv$dic_user_raw <- read.csv(input$path_input_dictionary$datapath)
-    # Columns
+    rv$dic_user_raw <- data.table::fread(
+      input$path_input_dictionary$datapath,
+      data.table = FALSE
+    )
     rv$names_user_raw <- sort(colnames(rv$dic_user_raw))
   })
 
   # Created radiobuttons for users field name column
   output$names_user_field <- shiny::renderUI({
-    # If data is uploaded
     if (nrow(rv$dic_user_raw) == 0) {
-      return(NULL)
+      NULL
     } else {
-      # Main function to create radio buttons
-      res <- shiny::radioButtons("names_user_field", "Field Names",
-                                 rv$names_user_raw, rv$names_user_raw[1])
-      # For each name change ID
-      # We need individual IDs so we can disable them with shinyjs
-      # We need to disable them as same ID can't be field and standard
-      for (i in rv$names_user_raw) {
-        res <- gsub(paste0("<span>", i, "</span>"),
-                    paste0("<span id=\"userField_", i, "\">", i, "</span>"),
-                    res
-        )
-      }
-      shiny::HTML(res)
+      bdDwC:::shiny_ui_dictionary_radiobuttons(
+        rv$names_user_raw,
+        "names_user_field",
+        "Field Names",
+        "userField"
+      )
     }
   })
 
@@ -270,21 +167,14 @@ shiny::shinyServer(function(input, output, session) {
   output$names_user_standard <- shiny::renderUI({
     # If data is uploaded
     if (nrow(rv$dic_user_raw) == 0) {
-      return(NULL)
+      NULL
     } else {
-      # Main function to create radio buttons
-      res <- shiny::radioButtons("names_user_standard", "Standard Names",
-                                 rv$names_user_raw, rv$names_user_raw[2])
-      # For each name change ID
-      # We need individual IDs so we can disable them with shinyjs
-      # We need to disable them as same ID can't be field and standard
-      for (i in rv$names_user_raw) {
-        res <- gsub(paste0("<span>", i, "</span>"),
-                    paste0("<span id=\"userStandard_", i, "\">", i, "</span>"),
-                    res
-        )
-      }
-      shiny::HTML(res)
+      bdDwC:::shiny_ui_dictionary_radiobuttons(
+        rv$names_user_raw,
+        "names_user_standard",
+        "Standard Names",
+        "userStandard"
+      )
     }
   })
 
@@ -326,81 +216,26 @@ shiny::shinyServer(function(input, output, session) {
     rv$info_dc_date <- Sys.Date()
   })
   # Information about dictionaries
-  # This code is in server part because of mix of reactive and html text
-  output$dic_info <- shiny::renderUI({
-    # Is user dictionary uploaded
-    upload_dictionary <- !is.null(input$path_input_dictionary)
-    # Select icon
-    user_dic_icon <- ifelse(upload_dictionary > 0, "check", "unchecked")
-    if (upload_dictionary) {
-      # Get name for user dictionary
-      user_dic_file <- paste0(
-        "(", sub(".csv$", "", basename(input$path_input_dictionary$name)), ")"
-      )
-    } else {
-      user_dic_file <- NULL
-    }
-    res <- paste0(
-      "<b>Used dictionaries:</b>
-      <br/>
-      <i class='glyphicon glyphicon-check fa-1x'></i>
-      Darwin Cloud (version: ", format(rv$info_dc_date, "%d-%B-%Y"), ")
-
-      <button class='btn btn-default action-button' id='pop_dc'
-              style='width: 1px; border-color: #ffffff;
-                     background-color: #ffffff;
-                     font-size:100%' type='button'>
-          <i class='glyphicon glyphicon-question-sign'></i>
-      </button>
-
-      <br/>
-      <i class='glyphicon glyphicon-", user_dic_icon, " fa-1x'></i>
-      Personal Dictionary ", user_dic_file,
-      "<button class='btn btn-default action-button' id='pop_dic'
-              style='width: 1px; border-color: #ffffff;
-                     background-color: #ffffff;
-                     font-size:100%' type='button'>
-          <i class='glyphicon glyphicon-question-sign'></i>
-      </button>"
+  shiny::observeEvent(input$update_darwin_cloud, {
+    output$dic_info <- bdDwC:::shiny_ui_dictionary(
+      input$path_input_dictionary$name,
+      rv$info_dc_date
     )
-    shiny::HTML(res)
   })
-  # Information about Darwin Cloud
-  shiny::observeEvent(input$pop_dc, {
-    shiny::showModal(shiny::modalDialog(
-      title = shiny::h3("Darwin Cloud Data"),
-      tags$p(
-        "bdDwC uses Darwin Core Dictionary (stored on official",
-        tags$a(
-          href = "https://github.com/kurator-org/kurator-validation",
-          "Kurator's repository)."
-        ),
-        shiny::br(),
-        "Update Darwin Core version for your analysis by clicking",
-        tags$b("Update DC"), "button bellow."
-      ),
-      size = "m",
-      easyClose = TRUE
-    ))
-  })
-  # Information about User dictionary
-  shiny::observeEvent(input$pop_dic, {
-    shiny::showModal(shiny::modalDialog(
-      title = shiny::h3("Personal Dictionary File"),
-      tags$p("File with columns fieldname and standard name"),
-      size = "m",
-      easyClose = TRUE
-    ))
+  shiny::observeEvent(input$path_input_dictionary, {
+    output$dic_info <- bdDwC:::shiny_ui_dictionary(
+      input$path_input_dictionary$name,
+      rv$info_dc_date
+    )
   })
   # Text that shows up if user uploaded dictionary
   output$user_dic_text <- shiny::renderUI({
     if (!is.null(input$path_input_dictionary)) {
-        tags$b("Select field and standard names")
+      tags$b("Select field and standard names")
     } else {
-        NULL
+      NULL
     }
   })
-
 
 
   # --------------------------
@@ -417,8 +252,10 @@ shiny::shinyServer(function(input, output, session) {
     # If user has uploaded dictionary
     if (nrow(rv$dic_user_raw) > 0) {
       # Update reactive user dictionary
-      rv$dic_user <- subset(rv$dic_user_raw,
-        select = c(input$names_user_field, input$names_user_standard))
+      rv$dic_user <- subset(
+        rv$dic_user_raw,
+        select = c(input$names_user_field, input$names_user_standard)
+      )
       colnames(rv$dic_user) <- c("fieldname", "standard")
     }
 
@@ -524,7 +361,7 @@ shiny::shinyServer(function(input, output, session) {
   # BUTTONS
   # --------------------------
 
-  # RENAMED
+  # renamed
   # This is very similar what happens with Darwinizer part
   # Should refactor this in the future
   shiny::observeEvent(input$names_rename, {
@@ -549,7 +386,7 @@ shiny::shinyServer(function(input, output, session) {
     ]
   })
 
-  # REMOVE
+  # remove
   shiny::observeEvent(input$names_remove, {
     remove_names <- c()
     if (length(input$names_renamed_manual) > 0) {
@@ -582,7 +419,7 @@ shiny::shinyServer(function(input, output, session) {
     rv$names_user_after <- rv$names_user
   })
 
-  # ROLLBACK
+  # Rollback
   # This is the same as part in Darwinize (should refactor)
   shiny::observeEvent(input$names_rollback, {
     if (nrow(rv$data_darwinized) > 0) {
@@ -597,86 +434,48 @@ shiny::shinyServer(function(input, output, session) {
     }
   })
 
-  # DONWLOAD
-  output$download_data <- shiny::downloadHandler(
-    filename = function() {
-      format(Sys.time(), "darwinizedData_%Y_%b_%d_%X.csv")
-    },
-    content = function(file) {
-      data.table::fwrite(
-        bdDwC::rename_user_data(rv$data_user, rv$data_rename),
-        file
-    )
-    }
+  # download
+  output$download_data <- bdDwC:::shiny_server_download_renamed(
+    rv$data_user,
+    rv$data_rename
   )
 
 
   # --------------------------
-  # VALUE BOXES
+  # CREATE UI
   # --------------------------
 
-  output$vb_all_names <- shinydashboard::renderValueBox({
-    shinydashboard::valueBox(
-      length(rv$names_user), "Names Submitted", color = "light-blue"
-    )
-  })
-  output$vb_dwc_names <- shinydashboard::renderValueBox({
-    foo <- paste0(
+  # Value boxes
+  output$vb_all_names <- bdDwC:::shiny_ui_valuebox(
+    length(rv$names_user), "Names Submitted", "light-blue"
+  )
+  output$vb_dwc_names <- bdDwC:::shiny_ui_valuebox(
+    paste0(
       nrow(rv$data_rename),
       " (", round(nrow(rv$data_rename) * 100 / length(rv$names_user)), "%)"
-    )
-    shinydashboard::valueBox(foo, "Names Darwinized", color = "olive")
-  })
-  output$vb_dwc_ident <- shinydashboard::renderValueBox({
-    shinydashboard::valueBox(
-      sum(rv$data_rename$match_type == "Identical"),
-      "Darwinized: Identical", color = "green")
-  })
-  output$vb_dwc_match <- shinydashboard::renderValueBox({
-    shinydashboard::valueBox(
-      sum(rv$data_rename$match_type == "Darwinized"),
-      "Darwinized: Matched", color = "green")
-  })
-  output$vb_manual <- shinydashboard::renderValueBox({
-    shinydashboard::valueBox(
-      sum(rv$data_rename$match_type == "Manual"),
-      "Darwinized: Manually", color = "green")
-  })
+    ),
+    "Names Darwinized",
+    "olive"
+  )
+  output$vb_dwc_ident <- bdDwC:::shiny_ui_valuebox(
+    sum(rv$data_rename$match_type == "Identical"),
+    "Darwinized: Identical",
+    "green"
+  )
+  output$vb_dwc_match <- bdDwC:::shiny_ui_valuebox(
+    sum(rv$data_rename$match_type == "Darwinized"),
+    "Darwinized: Matched",
+    "green"
+  )
+  output$vb_manual <- bdDwC:::shiny_ui_valuebox(
+    sum(rv$data_rename$match_type == "Manual"),
+    "Darwinized: Manually",
+    "green"
+  )
 
-
-  # --------------------------
-  # DARWIN CORE INFO
-  # --------------------------
-
+  # Darwin core definition
   output$names_standard_hover <- shiny::renderUI({
-    result <- list()
-    # For each name extract Darwin Core information
-    for (i in rv$names_standard_after) {
-      # Extract information
-      info <- subset(bdDwC:::data_darwin_core_info, name == i)$definition
-      if (length(info) == 0) {
-          info <- NULL
-      }
-      # Append information as a tool tip
-      result[[i]] <- shinyBS::bsTooltip(
-        paste0("DWC_", i), info, "right", "hover"
-      )
-    }
-    do.call(shiny::tagList, result)
-  })
-
-
-  # --------------------------
-  # CITATION
-  # --------------------------
-
-  shiny::observeEvent(input$citation, {
-    shiny::showModal(shiny::modalDialog(
-      title = "Cite us",
-      shiny::HTML(paste("bdverse will be published soon!")),
-      easyClose = TRUE
-      )
-    )
+    do.call(shiny::tagList, bdDwC:::shiny_ui_darwin_core_definition())
   })
 
 })
