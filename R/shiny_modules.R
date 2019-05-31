@@ -203,3 +203,48 @@ module_ui_dictionary_radiobuttons_fieldOutput <- function(id) {
     cellArgs = list(style = "padding: 6px")
   )
 }
+
+#' Module to update darwin cloud dictionary
+#' 
+#' @param rv reactive values
+#' 
+#' @family shiny modules
+#'
+#' @keywords shiny modules internal
+#'
+module_ui_dictionary <- function(input, output, server, rv) {
+  output$dic_info <- shiny_ui_dictionary(
+    input$path_input_dictionary$name,
+    rv$info_dc_date
+  )
+  shiny::observeEvent(input$update_darwin_cloud, {
+    # Update DC dictionary
+    rv$data_darwin_cloud <- download_cloud_data()
+    rv$info_dc_date <- Sys.Date()
+    # Information about dictionaries
+    output$dic_info <- shiny_ui_dictionary(
+      input$path_input_dictionary$name,
+      rv$info_dc_date
+    )
+  })
+  return(rv)
+}
+#' UI module for {module_ui_dictionary}
+#'
+#' @family shiny modules
+#'
+#' @keywords shiny modules internal
+#'
+module_ui_dictionaryUI <- function(id) {
+  ns <- shiny::NS(id)
+  shiny::tagList(
+    shiny::uiOutput(ns("dic_info")),
+    shiny::br(),
+    # Darwin Cloud dictionary
+    shiny::tags$b("Update Darwin Cloud dictionary"),
+    shiny::br(),
+    shiny::actionButton(ns("update_darwin_cloud"), "Update DC"),
+    shiny::br(),
+    shiny::br()
+  )
+}

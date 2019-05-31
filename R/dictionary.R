@@ -41,7 +41,6 @@ download_cloud_data <- function(
 
   # Create path to remote file
   path_cloud <- paste0(path_remote, path_github, path_file)
-
   # Read in remote file
   # Catch error if there's no internet connection
   data <- tryCatch({

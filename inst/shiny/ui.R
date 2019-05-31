@@ -76,16 +76,8 @@ shinydashboard::dashboardPage(
           title = "Dictionaries",
           status = "warning",
           width = 5,
-          # Dictionary information render in server
-          # Because of HTML and reactive object mix
-          shiny::uiOutput("dic_info"),
-          shiny::br(),
-          # Darwin Cloud dictionary
-          shiny::tags$b("Update Darwin Cloud dictionary"),
-          shiny::br(),
-          shiny::actionButton("update_darwin_cloud", "Update DC"),
-          shiny::br(),
-          shiny::br(),
+          # Display dictionary information
+          bdDwC:::module_ui_dictionaryUI("user_dictionary"),
           # Upload user dictionary
           bdDwC:::module_server_upload_dictionaryInput("upload_dictionary"),
           # Text that tells to select columns if dictionary added

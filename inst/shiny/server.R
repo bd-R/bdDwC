@@ -154,51 +154,45 @@ shiny::shinyServer(function(input, output, session) {
     "dictionary_names",
     rv
   )
-
+  # NO MODULE >>>>>>>>>>>>>>>>>
   # If button in standard is marked
   shiny::observeEvent(input$names_user_standard, {
     # Which button was marked
     result <- grepl(input$names_user_standard, rv$names_user_raw)
-    # We need double action (PG: I don't know why)
-    # Disable marked button in opposite box
+    # Disable marked button in a opposite box
     shinyjs::disable(selector = paste0(
-      "#names_user_field .radio:nth-child(", which(result), ") label"))
+      "#names_user_field .radio:nth-child(", which(result), ") label"
+    ))
     # Enable all non marked buttons in current box
     shinyjs::enable(selector = paste0(
-      "#names_user_field .radio:nth-child(", which(!result), ") label"))
+      "#names_user_field .radio:nth-child(", which(!result), ") label"
+    ))
   })
   # If button in field is marked
   shiny::observeEvent(input$names_user_field, {
     # Which button was marked
     result <- grepl(input$names_user_field, rv$names_user_raw)
-    # We need double action (PG: I don't know why)
-    # Disable marked button in opposite box
+    # Disable marked button in a opposite box
     shinyjs::disable(selector = paste0(
-      "#names_user_standard .radio:nth-child(", which(result), ") label")
-    )
+      "#names_user_standard .radio:nth-child(", which(result), ") label"
+    ))
     # Enable all non marked buttons in current box
     shinyjs::enable(selector = paste0(
-      "#names_user_standard .radio:nth-child(", which(!result), ") label")
-    )
+      "#names_user_standard .radio:nth-child(", which(!result), ") label"
+    ))
   })
+  # NO MODULE >>>>>>>>>>>>>>>>>
 
 
   # --------------------------
   # UPDATED DC DICTIONARY
   # --------------------------
 
-  # Update DC dictionary
-  shiny::observeEvent(input$update_darwin_cloud, {
-    rv$data_darwin_cloud <- bdDwC::download_cloud_data()
-    rv$info_dc_date <- Sys.Date()
-  })
-  # Information about dictionaries
-  shiny::observeEvent(input$update_darwin_cloud, {
-    output$dic_info <- bdDwC:::shiny_ui_dictionary(
-      input$path_input_dictionary$name,
-      rv$info_dc_date
-    )
-  })
+  callModule(
+    bdDwC:::module_ui_dictionary,
+    "user_dictionary",
+    rv
+  )
   shiny::observeEvent(input$path_input_dictionary, {
     output$dic_info <- bdDwC:::shiny_ui_dictionary(
       input$path_input_dictionary$name,

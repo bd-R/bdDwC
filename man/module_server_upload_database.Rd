@@ -16,8 +16,14 @@ Module to query data from the remote database
 }
 \seealso{
 Other shiny modules: \code{\link{module_server_upload_databaseInput}},
+  \code{\link{module_server_upload_dictionaryInput}},
+  \code{\link{module_server_upload_dictionary}},
   \code{\link{module_server_upload_localInput}},
-  \code{\link{module_server_upload_local}}
+  \code{\link{module_server_upload_local}},
+  \code{\link{module_ui_dictionaryUI}},
+  \code{\link{module_ui_dictionary_radiobuttons_fieldOutput}},
+  \code{\link{module_ui_dictionary_radiobuttons_field}},
+  \code{\link{module_ui_dictionary}}
 }
 \concept{shiny modules}
 \keyword{internal}

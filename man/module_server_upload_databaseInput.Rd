@@ -4,15 +4,28 @@
 \alias{module_server_upload_databaseInput}
 \title{Input module for {module_server_upload_database}}
 \usage{
-module_server_upload_databaseInput(id)
+module_server_upload_databaseInput(id, online_databases = list(`GBIF
+  (Global Biodiversity Information Facility)` = "gbif", `iDigBio
+  (Integrated Digitized Biocollections)` = "idigbio", `EcoEngine (Berkeley
+  Ecoinformatics Engine)` = "ecoengine", `Vertnet (Vertebrate Network)` =
+  "vertnet", `BISON (Biodiversity Information Serving Our Nation)` =
+  "bison", iNaturalist = "inat", `ALA (Atlas of Living Australia)` = "ala",
+  `OBIS (Ocean Biogeographic Information System)` = "obis", AntWeb =
+  "antweb"))
 }
 \description{
 Input module for {module_server_upload_database}
 }
 \seealso{
 Other shiny modules: \code{\link{module_server_upload_database}},
+  \code{\link{module_server_upload_dictionaryInput}},
+  \code{\link{module_server_upload_dictionary}},
   \code{\link{module_server_upload_localInput}},
-  \code{\link{module_server_upload_local}}
+  \code{\link{module_server_upload_local}},
+  \code{\link{module_ui_dictionaryUI}},
+  \code{\link{module_ui_dictionary_radiobuttons_fieldOutput}},
+  \code{\link{module_ui_dictionary_radiobuttons_field}},
+  \code{\link{module_ui_dictionary}}
 }
 \concept{shiny modules}
 \keyword{internal}

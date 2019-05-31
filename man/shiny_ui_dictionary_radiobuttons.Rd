@@ -4,7 +4,8 @@
 \alias{shiny_ui_dictionary_radiobuttons}
 \title{Create radio buttons for user dictionary}
 \usage{
-shiny_ui_dictionary_radiobuttons(names_dic, inputid, label, spanid)
+shiny_ui_dictionary_radiobuttons(names_dic = NULL, inputid, label,
+  spanid, selected)
 }
 \arguments{
 \item{names_dic}{a vector that contains column names of user dictionary}
@@ -14,6 +15,8 @@ shiny_ui_dictionary_radiobuttons(names_dic, inputid, label, spanid)
 \item{label}{value passed as `label` to `shiny::radioButtons`}
 
 \item{spanid}{value used to change span id in shiny::radioButtons}
+
+\item{selected}{selected name in radio buttons}
 }
 \description{
 Create radio buttons for user dictionary
