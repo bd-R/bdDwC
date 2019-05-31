@@ -1,15 +1,3 @@
-online_databases <- list(
-  "GBIF (Global Biodiversity Information Facility)" = "gbif",
-  "iDigBio (Integrated Digitized Biocollections)" = "idigbio",
-  "EcoEngine (Berkeley Ecoinformatics Engine)" = "ecoengine",
-  "Vertnet (Vertebrate Network)" = "vertnet",
-  "BISON (Biodiversity Information Serving Our Nation)" = "bison",
-  "iNaturalist" = "inat",
-  "ALA (Atlas of Living Australia)" = "ala",
-  "OBIS (Ocean Biogeographic Information System)" = "obis",
-  "AntWeb" = "antweb"
-)
-
 shinydashboard::dashboardPage(
 
   # --------------------------
@@ -67,50 +55,17 @@ shinydashboard::dashboardPage(
           # one selection
           shinyBS::bsCollapse(
             multiple = FALSE,
-            open = "From a Local File",
+            open = "Upload Local File",
             # USER FILE
-            shinyBS::bsCollapsePanel("Upload Local File",
-              # shiny::fileInput("path_input_data",
-              #   shiny::h3("CSV / DWCA ZIP file input"),
-              #   FALSE,
-              #   accept = upload_local_file
-              # ),
+            shinyBS::bsCollapsePanel(
+              "Upload Local File",
               bdDwC:::module_server_upload_localInput("input_local"),
               style = "info"
             ),
             # QUERY FROM A DATABASE
             shinyBS::bsCollapsePanel(
               "Query Data From a Database",
-              shiny::textInput(
-                "scientific_name",
-                shiny::h3("Scientific Name:"),
-                "Puma concolor"),
-              shiny::numericInput(
-                "record_size",
-                shiny::h3("Record Size:"),
-                500),
-              shiny::selectInput(
-                "has_coords",
-                shiny::h3("Records Filter:"),
-                list("With Coordinates" = "1",
-                     "Without Coordinates" = "2",
-                     "No Filter" = "3"
-                ),
-                3
-              ),
-              shiny::radioButtons(
-                "query_db",
-                shiny::h3("Online Database:"),
-                online_databases,
-                "gbif"
-              ),
-              shiny::br(),
-              shiny::div(id = "query_database_div",
-                class = "activeButton",
-                shiny::actionButton(
-                  "query_database", "Query Database", shiny::icon("download")
-                )
-              ),
+              bdDwC:::module_server_upload_databaseInput("input_remote"),
               style = "success"
             )
           )

@@ -143,7 +143,11 @@ shiny_server_upload_local <- function(path_input = NULL) {
 
 #' Query data from the remote database
 #'
-#' @param input a list with arguments for quering data from the databse
+#' @param scientific_name species scientific name
+#' @param record_size numeric value (positive integer) of how many records to
+#' get
+#' @param query_db database to use
+#' @param has_coords should records have coordinates
 #' 
 #' @importFrom rgbif occ_search
 #' @importFrom spocc occ
@@ -154,13 +158,18 @@ shiny_server_upload_local <- function(path_input = NULL) {
 #'
 #' @keywords shiny internal
 #'
-shiny_server_upload_database <- function(input = NULL) {
+shiny_server_upload_database <- function(
+  scientific_name,
+  record_size,
+  query_db,
+  has_coords
+) {
   # Check if user entered valid value
-  if (trimws(input$scientific_name) == "") {
+  if (trimws(scientific_name) == "") {
     foo <- paste("Please enter a valid scientific name")
     shiny::showNotification(foo, type = "error")
   }
-  if (input$record_size <= 0) {
+  if (record_size <= 0) {
     foo <- paste("Please enter a valid number of records")
     shiny::showNotification(foo, type = "error")
   }
@@ -169,23 +178,23 @@ shiny_server_upload_database <- function(input = NULL) {
     closeButton = FALSE,
     type = "message"
   )
-  if (input$query_db == "gbif") {
+  if (query_db == "gbif") {
     result <- rgbif::occ_search(
-      scientificName = input$scientific_name,
-      limit = input$record_size,
+      scientificName = scientific_name,
+      limit = record_size,
       hasCoordinate = switch(
-        input$has_coords,
+        has_coords,
         "1" = TRUE, "2" = FALSE, "3" = NULL
       )
     )$data
   } else {
     warnings <- utils::capture.output(
       data <- spocc::occ(
-        query = input$scientific_name,
-        from = input$query_db,
-        limit = input$record_size,
+        query = scientific_name,
+        from = query_db,
+        limit = record_size,
         has_coords = switch(
-          input$has_coords,
+          has_coords,
           "1" = TRUE, "2" = FALSE, "3" = NULL
         )
       ),
@@ -196,13 +205,13 @@ shiny_server_upload_database <- function(input = NULL) {
         paste(warnings, collapse = " "), duration = 5
       )
     }
-    result <- data[[input$query_db]]$data[[1]]
+    result <- data[[query_db]]$data[[1]]
   }
   if (is.null(result)) {
     result <- data.frame()
     foo <- paste(
       "There are no entries with",
-      input$scientific_name,
+      scientific_name,
       "scientific name. Please try another one"
     )
     shiny::showNotification(foo, type = "error")
