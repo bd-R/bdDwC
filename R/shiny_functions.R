@@ -294,6 +294,7 @@ shiny_server_download_renamed <- function(
 #' @param inputid value passed as `inputId` to `shiny::radioButtons`
 #' @param label value passed as `label` to `shiny::radioButtons`
 #' @param spanid value used to change span id in shiny::radioButtons
+#' @param selected selected name in radio buttons
 #' 
 #' @importFrom shiny HTML radioButtons
 #'
@@ -302,13 +303,14 @@ shiny_server_download_renamed <- function(
 #' @keywords shiny internal
 #'
 shiny_ui_dictionary_radiobuttons <- function(
-  names_dic,
+  names_dic = NULL,
   inputid,
   label,
-  spanid
+  spanid,
+  selected
 ) {
   # Main function to create radio buttons
-  result <- shiny::radioButtons(inputid, label, names_dic, names_dic[1])
+  result <- shiny::radioButtons(inputid, label, names_dic, selected)
   # For each name change ID
   # We need individual IDs so we can disable them with shinyjs
   # We need to disable them as same ID can't be field and standard

@@ -152,3 +152,54 @@ module_server_upload_dictionaryInput <- function(id) {
     )
   )
 }
+
+#' Module to create radio buttons for users dictionary
+#' (calls {shiny_ui_dictionary_radiobuttons})
+#' 
+#' @param rv reactive values
+#' 
+#' @family shiny modules
+#'
+#' @keywords shiny modules internal
+#'
+module_ui_dictionary_radiobuttons_field <- function(input, output, server, rv) {
+  output$names_user_field <- shiny::renderUI({
+    if (is.null(rv$names_user_raw)) {
+      return(NULL)
+    }
+    shiny_ui_dictionary_radiobuttons(
+      rv$names_user_raw,
+      "names_user_field",
+      "Field Names",
+      "userField",
+      rv$names_user_raw[1]
+    )
+  })
+  output$names_user_standard <- shiny::renderUI({
+    if (is.null(rv$names_user_raw)) {
+      return(NULL)
+    }
+    shiny_ui_dictionary_radiobuttons(
+      rv$names_user_raw,
+      "names_user_standard",
+      "Standard Names",
+      "userStandard",
+      rv$names_user_raw[2]
+    )
+  })
+}
+#' Output module for {module_ui_dictionary_radiobuttons_field}
+#'
+#' @family shiny modules
+#'
+#' @keywords shiny modules internal
+#'
+module_ui_dictionary_radiobuttons_fieldOutput <- function(id) {
+  ns <- shiny::NS(id)
+  shiny::splitLayout(
+    shiny::uiOutput(ns("names_user_field")),
+    shiny::uiOutput(ns("names_user_standard")),
+    cellWidths = 200,
+    cellArgs = list(style = "padding: 6px")
+  )
+}

@@ -90,11 +90,8 @@ shinydashboard::dashboardPage(
           bdDwC:::module_server_upload_dictionaryInput("upload_dictionary"),
           # Text that tells to select columns if dictionary added
           shiny::uiOutput("user_dic_text"),
-          shiny::splitLayout(
-            shiny::uiOutput("names_user_field"),
-            shiny::uiOutput("names_user_standard"),
-            cellWidths = 200,
-            cellArgs = list(style = "padding: 6px")
+          bdDwC:::module_ui_dictionary_radiobuttons_fieldOutput(
+            "dictionary_names"
           )
         )
       ),

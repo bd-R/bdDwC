@@ -148,35 +148,12 @@ shiny::shinyServer(function(input, output, session) {
     "upload_dictionary",
     rv
   )
-
-  # Created radiobuttons for users field name column
-  output$names_user_field <- shiny::renderUI({
-    if (nrow(rv$dic_user_raw) == 0) {
-      NULL
-    } else {
-      bdDwC:::shiny_ui_dictionary_radiobuttons(
-        rv$names_user_raw,
-        "names_user_field",
-        "Field Names",
-        "userField"
-      )
-    }
-  })
-
-  # Created radiobuttons for users standard name column
-  output$names_user_standard <- shiny::renderUI({
-    # If data is uploaded
-    if (nrow(rv$dic_user_raw) == 0) {
-      NULL
-    } else {
-      bdDwC:::shiny_ui_dictionary_radiobuttons(
-        rv$names_user_raw,
-        "names_user_standard",
-        "Standard Names",
-        "userStandard"
-      )
-    }
-  })
+  # Creat radiobuttons for users field name column
+  callModule(
+    bdDwC:::module_ui_dictionary_radiobuttons_field,
+    "dictionary_names",
+    rv
+  )
 
   # If button in standard is marked
   shiny::observeEvent(input$names_user_standard, {
