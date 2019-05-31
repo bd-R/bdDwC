@@ -22,11 +22,7 @@ shinydashboard::dashboardPage(
       shinydashboard::menuItem("Darwinizer", tabName = "darwinizer"),
       # Horizontal line
       shiny::tags$hr(style = "border-color: #bfbfbf;"),
-      # Citation
-      shiny::actionButton(
-        "citation", "Cite us", style = "border-color: #091520;
-                                        background-color: #e5e5e5"
-      )
+      bdDwC:::module_server_modalsUI("modals")
     )
   ),
 

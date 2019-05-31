@@ -12,24 +12,6 @@ shiny::shinyServer(function(input, output, session) {
   # Automatically stop a Shiny app when closing the browser tab
   session$onSessionEnded(shiny::stopApp)
 
-  # --------------------------
-  # MODAL DIALOGS
-  # --------------------------
-  # Welcoming text
-  bdDwC:::shiny_server_modal_welcome()
-  # Citation
-  shiny::observeEvent(input$citation, {
-    bdDwC:::shiny_server_modal_citation()
-  })
-  # Information about Darwin Cloud
-  shiny::observeEvent(input$pop_dc, {
-    bdDwC:::shiny_server_modal_cloud()
-  })
-  # Information about User dictionary
-  shiny::observeEvent(input$pop_dic, {
-    bdDwC:::shiny_server_modal_dictionary()
-  })
-
 
   # --------------------------
   # REACTIVE VALUES
@@ -62,6 +44,22 @@ shiny::shinyServer(function(input, output, session) {
     # Subset made using column names specified by user
     dic_user = data.frame()
   )
+
+
+  # --------------------------
+  # MODAL DIALOGS
+  # --------------------------
+  shiny::callModule(bdDwC:::module_server_modals, "modals")
+  # Information about Darwin Cloud
+  # No modal as created within shiny_ui_dictionary
+  shiny::observeEvent(input$pop_dc, {
+    shiny_server_modal_cloud()
+  })
+  # Information about User dictionary
+  # No modal as created within shiny_ui_dictionary
+  shiny::observeEvent(input$pop_dic, {
+    shiny_server_modal_dictionary()
+  })
 
 
   # --------------------------
@@ -143,12 +141,18 @@ shiny::shinyServer(function(input, output, session) {
     rv
   )
   # Creat radiobuttons for users field name column
-  callModule(
+  shiny::callModule(
     bdDwC:::module_ui_dictionary_radiobuttons_field,
     "dictionary_names",
     rv
   )
-  # NO MODULE >>>>>>>>>>>>>>>>>
+  # Update dictionary information
+  shiny::callModule(
+    bdDwC:::module_ui_dictionary,
+    "upload_dictionary",
+    rv
+  )
+  # NO MODULE AVAILABLE >>>>>>>>>>>>>>>>>
   # If button in standard is marked
   shiny::observeEvent(input$names_user_standard, {
     # Which button was marked
@@ -175,18 +179,7 @@ shiny::shinyServer(function(input, output, session) {
       "#names_user_standard .radio:nth-child(", which(!result), ") label"
     ))
   })
-  # NO MODULE >>>>>>>>>>>>>>>>>
-
-
-  # --------------------------
-  # UPDATED DC DICTIONARY
-  # --------------------------
-
-  shiny::callModule(
-    bdDwC:::module_ui_dictionary,
-    "upload_dictionary",
-    rv
-  )
+  # NO MODULE AVAILABLE >>>>>>>>>>>>>>>>>
 
 
   # --------------------------

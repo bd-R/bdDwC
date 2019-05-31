@@ -251,3 +251,34 @@ module_ui_dictionaryUI <- function(id) {
     shiny::br()
   )
 }
+
+#' Module to call modals
+#' 
+#' @family shiny modules
+#'
+#' @keywords shiny modules internal
+#'
+module_server_modals <- function(input, output, server)  {
+  # Welcoming text
+  shiny_server_modal_welcome()
+  # Citation
+  shiny::observeEvent(input$citation, {
+    shiny_server_modal_citation()
+  })
+}
+#' UI Module for {module_server_modals}
+#' 
+#' @family shiny modules
+#'
+#' @keywords shiny modules internal
+#'
+module_server_modalsUI <- function(id) {
+  ns <- shiny::NS(id)  
+  # Citation
+  shiny::actionButton(
+    ns("citation"),
+    "Cite us",
+    style = "border-color: #091520;
+             background-color: #e5e5e5"
+  )
+}
