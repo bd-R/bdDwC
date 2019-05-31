@@ -87,13 +87,7 @@ shinydashboard::dashboardPage(
           shiny::br(),
           shiny::br(),
           # Upload user dictionary
-          shiny::fileInput(
-            "path_input_dictionary",
-            "Choose a personal dictionary file",
-            accept = c(
-              "text/csv", ".csv", "text/comma-separated-values,text/plain"
-            )
-          ),
+          bdDwC:::module_server_upload_dictionaryInput("upload_dictionary"),
           # Text that tells to select columns if dictionary added
           shiny::uiOutput("user_dic_text"),
           shiny::splitLayout(

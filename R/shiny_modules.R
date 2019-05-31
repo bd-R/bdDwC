@@ -65,20 +65,20 @@ module_server_upload_database <- function(input, output, server, rv) {
 #'
 #' @keywords shiny modules internal
 #'
-module_server_upload_databaseInput <- function(id) {
-
-online_databases <- list(
-  "GBIF (Global Biodiversity Information Facility)" = "gbif",
-  "iDigBio (Integrated Digitized Biocollections)" = "idigbio",
-  "EcoEngine (Berkeley Ecoinformatics Engine)" = "ecoengine",
-  "Vertnet (Vertebrate Network)" = "vertnet",
-  "BISON (Biodiversity Information Serving Our Nation)" = "bison",
-  "iNaturalist" = "inat",
-  "ALA (Atlas of Living Australia)" = "ala",
-  "OBIS (Ocean Biogeographic Information System)" = "obis",
-  "AntWeb" = "antweb"
-)
-
+module_server_upload_databaseInput <- function(
+  id,
+  online_databases = list(
+    "GBIF (Global Biodiversity Information Facility)" = "gbif",
+    "iDigBio (Integrated Digitized Biocollections)" = "idigbio",
+    "EcoEngine (Berkeley Ecoinformatics Engine)" = "ecoengine",
+    "Vertnet (Vertebrate Network)" = "vertnet",
+    "BISON (Biodiversity Information Serving Our Nation)" = "bison",
+    "iNaturalist" = "inat",
+    "ALA (Atlas of Living Australia)" = "ala",
+    "OBIS (Ocean Biogeographic Information System)" = "obis",
+    "AntWeb" = "antweb"
+  )
+) {
   ns <- shiny::NS(id)
   shiny::tagList(
     shiny::textInput(
@@ -112,6 +112,43 @@ online_databases <- list(
       shiny::actionButton(
         ns("query_database"), "Query Database", shiny::icon("download")
       )
+    )
+  )
+}
+
+#' Module to upload users dictionary
+#'
+#' @param rv reactive values
+#' 
+#' @importFrom data.table fread
+#' 
+#' @family shiny modules
+#'
+#' @keywords shiny modules internal
+#'
+module_server_upload_dictionary <- function(input, output, server, rv) {
+  shiny::observeEvent(input$path_input_dictionary, {
+    rv$dic_user_raw <- data.table::fread(
+      input$path_input_dictionary$datapath,
+      data.table = FALSE
+    )
+    rv$names_user_raw <- sort(colnames(rv$dic_user_raw))
+  })
+  return(rv)
+}
+#' Input module for {module_server_upload_dictionary}
+#'
+#' @family shiny modules
+#'
+#' @keywords shiny modules internal
+#'
+module_server_upload_dictionaryInput <- function(id) {
+  ns <- shiny::NS(id)
+  shiny::fileInput(
+    ns("path_input_dictionary"),
+    "Choose a personal dictionary file",
+    accept = c(
+      "text/csv", ".csv", "text/comma-separated-values,text/plain"
     )
   )
 }

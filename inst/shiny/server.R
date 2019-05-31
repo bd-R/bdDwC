@@ -1,5 +1,5 @@
 options(
-  # let bigget input files
+  # let bigger input files
   shiny.maxRequestSize = 50 * 1024 ^ 2,
   # debug text (full path)
   shiny.fullstacktrace = TRUE,
@@ -143,13 +143,11 @@ shiny::shinyServer(function(input, output, session) {
   # --------------------------
 
   # Upload user dictionary
-  shiny::observeEvent(input$path_input_dictionary, {
-    rv$dic_user_raw <- data.table::fread(
-      input$path_input_dictionary$datapath,
-      data.table = FALSE
-    )
-    rv$names_user_raw <- sort(colnames(rv$dic_user_raw))
-  })
+  rv <- shiny::callModule(
+    bdDwC:::module_server_upload_dictionary,
+    "upload_dictionary",
+    rv
+  )
 
   # Created radiobuttons for users field name column
   output$names_user_field <- shiny::renderUI({
