@@ -133,6 +133,10 @@ module_server_upload_dictionary <- function(input, output, server, rv) {
       data.table = FALSE
     )
     rv$names_user_raw <- sort(colnames(rv$dic_user_raw))
+    output$dic_info <- shiny_ui_dictionary(
+      input$path_input_dictionary$name,
+      rv$info_dc_date
+    )
   })
   return(rv)
 }
@@ -221,7 +225,6 @@ module_ui_dictionary <- function(input, output, server, rv) {
     # Update DC dictionary
     rv$data_darwin_cloud <- download_cloud_data()
     rv$info_dc_date <- Sys.Date()
-    # Information about dictionaries
     output$dic_info <- shiny_ui_dictionary(
       input$path_input_dictionary$name,
       rv$info_dc_date

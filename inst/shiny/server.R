@@ -12,12 +12,6 @@ shiny::shinyServer(function(input, output, session) {
   # Automatically stop a Shiny app when closing the browser tab
   session$onSessionEnded(shiny::stopApp)
 
-  output$dic_info <- bdDwC:::shiny_ui_dictionary(
-    input$path_input_dictionary$name,
-    rv$info_dc_date
-  )
-
-
   # --------------------------
   # MODAL DIALOGS
   # --------------------------
@@ -188,25 +182,11 @@ shiny::shinyServer(function(input, output, session) {
   # UPDATED DC DICTIONARY
   # --------------------------
 
-  callModule(
+  shiny::callModule(
     bdDwC:::module_ui_dictionary,
-    "user_dictionary",
+    "upload_dictionary",
     rv
   )
-  shiny::observeEvent(input$path_input_dictionary, {
-    output$dic_info <- bdDwC:::shiny_ui_dictionary(
-      input$path_input_dictionary$name,
-      rv$info_dc_date
-    )
-  })
-  # Text that shows up if user uploaded dictionary
-  output$user_dic_text <- shiny::renderUI({
-    if (!is.null(input$path_input_dictionary)) {
-      tags$b("Select field and standard names")
-    } else {
-      NULL
-    }
-  })
 
 
   # --------------------------

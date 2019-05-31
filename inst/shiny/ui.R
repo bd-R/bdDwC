@@ -71,17 +71,16 @@ shinydashboard::dashboardPage(
           )
         ),
 
-        # Upload dictionaries
+        # Dictionaries
         shinydashboard::box(
           title = "Dictionaries",
           status = "warning",
           width = 5,
           # Display dictionary information
-          bdDwC:::module_ui_dictionaryUI("user_dictionary"),
+          bdDwC:::module_ui_dictionaryUI("upload_dictionary"),
           # Upload user dictionary
           bdDwC:::module_server_upload_dictionaryInput("upload_dictionary"),
-          # Text that tells to select columns if dictionary added
-          shiny::uiOutput("user_dic_text"),
+          # Buttons for field and standard names
           bdDwC:::module_ui_dictionary_radiobuttons_fieldOutput(
             "dictionary_names"
           )

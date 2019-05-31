@@ -343,7 +343,7 @@ shiny_ui_dictionary <- function(path_dictionary = NULL, date_dictionary) {
       user_dic_file <- NULL
     } else {
       user_dic_file <- paste0(
-        "(", sub(".csv$", "", basename(path_dictionary)), ")"
+        "(", sub("\\.txt$|\\.csv$", "", basename(path_dictionary)), ")"
       )
     }
     result <- paste0(
