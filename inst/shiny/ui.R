@@ -1,11 +1,3 @@
-upload_local_file <- c(
-  "text/csv",
-  "text/comma-separated-values,text/plain",
-  ".csv",
-  ".zip",
-  "application/zip"
-)
-
 online_databases <- list(
   "GBIF (Global Biodiversity Information Facility)" = "gbif",
   "iDigBio (Integrated Digitized Biocollections)" = "idigbio",
@@ -78,11 +70,12 @@ shinydashboard::dashboardPage(
             open = "From a Local File",
             # USER FILE
             shinyBS::bsCollapsePanel("Upload Local File",
-              shiny::fileInput("path_input_data",
-                shiny::h3("CSV / DWCA ZIP file input"),
-                FALSE,
-                accept = upload_local_file
-              ),
+              # shiny::fileInput("path_input_data",
+              #   shiny::h3("CSV / DWCA ZIP file input"),
+              #   FALSE,
+              #   accept = upload_local_file
+              # ),
+              bdDwC:::module_server_upload_localInput("input_local"),
               style = "info"
             ),
             # QUERY FROM A DATABASE

@@ -125,10 +125,7 @@ shiny::shinyServer(function(input, output, session) {
   # --------------------------
 
   # Upload local file
-  shiny::observeEvent(input$path_input_data, {
-    rv$data_user <- bdDwC:::shiny_server_upload_local(input$path_input_data)
-    rv$names_user <- rv$names_user_after <- colnames(rv$data_user)
-  })
+  rv <- shiny::callModule(bdDwC:::module_server_upload_local, "input_local", rv)
   # Download from database
   shiny::observeEvent(input$query_database, {
     rv$data_user <- bdDwC:::shiny_server_upload_database(input)
