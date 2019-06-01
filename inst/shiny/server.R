@@ -12,7 +12,6 @@ shiny::shinyServer(function(input, output, session) {
   # Automatically stop a Shiny app when closing the browser tab
   session$onSessionEnded(shiny::stopApp)
 
-
   # --------------------------
   # REACTIVE VALUES
   # --------------------------
@@ -67,10 +66,19 @@ shiny::shinyServer(function(input, output, session) {
   # DISABLE BUTTONS
   # --------------------------
   # Disable darwinizer tab
-  shinyjs::addCssClass(
-    "darwinizer",
-    class = "inactiveLink"
-  )
+  shiny::observe({
+    if (nrow(rv$data_user) == 0) {
+      shinyjs::addCssClass(
+        selector = "a[data-value='darwinizer']",
+        class = "inactiveLink"
+      )
+    } else {
+      shinyjs::removeCssClass(
+        selector = "a[data-value='darwinizer']",
+        class = "inactiveLink"
+      )
+    }
+  })
   shiny::callModule(bdDwC:::module_ui_buttons, "main", rv)
 
 
@@ -139,7 +147,6 @@ shiny::shinyServer(function(input, output, session) {
     ))
   })
 
-
   # Darwnizer
   rv <- shiny::callModule(
     bdDwC:::module_server_darwinizer,
@@ -156,11 +163,7 @@ shiny::shinyServer(function(input, output, session) {
   rv <- shiny::callModule(bdDwC:::module_server_buttons_remove, "main", rv)
   rv <- shiny::callModule(bdDwC:::module_server_buttons_clean, "main", rv)
   rv <- shiny::callModule(bdDwC:::module_server_buttons_rollback, "main", rv)
-  ####### CHECK????? !!!!!!!!!!!!!!!!
-  output$download_data <- bdDwC:::shiny_server_download_renamed(
-    rv$data_user,
-    rv$data_rename
-  )
+  shiny::callModule(bdDwC:::module_server_buttons_download, "main", rv)
 
   # Value boxes
   shiny::callModule(bdDwC:::module_ui_valuebox, "main", rv)

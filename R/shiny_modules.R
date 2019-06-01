@@ -291,7 +291,6 @@ module_server_modalsUI <- function(id) {
 #'
 module_ui_checkbox <- function(input, output, session, rv, match_type = NULL) {
   ns <- session$ns
-  saveRDS(ns, "~/Desktop/foo.RDS")
   # Create checkbox with current user names
   output$names_user <- shiny::renderUI({
     if (length(rv$names_user_after) == 0) {
@@ -706,32 +705,36 @@ module_server_buttons_rollback <- function(input, output, session, rv)  {
 #' @keywords shiny modules internal
 #'
 module_ui_valuebox <- function(input, output, session, rv)  {
-  output$vb_all_names <- bdDwC:::shiny_ui_valuebox(
-    length(rv$names_user), "Names Submitted", "light-blue"
-  )
-  output$vb_dwc_names <- bdDwC:::shiny_ui_valuebox(
-    paste0(
-      nrow(rv$data_rename),
-      " (", round(nrow(rv$data_rename) * 100 / length(rv$names_user)), "%)"
-    ),
-    "Names Darwinized",
-    "olive"
-  )
-  output$vb_dwc_ident <- bdDwC:::shiny_ui_valuebox(
-    sum(rv$data_rename$match_type == "Identical"),
-    "Darwinized: Identical",
-    "green"
-  )
-  output$vb_dwc_match <- bdDwC:::shiny_ui_valuebox(
-    sum(rv$data_rename$match_type == "Darwinized"),
-    "Darwinized: Matched",
-    "green"
-  )
-  output$vb_manual <- bdDwC:::shiny_ui_valuebox(
-    sum(rv$data_rename$match_type == "Manual"),
-    "Darwinized: Manually",
-    "green"
-  )
+  shiny::observeEvent(
+    c(input$submit_to_darwinizer, input$names_rollback, input$names_clean, input$names_remove, input$names_rename),
+  {
+    output$vb_all_names <- shiny_ui_valuebox(
+      length(rv$names_user), "Names Submitted", "light-blue"
+    )
+    output$vb_dwc_names <- shiny_ui_valuebox(
+      paste0(
+        nrow(rv$data_rename),
+        " (", round(nrow(rv$data_rename) * 100 / length(rv$names_user)), "%)"
+      ),
+      "Names Darwinized",
+      "olive"
+    )
+    output$vb_dwc_ident <- shiny_ui_valuebox(
+      sum(rv$data_rename$match_type == "Identical"),
+      "Darwinized: Identical",
+      "green"
+    )
+    output$vb_dwc_match <- shiny_ui_valuebox(
+      sum(rv$data_rename$match_type == "Darwinized"),
+      "Darwinized: Matched",
+      "green"
+    )
+    output$vb_manual <- shiny_ui_valuebox(
+      sum(rv$data_rename$match_type == "Manual"),
+      "Darwinized: Manually",
+      "green"
+    )
+  })
 }
 #' Output module for {module_ui_valuebox}
 #'
@@ -747,5 +750,22 @@ module_ui_valueboxOutput <- function(id) {
     shinydashboard::valueBoxOutput(ns("vb_dwc_match"), width = 2),
     shinydashboard::valueBoxOutput(ns("vb_manual"), width = 2),
     shinydashboard::valueBoxOutput(ns("vb_dwc_ident"), width = 2)
+  )
+}
+
+#' Module to control download button
+#' 
+#' @param rv reactive values
+#' 
+#' @family shiny modules
+#'
+#' @keywords shiny modules internal
+#'
+module_server_buttons_download <- function(input, output, session, rv)  {
+  output$download_data <- shiny::downloadHandler(
+    filename = format(Sys.time(), "darwinizedData_%Y_%b_%d_%X.csv"),
+    content = function(file) {
+      data.table::fwrite(rename_user_data(rv$data_user, rv$data_rename), file)
+    }
   )
 }

@@ -262,32 +262,6 @@ shiny_ui_valuebox <- function(value, subtitle, color) {
   })
 }
 
-#' Download renamed data
-#'
-#' @param data_user a data.frame to be renamed (passed to rename_user_data)
-#' @param data_rename a data.frame to rename by  (passed to rename_user_data)
-#' @param filename a caracter string to use as a file name
-#' 
-#' @importFrom data.table fwrite
-#' @importFrom shiny downloadHandler
-#'
-#' @family shiny
-#'
-#' @keywords shiny internal
-#'
-shiny_server_download_renamed <- function(
-  data_user,
-  data_rename,
-  filename = format(Sys.time(), "darwinizedData_%Y_%b_%d_%X.csv")
-) {
-  shiny::downloadHandler(
-    filename,
-    function(file) {
-      data.table::fwrite(rename_user_data(data_user, data_rename), file)
-    }
-  )
-}
-
 #' Create radio buttons for user dictionary
 #'
 #' @param names_dic a vector that contains column names of user dictionary

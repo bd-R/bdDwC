@@ -13,6 +13,7 @@ Input module for {module_server_upload_local}
 }
 \seealso{
 Other shiny modules: \code{\link{module_server_buttons_clean}},
+  \code{\link{module_server_buttons_download}},
   \code{\link{module_server_buttons_remove}},
   \code{\link{module_server_buttons_rename}},
   \code{\link{module_server_buttons_rollback}},

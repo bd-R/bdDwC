@@ -10,8 +10,7 @@ shiny_server_modal_cloud()
 Show darwin cloud data modal
 }
 \seealso{
-Other shiny: \code{\link{shiny_server_download_renamed}},
-  \code{\link{shiny_server_modal_citation}},
+Other shiny: \code{\link{shiny_server_modal_citation}},
   \code{\link{shiny_server_modal_dictionary}},
   \code{\link{shiny_server_modal_welcome}},
   \code{\link{shiny_server_upload_database}},

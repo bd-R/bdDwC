@@ -16,8 +16,7 @@ shiny_server_modal_welcome(title = "Welcome to Darwinizer!",
 Show shiny modal with specified title, subtitle and other details
 }
 \seealso{
-Other shiny: \code{\link{shiny_server_download_renamed}},
-  \code{\link{shiny_server_modal_citation}},
+Other shiny: \code{\link{shiny_server_modal_citation}},
   \code{\link{shiny_server_modal_cloud}},
   \code{\link{shiny_server_modal_dictionary}},
   \code{\link{shiny_server_upload_database}},
