@@ -14,9 +14,7 @@ An object that stores reactive values
 Create reactive values used within app
 }
 \seealso{
-Other shiny: \code{\link{shiny_server_modal_citation}},
-  \code{\link{shiny_server_modal_cloud}},
-  \code{\link{shiny_server_modal_dictionary}},
+Other shiny: \code{\link{shiny_server_modal_custom}},
   \code{\link{shiny_server_modal_welcome}},
   \code{\link{shiny_server_upload_database}},
   \code{\link{shiny_server_upload_local}},

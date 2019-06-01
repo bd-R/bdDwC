@@ -13,9 +13,7 @@ shiny_ui_darwin_core_definition()
 Extract darwin core definitions and return as ui element
 }
 \seealso{
-Other shiny: \code{\link{shiny_server_modal_citation}},
-  \code{\link{shiny_server_modal_cloud}},
-  \code{\link{shiny_server_modal_dictionary}},
+Other shiny: \code{\link{shiny_server_modal_custom}},
   \code{\link{shiny_server_modal_welcome}},
   \code{\link{shiny_server_reactivevalues}},
   \code{\link{shiny_server_upload_database}},

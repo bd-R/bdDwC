@@ -83,64 +83,36 @@ shiny_server_modal_welcome <- function(
   ))
 }
 
-#' Show shiny citation modal
+#' Show shiny custom modal
 #'
+#' Show shiny modal with specified title, subtitle and other details
+#'
+#' @param title an object string passed as `shiny::modalDialog` title 
+#' @param body an object shown withing `shiny::modalDialog`
+#' @param size a value that specifies size of the dialog box
+#' @param easyClose logical value to specify in box is easy to close
+#' 
 #' @import shiny
+#' @importFrom utils packageVersion
 #'
 #' @family shiny
 #'
 #' @keywords shiny internal
 #'
-shiny_server_modal_citation <- function() {
+shiny_server_modal_custom <- function(
+  title = "Wanted Title!",
+  body = "Wanted Body",
+  size = "m",
+  easyClose = TRUE
+) {
   shiny::showModal(shiny::modalDialog(
-    title = "Cite us",
-    shiny::HTML(paste("bdverse will be published soon!")),
-    easyClose = TRUE
+    body,
+    title = title,
+    size = size,
+    easyClose = easyClose
   ))
 }
 
-#' Show darwin cloud data modal
-#'
-#' @import shiny
-#'
-#' @family shiny
-#'
-#' @keywords shiny internal
-#'
-shiny_server_modal_cloud <- function() {
-  shiny::showModal(shiny::modalDialog(
-    title = shiny::h3("Darwin Cloud Data"),
-    tags$p(
-      "bdDwC uses Darwin Core Dictionary (stored on official",
-      tags$a(
-        href = "https://github.com/kurator-org/kurator-validation",
-        "Kurator's repository)."
-      ),
-      shiny::br(),
-      "Update Darwin Core version for your analysis by clicking",
-      tags$b("Update DC"), "button bellow."
-    ),
-    size = "m",
-    easyClose = TRUE
-  ))
-}
-
-#' Show dictionary modal
-#'
-#' @import shiny
-#'
-#' @family shiny
-#'
-#' @keywords shiny internal
-#'
-shiny_server_modal_dictionary <- function() {
-  shiny::showModal(shiny::modalDialog(
-    title = shiny::h3("Personal Dictionary File"),
-    tags$p("File with columns fieldname and standard name"),
-    size = "m",
-    easyClose = TRUE
-  ))
-}
 
 #' Upload local users data
 #'

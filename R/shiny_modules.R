@@ -1,3 +1,39 @@
+#' Module to call modals
+#' 
+#' @family shiny modules
+#'
+#' @keywords shiny modules internal
+#'
+module_server_modals <- function(input, output, session)  {
+  # Welcoming text
+  shiny_server_modal_welcome()
+  # Citation
+  shiny::observeEvent(input$citation, {
+    shiny_server_modal_custom(
+      shiny::h3("Cite us"),
+      shiny::tags$p("bdverse will be published soon!")
+    )
+  })
+}
+#' UI Module for {module_server_modals}
+#' 
+#' @family shiny modules
+#'
+#' @keywords shiny modules internal
+#'
+module_server_modalsUI <- function(id) {
+  ns <- shiny::NS(id)  
+  # Citation
+  shiny::actionButton(
+    ns("citation"),
+    "Cite us",
+    style = "border-color: #091520;
+             background-color: #e5e5e5"
+  )
+}
+
+
+
 #' Module to upload local users data
 #' (calls {shiny_server_upload_local})
 #'
@@ -247,37 +283,6 @@ module_ui_dictionaryUI <- function(id) {
     shiny::actionButton(ns("update_darwin_cloud"), "Update DC"),
     shiny::br(),
     shiny::br()
-  )
-}
-
-#' Module to call modals
-#' 
-#' @family shiny modules
-#'
-#' @keywords shiny modules internal
-#'
-module_server_modals <- function(input, output, session)  {
-  # Welcoming text
-  shiny_server_modal_welcome()
-  # Citation
-  shiny::observeEvent(input$citation, {
-    shiny_server_modal_citation()
-  })
-}
-#' UI Module for {module_server_modals}
-#' 
-#' @family shiny modules
-#'
-#' @keywords shiny modules internal
-#'
-module_server_modalsUI <- function(id) {
-  ns <- shiny::NS(id)  
-  # Citation
-  shiny::actionButton(
-    ns("citation"),
-    "Cite us",
-    style = "border-color: #091520;
-             background-color: #e5e5e5"
   )
 }
 

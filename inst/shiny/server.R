@@ -20,26 +20,40 @@ shiny::shinyServer(function(input, output, session) {
 
 
   # --------------------------
-  # MODAL DIALOGS
+  # MISC
   # --------------------------
+  # Modals dialogs
   # We have to keep this on top as it's a welcoming modal
   shiny::callModule(bdDwC:::module_server_modals, "main")
   # Information about the Darwin Cloud
-  # No modal as created within shiny_ui_dictionary
+  # No module as created within shiny_ui_dictionary
   shiny::observeEvent(input$pop_dc, {
-    bdDwC:::shiny_server_modal_cloud()
+    bdDwC:::shiny_server_modal_custom(
+      shiny::h3("Darwin Cloud Data"),
+      shiny::tags$p(
+        "bdDwC uses Darwin Core Dictionary (stored on official",
+        shiny::tags$a(
+          href = "https://github.com/kurator-org/kurator-validation",
+          "Kurator's repository)."
+        ),
+        shiny::br(),
+        "Update Darwin Core version for your analysis by clicking",
+        shiny::tags$b("Update DC"), "button bellow."
+      ),
+    )
   })
   # Information about users dictionary
-  # No modal as created within shiny_ui_dictionary
+  # No module as created within shiny_ui_dictionary
   shiny::observeEvent(input$pop_dic, {
-    bdDwC:::shiny_server_modal_dictionary()
+    bdDwC:::shiny_server_modal_custom(
+      shiny::h3("Personal Dictionary File"),
+      shiny::tags$p("File with columns fieldname and standard name")
+    )
   })
 
-
-  # --------------------------
-  # DISABLE BUTTONS
-  # --------------------------
-  # Disable darwinizer tab
+  # Disable/Enable buttons
+  # Disable darwinizer tab if no data submitted
+  # No module as it's too complicated with Css classes
   shiny::observe({
     if (nrow(rv$data_user) == 0) {
       shinyjs::addCssClass(
@@ -53,11 +67,10 @@ shiny::shinyServer(function(input, output, session) {
       )
     }
   })
-  shiny::callModule(bdDwC:::module_ui_buttons, "main", rv)
 
 
   # --------------------------
-  # UPLOAD USER DATA
+  # UPLOAD DATA
   # --------------------------
   # Upload local file
   rv <- shiny::callModule(
@@ -121,7 +134,10 @@ shiny::shinyServer(function(input, output, session) {
     ))
   })
 
+
   # Darwnizer
+  shiny::callModule(bdDwC:::module_ui_buttons, "main", rv)
+
   rv <- shiny::callModule(
     bdDwC:::module_server_darwinizer,
     "main",
