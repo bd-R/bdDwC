@@ -4,12 +4,14 @@
 \alias{shiny_ui_dictionary}
 \title{Create information about dictionaries}
 \usage{
-shiny_ui_dictionary(path_dictionary = NULL, date_dictionary)
+shiny_ui_dictionary(path_dictionary = NULL, date_dictionary, ns)
 }
 \arguments{
 \item{path_dictionary}{a character string with path to users dictionary}
 
 \item{date_dictionary}{a value with date of darwin cloud dictionary date}
+
+\item{ns}{namespace created with {shiny::NS}}
 }
 \description{
 Create information about dictionaries

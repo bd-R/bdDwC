@@ -14,6 +14,29 @@ module_server_modals <- function(input, output, session)  {
       shiny::tags$p("bdverse will be published soon!")
     )
   })
+  # Information about the Darwin Cloud
+  shiny::observeEvent(input$pop_dc, {
+    shiny_server_modal_custom(
+      shiny::h3("Darwin Cloud Data"),
+      shiny::tags$p(
+        "bdDwC uses Darwin Core Dictionary (stored on official",
+        shiny::tags$a(
+          href = "https://github.com/kurator-org/kurator-validation",
+          "Kurator's repository)."
+        ),
+        shiny::br(),
+        "Update Darwin Core version for your analysis by clicking",
+        shiny::tags$b("Update DC"), "button bellow."
+      ),
+    )
+  })
+  # Information about users dictionary
+  shiny::observeEvent(input$pop_dic, {
+    shiny_server_modal_custom(
+      shiny::h3("Personal Dictionary File"),
+      shiny::tags$p("File with columns fieldname and standard name")
+    )
+  })
 }
 #' UI Module for {module_server_modals}
 #' 
@@ -210,9 +233,11 @@ module_ui_dictionary_radiobuttons_fieldOutput <- function(id) {
 #' @keywords shiny modules internal
 #'
 module_ui_dictionary <- function(input, output, session, rv) {
+  ns <- session$ns
   output$dic_info <- shiny_ui_dictionary(
     input$path_input_dictionary$name,
-    rv$info_dc_date
+    rv$info_dc_date,
+    ns
   )
   shiny::observeEvent(input$update_darwin_cloud, {
     # Update DC dictionary
@@ -220,7 +245,8 @@ module_ui_dictionary <- function(input, output, session, rv) {
     rv$info_dc_date <- Sys.Date()
     output$dic_info <- shiny_ui_dictionary(
       input$path_input_dictionary$name,
-      rv$info_dc_date
+      rv$info_dc_date,
+      ns
     )
   })
   shiny::observeEvent(input$path_input_dictionary, {
@@ -231,7 +257,8 @@ module_ui_dictionary <- function(input, output, session, rv) {
     rv$names_user_raw <- sort(colnames(rv$dic_user_raw))
     output$dic_info <- shiny_ui_dictionary(
       input$path_input_dictionary$name,
-      rv$info_dc_date
+      rv$info_dc_date,
+      ns
     )
   })
   return(rv)

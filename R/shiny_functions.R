@@ -113,7 +113,6 @@ shiny_server_modal_custom <- function(
   ))
 }
 
-
 #' Upload local users data
 #'
 #' @param path_input path to local file from `shiny::fileInput`
@@ -316,6 +315,7 @@ shiny_ui_dictionary_radiobuttons <- function(
 #'
 #' @param path_dictionary a character string with path to users dictionary
 #' @param date_dictionary a value with date of darwin cloud dictionary date
+#' @param ns namespace created with {shiny::NS}
 #' 
 #' @importFrom shiny HTML renderUI
 #'
@@ -323,7 +323,7 @@ shiny_ui_dictionary_radiobuttons <- function(
 #'
 #' @keywords shiny internal
 #'
-shiny_ui_dictionary <- function(path_dictionary = NULL, date_dictionary) {
+shiny_ui_dictionary <- function(path_dictionary = NULL, date_dictionary, ns) {
   shiny::renderUI({
     # Select icon
     user_dic_icon <- ifelse(is.null(path_dictionary), "unchecked", "check")
@@ -340,7 +340,7 @@ shiny_ui_dictionary <- function(path_dictionary = NULL, date_dictionary) {
       <i class='glyphicon glyphicon-check fa-1x'></i>
       Darwin Cloud (version: ", format(date_dictionary, "%d-%B-%Y"), ")
 
-      <button class='btn btn-default action-button' id='pop_dc'
+      <button class='btn btn-default action-button' id='", ns("pop_dc"), "'
               style='width: 1px; border-color: #ffffff;
                      background-color: #ffffff;
                      font-size:100%' type='button'>
@@ -350,7 +350,7 @@ shiny_ui_dictionary <- function(path_dictionary = NULL, date_dictionary) {
       <br/>
       <i class='glyphicon glyphicon-", user_dic_icon, " fa-1x'></i>
       Personal Dictionary ", user_dic_file,
-      "<button class='btn btn-default action-button' id='pop_dic'
+      "<button class='btn btn-default action-button' id='", ns("pop_dic"), "'
               style='width: 1px; border-color: #ffffff;
                      background-color: #ffffff;
                      font-size:100%' type='button'>

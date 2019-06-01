@@ -13,45 +13,13 @@ shiny::shinyServer(function(input, output, session) {
   session$onSessionEnded(shiny::stopApp)
 
   # --------------------------
-  # REACTIVE VALUES
+  # META
   # --------------------------
   # All reactive values that we use within app
   rv <- bdDwC:::shiny_server_reactivevalues()
-
-
-  # --------------------------
-  # MISC
-  # --------------------------
   # Modals dialogs
-  # We have to keep this on top as it's a welcoming modal
+  # We have to keep this on top as it contains welcoming modal
   shiny::callModule(bdDwC:::module_server_modals, "main")
-  # Information about the Darwin Cloud
-  # No module as created within shiny_ui_dictionary
-  shiny::observeEvent(input$pop_dc, {
-    bdDwC:::shiny_server_modal_custom(
-      shiny::h3("Darwin Cloud Data"),
-      shiny::tags$p(
-        "bdDwC uses Darwin Core Dictionary (stored on official",
-        shiny::tags$a(
-          href = "https://github.com/kurator-org/kurator-validation",
-          "Kurator's repository)."
-        ),
-        shiny::br(),
-        "Update Darwin Core version for your analysis by clicking",
-        shiny::tags$b("Update DC"), "button bellow."
-      ),
-    )
-  })
-  # Information about users dictionary
-  # No module as created within shiny_ui_dictionary
-  shiny::observeEvent(input$pop_dic, {
-    bdDwC:::shiny_server_modal_custom(
-      shiny::h3("Personal Dictionary File"),
-      shiny::tags$p("File with columns fieldname and standard name")
-    )
-  })
-
-  # Disable/Enable buttons
   # Disable darwinizer tab if no data submitted
   # No module as it's too complicated with Css classes
   shiny::observe({
