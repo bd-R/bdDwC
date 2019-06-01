@@ -4,7 +4,7 @@
 \alias{module_ui_dictionary}
 \title{Module to update darwin cloud dictionary}
 \usage{
-module_ui_dictionary(input, output, server, rv)
+module_ui_dictionary(input, output, session, rv)
 }
 \arguments{
 \item{rv}{reactive values}
@@ -13,7 +13,13 @@ module_ui_dictionary(input, output, server, rv)
 Module to update darwin cloud dictionary
 }
 \seealso{
-Other shiny modules: \code{\link{module_server_modalsUI}},
+Other shiny modules: \code{\link{module_server_buttons_clean}},
+  \code{\link{module_server_buttons_remove}},
+  \code{\link{module_server_buttons_rename}},
+  \code{\link{module_server_buttons_rollback}},
+  \code{\link{module_server_darwinizerInput}},
+  \code{\link{module_server_darwinizer}},
+  \code{\link{module_server_modalsUI}},
   \code{\link{module_server_modals}},
   \code{\link{module_server_upload_databaseInput}},
   \code{\link{module_server_upload_database}},
@@ -21,6 +27,8 @@ Other shiny modules: \code{\link{module_server_modalsUI}},
   \code{\link{module_server_upload_dictionary}},
   \code{\link{module_server_upload_localInput}},
   \code{\link{module_server_upload_local}},
+  \code{\link{module_ui_buttonsUI}},
+  \code{\link{module_ui_buttons}},
   \code{\link{module_ui_checkboxUI}},
   \code{\link{module_ui_checkbox}},
   \code{\link{module_ui_dictionaryUI}},

@@ -4,19 +4,27 @@
 \alias{module_server_modals}
 \title{Module to call modals}
 \usage{
-module_server_modals(input, output, server)
+module_server_modals(input, output, session)
 }
 \description{
 Module to call modals
 }
 \seealso{
-Other shiny modules: \code{\link{module_server_modalsUI}},
+Other shiny modules: \code{\link{module_server_buttons_clean}},
+  \code{\link{module_server_buttons_remove}},
+  \code{\link{module_server_buttons_rename}},
+  \code{\link{module_server_buttons_rollback}},
+  \code{\link{module_server_darwinizerInput}},
+  \code{\link{module_server_darwinizer}},
+  \code{\link{module_server_modalsUI}},
   \code{\link{module_server_upload_databaseInput}},
   \code{\link{module_server_upload_database}},
   \code{\link{module_server_upload_dictionaryInput}},
   \code{\link{module_server_upload_dictionary}},
   \code{\link{module_server_upload_localInput}},
   \code{\link{module_server_upload_local}},
+  \code{\link{module_ui_buttonsUI}},
+  \code{\link{module_ui_buttons}},
   \code{\link{module_ui_checkboxUI}},
   \code{\link{module_ui_checkbox}},
   \code{\link{module_ui_dictionaryUI}},

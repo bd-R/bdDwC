@@ -68,48 +68,10 @@ shiny::shinyServer(function(input, output, session) {
   # --------------------------
   # Disable darwinizer tab
   shinyjs::addCssClass(
-    selector = "a[data-value='darwinizer']",
+    "darwinizer",
     class = "inactiveLink"
   )
-  # Disable Darwinize button if no user data uploaded
-  shiny::observe({
-    if (nrow(rv$data_user) == 0) {
-        shinyjs::disable("submit_to_darwinizer")
-    } else {
-        shinyjs::enable("submit_to_darwinizer")
-    }
-  })
-  # Disable all other buttons if not submitted to Darwinizer
-  shiny::observeEvent(input$submit_to_darwinizer, {
-    shinyjs::removeCssClass(
-      selector = "a[data-value='darwinizer']",
-      class = "inactiveLink"
-    )
-    shinyjs::enable("names_rename")
-    shinyjs::enable("names_remove")
-    shinyjs::enable("names_clean")
-    shinyjs::enable("names_rollback")
-    shinyjs::enable("download_data")
-  })
-  # Disable renaming when no names left
-  shiny::observe({
-    # Check if there are still names left
-    foo <- length(rv$names_user_after) == 0 |
-           length(rv$names_standard_after) == 0
-    bar <- nrow(rv$data_rename) > 0
-    if (foo & bar) {
-      shinyjs::disable("names_rename")
-    }
-    if (length(rv$names_user_after) > 0) {
-      shinyjs::enable("names_rename")
-    }
-  })
-  # Disable rollback when no nothing was darwinized
-  shiny::observe({
-    if (length(rv$data_darwinized$name_old) == 0) {
-      shinyjs::disable("names_rollback")
-    }
-  })
+  shiny::callModule(bdDwC:::module_ui_buttons, "main", rv)
 
 
   # --------------------------
@@ -181,47 +143,11 @@ shiny::shinyServer(function(input, output, session) {
   # --------------------------
   # DARWINIZER
   # --------------------------
-  # Run Darwinizer
-
-  # When Darwinizer button is clicked
-  shiny::observeEvent(input$submit_to_darwinizer, {
-
-    # Jump to Darwinizer tab
-    shinydashboard::updateTabItems(session, "my_tabs", "darwinizer")
-
-    # If user has uploaded dictionary
-    if (nrow(rv$dic_user_raw) > 0) {
-      # Update reactive user dictionary
-      rv$dic_user <- subset(
-        rv$dic_user_raw,
-        select = c(input$names_user_field, input$names_user_standard)
-      )
-      colnames(rv$dic_user) <- c("fieldname", "standard")
-    }
-
-    # Get all standard names
-    rv$names_standard <- unique(rv$data_darwin_cloud$standard)
-    rv$names_standard_after <- unique(rv$data_darwin_cloud$standard)
-    # Run Darwinizer with user and reference dictionary
-    rv$data_darwinized <- bdDwC::darwinize_names(
-      rv$data_user, rbind(rv$dic_user, rv$data_darwin_cloud)
-    )
-
-    # Checkboxes
-    # Update if something was darwinized
-    if (nrow(rv$data_darwinized) > 0) {
-      rv$data_rename <- rv$data_darwinized
-      rv$data_rename$name_rename <- bdDwC:::link_old_new(rv$data_rename)
-      # Updated (remove name) from standard names
-      rv$names_standard_after <- rv$names_standard[
-        !rv$names_standard %in% rv$data_rename$name_new
-      ]
-      # Updated (remove name) from user names
-      rv$names_user_after <- rv$names_user[
-        !tolower(rv$names_user) %in% tolower(rv$data_rename$name_old)
-      ]
-    }
-  })
+  rv <- shiny::callModule(
+    bdDwC:::module_server_darwinizer,
+    "main",
+    rv,
+    parent = session)
 
 
   # --------------------------
@@ -234,80 +160,10 @@ shiny::shinyServer(function(input, output, session) {
   # BUTTONS
   # --------------------------
 
-  # renamed
-  # This is very similar what happens with Darwinizer part
-  # Should refactor this in the future
-  shiny::observeEvent(input$names_rename, {
-    # Update renamed dataset
-    rv$data_rename$name_rename <- NULL
-    rv$data_rename <- rbind(
-      rv$data_rename,
-      data.frame(name_old = input$names_user_radio,
-                 name_new = input$names_standard_radio,
-                 match_type = "Manual",
-                 stringsAsFactors = FALSE)
-    )
-    # Create (combine) renamed name
-    rv$data_rename$name_rename <- bdDwC:::link_old_new(rv$data_rename)
-    # Updated (remove name) from standard names
-    rv$names_standard_after <- rv$names_standard[
-      !rv$names_standard %in% rv$data_rename$name_new
-    ]
-    # Updated (remove name) from user names
-    rv$names_user_after <- rv$names_user[
-      !tolower(rv$names_user) %in% tolower(rv$data_rename$name_old)
-    ]
-  })
-
-  # remove
-  shiny::observeEvent(input$names_remove, {
-    remove_names <- c()
-    if (length(input$names_renamed_manual) > 0) {
-      remove_names <- c(remove_names, input$names_renamed_manual)
-    }
-    if (length(input$names_renamed_darwinized) > 0) {
-      remove_names <- c(remove_names, input$names_renamed_darwinized)
-    }
-    if (length(input$names_renamed_identical) > 0) {
-      remove_names <- c(remove_names, input$names_renamed_identical)
-    }
-    # Remove input from renamed names dataset
-    rv$data_rename <- rv$data_rename[
-      !rv$data_rename$name_rename %in% remove_names,
-    ]
-    # Update standard names checkbox
-    rv$names_standard_after <- rv$names_standard[
-      !rv$names_standard %in% rv$data_rename$name_new
-    ]
-    # Update user names checkbox
-    rv$names_user_after <- rv$names_user[
-      !tolower(rv$names_user) %in% tolower(rv$data_rename$name_old)
-    ]
-  })
-
-  # Clean all renamings
-  shiny::observeEvent(input$names_clean, {
-    rv$data_rename <- data.frame()
-    rv$names_standard_after <- rv$names_standard
-    rv$names_user_after <- rv$names_user
-  })
-
-  # Rollback
-  # This is the same as part in Darwinize (should refactor)
-  shiny::observeEvent(input$names_rollback, {
-    if (nrow(rv$data_darwinized) > 0) {
-      rv$data_rename <- rv$data_darwinized
-      rv$data_rename$name_rename <- bdDwC:::link_old_new(rv$data_rename)
-      rv$names_standard_after <- rv$names_standard[
-        !rv$names_standard %in% rv$data_rename$name_new
-      ]
-      rv$names_user_after <- rv$names_user[
-        !tolower(rv$names_user) %in% tolower(rv$data_rename$name_old)
-      ]
-    }
-  })
-
-  # download
+  rv <- shiny::callModule(bdDwC:::module_server_buttons_rename, "main", rv)
+  rv <- shiny::callModule(bdDwC:::module_server_buttons_remove, "main", rv)
+  rv <- shiny::callModule(bdDwC:::module_server_buttons_clean, "main", rv)
+  rv <- shiny::callModule(bdDwC:::module_server_buttons_rollback, "main", rv)
   output$download_data <- bdDwC:::shiny_server_download_renamed(
     rv$data_user,
     rv$data_rename

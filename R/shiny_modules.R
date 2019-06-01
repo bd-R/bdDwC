@@ -7,7 +7,7 @@
 #'
 #' @keywords shiny modules internal
 #'
-module_server_upload_local <- function(input, output, server, rv) {
+module_server_upload_local <- function(input, output, session, rv) {
   shiny::observeEvent(input$path_input_data, {
     rv$data_user <- shiny_server_upload_local(input$path_input_data)
     rv$names_user <- rv$names_user_after <- colnames(rv$data_user)
@@ -47,7 +47,7 @@ module_server_upload_localInput <- function(
 #'
 #' @keywords shiny modules internal
 #'
-module_server_upload_database <- function(input, output, server, rv) {
+module_server_upload_database <- function(input, output, session, rv) {
   shiny::observeEvent(input$query_database, {
     rv$data_user <- shiny_server_upload_database(
       input$scientific_name,
@@ -124,7 +124,7 @@ module_server_upload_databaseInput <- function(id) {
 #'
 #' @keywords shiny modules internal
 #'
-module_server_upload_dictionary <- function(input, output, server, rv) {
+module_server_upload_dictionary <- function(input, output, session, rv) {
   shiny::observeEvent(input$path_input_dictionary, {
     rv$dic_user_raw <- data.table::fread(
       input$path_input_dictionary$datapath,
@@ -164,7 +164,7 @@ module_server_upload_dictionaryInput <- function(id) {
 #'
 #' @keywords shiny modules internal
 #'
-module_ui_dictionary_radiobuttons_field <- function(input, output, server, rv) {
+module_ui_dictionary_radiobuttons_field <- function(input, output, session, rv) {
   output$names_user_field <- shiny::renderUI({
     if (is.null(rv$names_user_raw)) {
       return(NULL)
@@ -214,7 +214,7 @@ module_ui_dictionary_radiobuttons_fieldOutput <- function(id) {
 #'
 #' @keywords shiny modules internal
 #'
-module_ui_dictionary <- function(input, output, server, rv) {
+module_ui_dictionary <- function(input, output, session, rv) {
   output$dic_info <- shiny_ui_dictionary(
     input$path_input_dictionary$name,
     rv$info_dc_date
@@ -256,7 +256,7 @@ module_ui_dictionaryUI <- function(id) {
 #'
 #' @keywords shiny modules internal
 #'
-module_server_modals <- function(input, output, server)  {
+module_server_modals <- function(input, output, session)  {
   # Welcoming text
   shiny_server_modal_welcome()
   # Citation
@@ -289,14 +289,16 @@ module_server_modalsUI <- function(id) {
 #'
 #' @keywords shiny modules internal
 #'
-module_ui_checkbox <- function(input, output, server, rv, match_type = NULL)  {
+module_ui_checkbox <- function(input, output, session, rv, match_type = NULL) {
+  ns <- session$ns
+  saveRDS(ns, "~/Desktop/foo.RDS")
   # Create checkbox with current user names
   output$names_user <- shiny::renderUI({
     if (length(rv$names_user_after) == 0) {
       return(NULL)
     } else {
       shiny::radioButtons(
-        "names_user_radio",
+        ns("names_user_radio"),
         "User Names",
         sort(rv$names_user_after)
       )
@@ -308,7 +310,7 @@ module_ui_checkbox <- function(input, output, server, rv, match_type = NULL)  {
       return(NULL)
     } else {
       res <- shiny::radioButtons(
-        "names_standard_radio",
+        ns("names_standard_radio"),
         "Stand Names",
         sort(rv$names_standard_after)
       )
@@ -331,7 +333,7 @@ module_ui_checkbox <- function(input, output, server, rv, match_type = NULL)  {
       foo <- subset(rv$data_rename, match_type == "Manual")$name_rename
       if (length(foo) > 0) {
         # Use rev to have newest on top
-        shiny::checkboxGroupInput("names_renamed_manual", NULL, rev(foo))
+        shiny::checkboxGroupInput(ns("names_renamed_manual"), NULL, rev(foo))
       } else {
         shiny::h5("Nothing was renamed")
       }
@@ -345,7 +347,7 @@ module_ui_checkbox <- function(input, output, server, rv, match_type = NULL)  {
       foo <- subset(rv$data_rename, match_type == "Darwinized")$name_rename
       if (length(foo) > 0) {
         # Use rev to have newest on top
-        shiny::checkboxGroupInput("names_renamed_darwinized", NULL, foo)
+        shiny::checkboxGroupInput(ns("names_renamed_darwinized"), NULL, foo)
       } else {
         shiny::h5("No names were Darwinized")
       }
@@ -359,7 +361,7 @@ module_ui_checkbox <- function(input, output, server, rv, match_type = NULL)  {
       foo <- subset(rv$data_rename, match_type == "Identical")$name_rename
       if (length(foo) > 0) {
         # Use rev to have newest on top
-        shiny::checkboxGroupInput("names_renamed_identical", NULL, foo)
+        shiny::checkboxGroupInput(ns("names_renamed_identical"), NULL, foo)
       } else {
         shiny::h5("No names were Identical")
       }
@@ -400,4 +402,297 @@ module_ui_checkboxUI <- function(id) {
       shiny::uiOutput(ns("names_renamed_identical"))
     )
   )
+}
+
+#' Module for darwinizer
+#' 
+#' @param rv reactive values
+#' 
+#' @family shiny modules
+#'
+#' @keywords shiny modules internal
+#'
+module_server_darwinizer <- function(input, output, session, rv, parent)  {
+  shiny::observeEvent(input$submit_to_darwinizer, {
+    # Jump to Darwinizer tab
+    shinydashboard::updateTabItems(session = parent, "my_tabs", "darwinizer")
+    # If user has uploaded dictionary
+    if (nrow(rv$dic_user_raw) > 0) {
+      # Update reactive user dictionary
+      rv$dic_user <- subset(
+        rv$dic_user_raw,
+        select = c(input$names_user_field, input$names_user_standard)
+      )
+      colnames(rv$dic_user) <- c("fieldname", "standard")
+    }
+
+    # Get all standard names
+    rv$names_standard <- unique(rv$data_darwin_cloud$standard)
+    rv$names_standard_after <- unique(rv$data_darwin_cloud$standard)
+    # Run Darwinizer with user and reference dictionary
+    rv$data_darwinized <- bdDwC::darwinize_names(
+      rv$data_user, rbind(rv$dic_user, rv$data_darwin_cloud)
+    )
+
+    # Checkboxes
+    # Update if something was darwinized
+    if (nrow(rv$data_darwinized) > 0) {
+      rv$data_rename <- rv$data_darwinized
+      rv$data_rename$name_rename <- link_old_new(rv$data_rename)
+      # Updated (remove name) from standard names
+      rv$names_standard_after <- rv$names_standard[
+        !rv$names_standard %in% rv$data_rename$name_new
+      ]
+      # Updated (remove name) from user names
+      rv$names_user_after <- rv$names_user[
+        !tolower(rv$names_user) %in% tolower(rv$data_rename$name_old)
+      ]
+    }
+  })
+  return(rv)
+}
+
+#' Input module for {module_server_darwinizer}
+#'
+#' @family shiny modules
+#'
+#' @keywords shiny modules internal
+#'
+module_server_darwinizerInput <- function(id) {
+  ns <- shiny::NS(id)
+  shiny::actionButton(
+    ns("submit_to_darwinizer"),
+    "Submit to Darwinizer",
+    width = 250,
+    style = "background: url('Darwin.svg');
+             background-position: left center;
+             background-repeat: no-repeat;
+             background-color: #ffffff;
+             color: #000000;
+             border-color: #091520;
+             padding:10px;
+             font-size:120%"
+  )
+}
+
+#' Module to enable/disable darwinizer buttons
+#' 
+#' @param rv reactive values
+#' 
+#' @family shiny modules
+#'
+#' @keywords shiny modules internal
+#'
+module_ui_buttons <- function(input, output, session, rv)  {
+  shiny::observe({
+    # Disable submission if there's no data
+    shinyjs::toggleState(
+      "submit_to_darwinizer",
+      nrow(rv$data_user) > 0
+    )
+    # Disable renaming when no names left
+    shinyjs::toggleState(
+      "names_rename",
+      all(
+        length(rv$names_user_after) > 0,
+        length(rv$names_standard_after) > 0
+      )
+        # nrow(rv$data_rename) == 0
+    )
+    # Disable rollback when no nothing was darwinized
+    shinyjs::toggleState(
+      "names_rollback",
+      length(rv$data_darwinized$name_old) > 0
+    )
+  })
+}
+
+#' Input module for {module_ui_buttons}
+#'
+#' @family shiny modules
+#'
+#' @keywords shiny modules internal
+#'
+module_ui_buttonsUI <- function(id) {
+  ns <- shiny::NS(id)
+  shiny::fluidRow(
+    shiny::column(2,
+      shiny::br(), shiny::br(),
+      shiny::actionButton(
+        ns("names_rename"),
+        "Rename",
+        icon = shiny::icon("arrow-circle-right"),
+        width = 210,
+        style = "color: #000000;
+                 background-color: #71a879;
+                 border-color: #091520;
+                 padding:10px;
+                 font-size:120%"
+      ),
+      offset = 1
+    ),
+    shiny::column(2,
+      shiny::verticalLayout(
+        shiny::actionButton(
+            ns("names_remove"),
+            "Remove selected rename",
+            icon = shiny::icon("times"),
+            width = 210,
+            style = "color: #000000;
+                     background-color: #a188bd;
+                     border-color: #091520"
+        ),
+        shiny::br(),
+        shiny::actionButton(
+          ns("names_clean"),
+          "Remove all renames",
+          icon = shiny::icon("times"),
+          width = 210,
+          style = "color: #000000;
+                   background-color: #a188bd;
+                   border-color: #091520"
+        ),
+        shiny::br(),
+        shiny::actionButton(
+          ns("names_rollback"),
+          "Rollback to Darwinizer",
+          icon = shiny::icon("fast-backward"),
+          width = 210,
+          style = "color: #000000;
+                   background-color: #c4cc6d;
+                   border-color: #091520"
+        )
+      ),
+      offset = 2
+    ),
+    shiny::column(2,
+      shiny::downloadButton(
+        ns("download_data"),
+        "Download final data",
+        icon = shiny::icon("check"),
+        width = 210,
+        style = "color: #000000;
+                 background-color: #71a879;
+                 border-color: #091520;
+                 padding:10px;
+                 font-size:120%"
+      ),
+      offset = 0
+    ),
+    style = "margin-bottom:30px;
+             border-bottom:2px solid;
+             padding: 20px"
+  )
+}
+
+#' Module to control rename button 
+#' 
+#' @param rv reactive values
+#' 
+#' @family shiny modules
+#'
+#' @keywords shiny modules internal
+#'
+module_server_buttons_rename <- function(input, output, session, rv)  {
+  shiny::observeEvent(input$names_rename, {
+    # Update renamed dataset
+    rv$data_rename$name_rename <- NULL
+    rv$data_rename <- rbind(
+      rv$data_rename,
+      data.frame(
+        name_old = input$names_user_radio,
+        name_new = input$names_standard_radio,
+        match_type = "Manual",
+        stringsAsFactors = FALSE
+      )
+    )
+    # Create (combine) renamed name
+    rv$data_rename$name_rename <- link_old_new(rv$data_rename)
+    # Updated (remove name) from standard names
+    rv$names_standard_after <- rv$names_standard[
+      !rv$names_standard %in% rv$data_rename$name_new
+    ]
+    # Updated (remove name) from user names
+    rv$names_user_after <- rv$names_user[
+      !tolower(rv$names_user) %in% tolower(rv$data_rename$name_old)
+    ]
+  })
+  return(rv)
+}
+
+#' Module to control remove button
+#' 
+#' @param rv reactive values
+#' 
+#' @family shiny modules
+#'
+#' @keywords shiny modules internal
+#'
+module_server_buttons_remove <- function(input, output, session, rv)  {
+  shiny::observeEvent(input$names_remove, {
+    remove_names <- c()
+    if (length(input$names_renamed_manual) > 0) {
+      remove_names <- c(remove_names, input$names_renamed_manual)
+    }
+    if (length(input$names_renamed_darwinized) > 0) {
+      remove_names <- c(remove_names, input$names_renamed_darwinized)
+    }
+    if (length(input$names_renamed_identical) > 0) {
+      remove_names <- c(remove_names, input$names_renamed_identical)
+    }
+    # Remove input from renamed names dataset
+    rv$data_rename <- rv$data_rename[
+      !rv$data_rename$name_rename %in% remove_names,
+    ]
+    # Update standard names checkbox
+    rv$names_standard_after <- rv$names_standard[
+      !rv$names_standard %in% rv$data_rename$name_new
+    ]
+    # Update user names checkbox
+    rv$names_user_after <- rv$names_user[
+      !tolower(rv$names_user) %in% tolower(rv$data_rename$name_old)
+    ]
+  })
+  return(rv)
+}
+
+#' Module to control clean button
+#' 
+#' @param rv reactive values
+#' 
+#' @family shiny modules
+#'
+#' @keywords shiny modules internal
+#'
+module_server_buttons_clean <- function(input, output, session, rv)  {
+  shiny::observeEvent(input$names_clean, {
+    rv$data_rename <- data.frame()
+    rv$names_standard_after <- rv$names_standard
+    rv$names_user_after <- rv$names_user
+  })
+  return(rv)
+}
+
+#' Module to control rollback button
+#' 
+#' @param rv reactive values
+#' 
+#' @family shiny modules
+#'
+#' @keywords shiny modules internal
+#'
+module_server_buttons_rollback <- function(input, output, session, rv)  {
+  shiny::observeEvent(input$names_rollback, {
+    if (nrow(rv$data_darwinized) > 0) {
+      rv$data_rename <- rv$data_darwinized
+      rv$data_rename$name_rename <- link_old_new(rv$data_rename)
+      rv$names_standard_after <- rv$names_standard[
+        !rv$names_standard %in% rv$data_rename$name_new
+      ]
+      rv$names_user_after <- rv$names_user[
+        !tolower(rv$names_user) %in% tolower(rv$data_rename$name_old)
+      ]
+    }
+  })
+  return(rv)
 }

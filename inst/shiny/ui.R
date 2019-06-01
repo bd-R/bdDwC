@@ -82,19 +82,7 @@ shinydashboard::dashboardPage(
             )
           )
         ),
-        shiny::actionButton(
-          "submit_to_darwinizer",
-          "Submit to Darwinizer",
-          width = 250,
-          style = "background: url('Darwin.svg');
-                   background-position: left center;
-                   background-repeat: no-repeat;
-                   background-color: #ffffff;
-                   color: #000000;
-                   border-color: #091520;
-                   padding:10px;
-                   font-size:120%"
-        )
+        bdDwC:::module_server_darwinizerInput("main")
       ),
 
       # --------------------------
@@ -117,77 +105,9 @@ shinydashboard::dashboardPage(
               style = "margin-bottom:10px; border-bottom:2px solid"
             )
           ),
-          shiny::fluidRow(
-            shiny::column(2,
-              shiny::br(), shiny::br(),
-              shinyjs::disabled(
-                shiny::actionButton(
-                  "names_rename", "Rename",
-                  icon = shiny::icon("arrow-circle-right"), width = 210,
-                  style = "color: #000000;
-                           background-color: #71a879;
-                           border-color: #091520;
-                           padding:10px;
-                           font-size:120%"
-                )
-              ),
-              offset = 1
-            ),
-            shiny::column(2,
-              shiny::verticalLayout(
-                shinyjs::disabled(
-                  shiny::actionButton(
-                      "names_remove", "Remove selected rename",
-                      icon = shiny::icon("times"), width = 210,
-                      style = "color: #000000;
-                               background-color: #a188bd;
-                               border-color: #091520"
-                  )
-                ),
-                shiny::br(),
-                shinyjs::disabled(
-                  shiny::actionButton(
-                    "names_clean", "Remove all renames",
-                    icon = shiny::icon("times"), width = 210,
-                    style = "color: #000000;
-                             background-color: #a188bd;
-                             border-color: #091520"
-                  )
-                ),
-                shiny::br(),
-                shinyjs::disabled(
-                  shiny::actionButton(
-                    "names_rollback",
-                    "Rollback to Darwinizer",
-                    icon = shiny::icon("fast-backward"), width = 210,
-                    style = "color: #000000;
-                             background-color: #c4cc6d;
-                             border-color: #091520"
-                  )
-                )
-              ),
-              offset = 2
-            ),
-            shiny::column(2,
-              shinyjs::disabled(
-                shiny::downloadButton(
-                  "download_data", "Download final data",
-                  icon = shiny::icon("check"), width = 210,
-                  style = "color: #000000;
-                           background-color: #71a879;
-                           border-color: #091520;
-                           padding:10px;
-                           font-size:120%"
-                )
-              ),
-              offset = 0
-            ),
-            style = "margin-bottom:30px;
-                     border-bottom:2px solid;
-                     padding: 20px"
-          ),
-            shiny::br(), shiny::br(),
-            bdDwC:::module_ui_checkboxUI("main")
+          bdDwC:::module_ui_buttonsUI("main"),
+          shiny::br(), shiny::br(),
+          bdDwC:::module_ui_checkboxUI("main")
         )
       )
     )
