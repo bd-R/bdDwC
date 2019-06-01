@@ -1,3 +1,45 @@
+#' Create reactive values used within app
+#' 
+#' @return An object that stores reactive values
+#' (created with {shiny::reactiveValues})
+#'
+#' @importFrom shiny reactiveValues
+#'
+#' @family shiny
+#'
+#' @keywords shiny internal
+#'
+shiny_server_reactivevalues <- function()  {
+  rv <- shiny::reactiveValues(
+    # User data used in Darwinizer
+    data_user = data.frame(),
+    # Darwinized data (created with darwinize_names)
+    data_darwinized = data.frame(),
+    # Data that contains all renamings
+    data_rename = data.frame(),
+    # Darwin Cloud Data (standard and fieldname)
+    data_darwin_cloud = data_darwin_cloud$data,
+    # Original set of names in user data
+    names_user = c(),
+    # Set of names in user data after renaming
+    names_user_after = c(),
+    # Original set of Darwin Cloud names
+    names_standard = c(),
+    # Set of Darwin Cloud names after renaming
+    names_standard_after = c(),
+    # Dictionary version (date)
+    info_dc_date = data_darwin_cloud$date,
+    # User original dictionary
+    dic_user_raw = data.frame(),
+    # Names in user original dictionary used to create radio buttons
+    names_user_raw = c(),
+    # Subset of users dictionary
+    # Subset made using column names specified by user
+    dic_user = data.frame()
+  )
+  return(rv)
+}
+
 #' Show shiny welcoming modal
 #'
 #' Show shiny modal with specified title, subtitle and other details

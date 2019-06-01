@@ -1,8 +1,8 @@
 options(
-  # let bigger input files
-  shiny.maxRequestSize = 50 * 1024 ^ 2,
   # debug text (full path)
   shiny.fullstacktrace = TRUE,
+  # let bigger input files
+  shiny.maxRequestSize = 50 * 1024 ^ 2,
   # debug visual
   shiny.reactlog = TRUE
 )
@@ -16,46 +16,20 @@ shiny::shinyServer(function(input, output, session) {
   # REACTIVE VALUES
   # --------------------------
   # All reactive values that we use within app
-  rv <- shiny::reactiveValues(
-    # User data used in Darwinizer
-    data_user = data.frame(),
-    # Darwinized data (created with darwinize_names)
-    data_darwinized = data.frame(),
-    # Data that contains all renamings
-    data_rename = data.frame(),
-    # Darwin Cloud Data (standard and fieldname)
-    data_darwin_cloud = bdDwC:::data_darwin_cloud$data,
-    # Original set of names in user data
-    names_user = c(),
-    # Set of names in user data after renaming
-    names_user_after = c(),
-    # Original set of Darwin Cloud names
-    names_standard = c(),
-    # Set of Darwin Cloud names after renaming
-    names_standard_after = c(),
-    # Dictionary version (date)
-    info_dc_date = bdDwC:::data_darwin_cloud$date,
-    # User original dictionary
-    dic_user_raw = data.frame(),
-    # Names in user original dictionary used to create radio buttons
-    names_user_raw = c(),
-    # Subset of users dictionary
-    # Subset made using column names specified by user
-    dic_user = data.frame()
-  )
+  rv <- bdDwC:::shiny_server_reactivevalues()
 
 
   # --------------------------
   # MODAL DIALOGS
   # --------------------------
-  # We have to keep this on top as welcoming modal is produced here
+  # We have to keep this on top as it's a welcoming modal
   shiny::callModule(bdDwC:::module_server_modals, "main")
   # Information about the Darwin Cloud
   # No modal as created within shiny_ui_dictionary
   shiny::observeEvent(input$pop_dc, {
     bdDwC:::shiny_server_modal_cloud()
   })
-  # Information about user dictionary
+  # Information about users dictionary
   # No modal as created within shiny_ui_dictionary
   shiny::observeEvent(input$pop_dic, {
     bdDwC:::shiny_server_modal_dictionary()
