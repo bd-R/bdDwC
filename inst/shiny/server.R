@@ -140,69 +140,32 @@ shiny::shinyServer(function(input, output, session) {
   })
 
 
-  # --------------------------
-  # DARWINIZER
-  # --------------------------
+  # Darwnizer
   rv <- shiny::callModule(
     bdDwC:::module_server_darwinizer,
     "main",
     rv,
-    parent = session)
+    parent = session
+  )
 
-
-  # --------------------------
-  # CHECKBOXES
-  # --------------------------
+  # Checkboxes
   shiny::callModule(bdDwC:::module_ui_checkbox, "main", rv)
 
-
-  # --------------------------
-  # BUTTONS
-  # --------------------------
-
+  # Buttons
   rv <- shiny::callModule(bdDwC:::module_server_buttons_rename, "main", rv)
   rv <- shiny::callModule(bdDwC:::module_server_buttons_remove, "main", rv)
   rv <- shiny::callModule(bdDwC:::module_server_buttons_clean, "main", rv)
   rv <- shiny::callModule(bdDwC:::module_server_buttons_rollback, "main", rv)
+  ####### CHECK????? !!!!!!!!!!!!!!!!
   output$download_data <- bdDwC:::shiny_server_download_renamed(
     rv$data_user,
     rv$data_rename
   )
 
-
-  # --------------------------
-  # CREATE UI
-  # --------------------------
-
   # Value boxes
-  output$vb_all_names <- bdDwC:::shiny_ui_valuebox(
-    length(rv$names_user), "Names Submitted", "light-blue"
-  )
-  output$vb_dwc_names <- bdDwC:::shiny_ui_valuebox(
-    paste0(
-      nrow(rv$data_rename),
-      " (", round(nrow(rv$data_rename) * 100 / length(rv$names_user)), "%)"
-    ),
-    "Names Darwinized",
-    "olive"
-  )
-  output$vb_dwc_ident <- bdDwC:::shiny_ui_valuebox(
-    sum(rv$data_rename$match_type == "Identical"),
-    "Darwinized: Identical",
-    "green"
-  )
-  output$vb_dwc_match <- bdDwC:::shiny_ui_valuebox(
-    sum(rv$data_rename$match_type == "Darwinized"),
-    "Darwinized: Matched",
-    "green"
-  )
-  output$vb_manual <- bdDwC:::shiny_ui_valuebox(
-    sum(rv$data_rename$match_type == "Manual"),
-    "Darwinized: Manually",
-    "green"
-  )
+  shiny::callModule(bdDwC:::module_ui_valuebox, "main", rv)
 
-  # Darwin core definition
+  ##DOESN:T WORK Darwin core definition !!!!!!!!!!!!!!!!!!!!!!
   output$names_standard_hover <- shiny::renderUI({
     do.call(shiny::tagList, bdDwC:::shiny_ui_darwin_core_definition())
   })

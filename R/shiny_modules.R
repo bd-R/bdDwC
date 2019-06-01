@@ -696,3 +696,56 @@ module_server_buttons_rollback <- function(input, output, session, rv)  {
   })
   return(rv)
 }
+
+#' Module to control values boxes
+#' 
+#' @param rv reactive values
+#' 
+#' @family shiny modules
+#'
+#' @keywords shiny modules internal
+#'
+module_ui_valuebox <- function(input, output, session, rv)  {
+  output$vb_all_names <- bdDwC:::shiny_ui_valuebox(
+    length(rv$names_user), "Names Submitted", "light-blue"
+  )
+  output$vb_dwc_names <- bdDwC:::shiny_ui_valuebox(
+    paste0(
+      nrow(rv$data_rename),
+      " (", round(nrow(rv$data_rename) * 100 / length(rv$names_user)), "%)"
+    ),
+    "Names Darwinized",
+    "olive"
+  )
+  output$vb_dwc_ident <- bdDwC:::shiny_ui_valuebox(
+    sum(rv$data_rename$match_type == "Identical"),
+    "Darwinized: Identical",
+    "green"
+  )
+  output$vb_dwc_match <- bdDwC:::shiny_ui_valuebox(
+    sum(rv$data_rename$match_type == "Darwinized"),
+    "Darwinized: Matched",
+    "green"
+  )
+  output$vb_manual <- bdDwC:::shiny_ui_valuebox(
+    sum(rv$data_rename$match_type == "Manual"),
+    "Darwinized: Manually",
+    "green"
+  )
+}
+#' Output module for {module_ui_valuebox}
+#'
+#' @family shiny modules
+#'
+#' @keywords shiny modules internal
+#'
+module_ui_valueboxOutput <- function(id) {
+  ns <- shiny::NS(id)
+  shiny::tagList(
+    shinydashboard::valueBoxOutput(ns("vb_all_names"), width = 2),
+    shinydashboard::valueBoxOutput(ns("vb_dwc_names"), width = 2),
+    shinydashboard::valueBoxOutput(ns("vb_dwc_match"), width = 2),
+    shinydashboard::valueBoxOutput(ns("vb_manual"), width = 2),
+    shinydashboard::valueBoxOutput(ns("vb_dwc_ident"), width = 2)
+  )
+}

@@ -30,7 +30,9 @@ Other shiny modules: \code{\link{module_server_buttons_clean}},
   \code{\link{module_ui_checkbox}},
   \code{\link{module_ui_dictionary_radiobuttons_fieldOutput}},
   \code{\link{module_ui_dictionary_radiobuttons_field}},
-  \code{\link{module_ui_dictionary}}
+  \code{\link{module_ui_dictionary}},
+  \code{\link{module_ui_valueboxOutput}},
+  \code{\link{module_ui_valuebox}}
 }
 \concept{shiny modules}
 \keyword{internal}

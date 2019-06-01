@@ -93,11 +93,7 @@ shinydashboard::dashboardPage(
         shiny::fluidRow(
           shiny::fluidRow(
             shiny::column(12,
-              shinydashboard::valueBoxOutput("vb_all_names", width = 2),
-              shinydashboard::valueBoxOutput("vb_dwc_names", width = 2),
-              shinydashboard::valueBoxOutput("vb_dwc_match", width = 2),
-              shinydashboard::valueBoxOutput("vb_manual", width = 2),
-              shinydashboard::valueBoxOutput("vb_dwc_ident", width = 2),
+              bdDwC:::module_ui_valueboxOutput("main"),
               offset = 1
             ),
             # Adds lines belowe value boxes
