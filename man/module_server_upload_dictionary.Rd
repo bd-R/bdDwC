@@ -13,7 +13,9 @@ module_server_upload_dictionary(input, output, server, rv)
 Module to upload users dictionary
 }
 \seealso{
-Other shiny modules: \code{\link{module_server_upload_databaseInput}},
+Other shiny modules: \code{\link{module_server_modalsUI}},
+  \code{\link{module_server_modals}},
+  \code{\link{module_server_upload_databaseInput}},
   \code{\link{module_server_upload_database}},
   \code{\link{module_server_upload_dictionaryInput}},
   \code{\link{module_server_upload_localInput}},

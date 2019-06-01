@@ -49,23 +49,22 @@ shiny::shinyServer(function(input, output, session) {
   # --------------------------
   # MODAL DIALOGS
   # --------------------------
-  shiny::callModule(bdDwC:::module_server_modals, "modals")
+  shiny::callModule(bdDwC:::module_server_modals, "main")
   # Information about Darwin Cloud
   # No modal as created within shiny_ui_dictionary
   shiny::observeEvent(input$pop_dc, {
-    shiny_server_modal_cloud()
+    bdDwC:::shiny_server_modal_cloud()
   })
   # Information about User dictionary
   # No modal as created within shiny_ui_dictionary
   shiny::observeEvent(input$pop_dic, {
-    shiny_server_modal_dictionary()
+    bdDwC:::shiny_server_modal_dictionary()
   })
 
 
   # --------------------------
   # DISABLE BUTTONS
   # --------------------------
-
   # Disable darwinizer tab
   shinyjs::addCssClass(
     selector = "a[data-value='darwinizer']",
@@ -119,13 +118,13 @@ shiny::shinyServer(function(input, output, session) {
   # Upload local file
   rv <- shiny::callModule(
     bdDwC:::module_server_upload_local,
-    "input_local",
+    "main",
     rv
   )
   # Download from database
   rv <- shiny::callModule(
     bdDwC:::module_server_upload_database,
-    "input_remote",
+    "main",
     rv
   )
 
@@ -137,19 +136,19 @@ shiny::shinyServer(function(input, output, session) {
   # Upload user dictionary
   rv <- shiny::callModule(
     bdDwC:::module_server_upload_dictionary,
-    "upload_dictionary",
+    "main",
     rv
   )
   # Creat radiobuttons for users field name column
   shiny::callModule(
     bdDwC:::module_ui_dictionary_radiobuttons_field,
-    "dictionary_names",
+    "main",
     rv
   )
   # Update dictionary information
   shiny::callModule(
     bdDwC:::module_ui_dictionary,
-    "upload_dictionary",
+    "main",
     rv
   )
   # NO MODULE AVAILABLE >>>>>>>>>>>>>>>>>

@@ -65,9 +65,8 @@ module_server_upload_database <- function(input, output, server, rv) {
 #'
 #' @keywords shiny modules internal
 #'
-module_server_upload_databaseInput <- function(
-  id,
-  online_databases = list(
+module_server_upload_databaseInput <- function(id) {
+  online_databases <- list(
     "GBIF (Global Biodiversity Information Facility)" = "gbif",
     "iDigBio (Integrated Digitized Biocollections)" = "idigbio",
     "EcoEngine (Berkeley Ecoinformatics Engine)" = "ecoengine",
@@ -78,7 +77,6 @@ module_server_upload_databaseInput <- function(
     "OBIS (Ocean Biogeographic Information System)" = "obis",
     "AntWeb" = "antweb"
   )
-) {
   ns <- shiny::NS(id)
   shiny::tagList(
     shiny::textInput(

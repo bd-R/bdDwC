@@ -22,7 +22,7 @@ shinydashboard::dashboardPage(
       shinydashboard::menuItem("Darwinizer", tabName = "darwinizer"),
       # Horizontal line
       shiny::tags$hr(style = "border-color: #bfbfbf;"),
-      bdDwC:::module_server_modalsUI("modals")
+      bdDwC:::module_server_modalsUI("main")
     )
   ),
 
@@ -55,13 +55,13 @@ shinydashboard::dashboardPage(
             # USER FILE
             shinyBS::bsCollapsePanel(
               "Upload Local File",
-              bdDwC:::module_server_upload_localInput("input_local"),
+              bdDwC:::module_server_upload_localInput("main"),
               style = "info"
             ),
             # QUERY FROM A DATABASE
             shinyBS::bsCollapsePanel(
               "Query Data From a Database",
-              bdDwC:::module_server_upload_databaseInput("input_remote"),
+              bdDwC:::module_server_upload_databaseInput("main"),
               style = "success"
             )
           )
@@ -73,12 +73,12 @@ shinydashboard::dashboardPage(
           status = "warning",
           width = 5,
           # Display dictionary information
-          bdDwC:::module_ui_dictionaryUI("upload_dictionary"),
+          bdDwC:::module_ui_dictionaryUI("main"),
           # Upload user dictionary
-          bdDwC:::module_server_upload_dictionaryInput("upload_dictionary"),
+          bdDwC:::module_server_upload_dictionaryInput("main"),
           # Buttons for field and standard names
           bdDwC:::module_ui_dictionary_radiobuttons_fieldOutput(
-            "dictionary_names"
+            "main"
           )
         )
       ),
