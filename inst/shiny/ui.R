@@ -74,8 +74,6 @@ shinydashboard::dashboardPage(
             width = 5,
             # Display dictionary information
             bdDwC:::module_ui_dictionaryUI("main"),
-            # Upload user dictionary
-            bdDwC:::module_server_upload_dictionaryInput("main"),
             # Buttons for field and standard names
             bdDwC:::module_ui_dictionary_radiobuttons_fieldOutput(
               "main"

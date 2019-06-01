@@ -89,12 +89,6 @@ shiny::shinyServer(function(input, output, session) {
   # --------------------------
   # USER DICTIONARY
   # --------------------------
-  # Upload user dictionary
-  rv <- shiny::callModule(
-    bdDwC:::module_server_upload_dictionary,
-    "main",
-    rv
-  )
   # Creat radiobuttons for users field name column
   shiny::callModule(
     bdDwC:::module_ui_dictionary_radiobuttons_field,
