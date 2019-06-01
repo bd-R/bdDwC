@@ -280,3 +280,124 @@ module_server_modalsUI <- function(id) {
              background-color: #e5e5e5"
   )
 }
+
+#' Module to create checkbox for user names
+#' 
+#' @param rv reactive values
+#' 
+#' @family shiny modules
+#'
+#' @keywords shiny modules internal
+#'
+module_ui_checkbox <- function(input, output, server, rv, match_type = NULL)  {
+  # Create checkbox with current user names
+  output$names_user <- shiny::renderUI({
+    if (length(rv$names_user_after) == 0) {
+      return(NULL)
+    } else {
+      shiny::radioButtons(
+        "names_user_radio",
+        "User Names",
+        sort(rv$names_user_after)
+      )
+    }
+  })
+  # Create checkbox with current standard names
+  output$names_standard <- shiny::renderUI({
+    if (length(rv$names_standard_after) == 0) {
+      return(NULL)
+    } else {
+      res <- shiny::radioButtons(
+        "names_standard_radio",
+        "Stand Names",
+        sort(rv$names_standard_after)
+      )
+      # Adding unique ID so we can add info boxes with additional info
+      for (i in sort(rv$names_standard_after)) {
+        res <- gsub(
+          paste0("<span>", i, "</span>"),
+          paste0("<span id=\"DWC_", i, "\">", i, "</span>"),
+          res
+        )
+      }
+      shiny::HTML(res)
+    }
+  })
+  # Create checkbox manually renamed terms
+  output$names_renamed_manual <- shiny::renderUI({
+    if (length(rv$data_rename$name_rename) == 0) {
+      shiny::h5("Nothing was renamed")
+    } else {
+      foo <- subset(rv$data_rename, match_type == "Manual")$name_rename
+      if (length(foo) > 0) {
+        # Use rev to have newest on top
+        shiny::checkboxGroupInput("names_renamed_manual", NULL, rev(foo))
+      } else {
+        shiny::h5("Nothing was renamed")
+      }
+    }
+  })
+  # Create checkbox for darwinized terms
+  output$names_renamed_darwinized <- shiny::renderUI({
+    if (length(rv$data_rename$name_rename) == 0) {
+      shiny::h5("No names were Darwinized")
+    } else {
+      foo <- subset(rv$data_rename, match_type == "Darwinized")$name_rename
+      if (length(foo) > 0) {
+        # Use rev to have newest on top
+        shiny::checkboxGroupInput("names_renamed_darwinized", NULL, foo)
+      } else {
+        shiny::h5("No names were Darwinized")
+      }
+    }
+  })
+  # Create checkbox for identical matches
+  output$names_renamed_identical <- shiny::renderUI({
+    if (length(rv$data_rename$name_rename) == 0) {
+      shiny::h5("No names were Identical")
+    } else {
+      foo <- subset(rv$data_rename, match_type == "Identical")$name_rename
+      if (length(foo) > 0) {
+        # Use rev to have newest on top
+        shiny::checkboxGroupInput("names_renamed_identical", NULL, foo)
+      } else {
+        shiny::h5("No names were Identical")
+      }
+    }
+  })
+}
+#' UI module for {module_ui_checkbox_usernames}
+#'
+#' @family shiny modules
+#'
+#' @keywords shiny modules internal
+#'
+#'
+module_ui_checkboxUI <- function(id) {
+  ns <- shiny::NS(id)
+  shiny::tagList(
+    shiny::column(2,
+      shiny::uiOutput(ns("names_user"))
+    ),
+    shiny::column(2,
+      shiny::uiOutput(ns("names_standard")),
+      shiny::uiOutput(ns("names_standard_hover")),
+      offset = 1
+    ),
+    shinydashboard::box(
+      title = "Darwinized Names",
+      width = 2, status = "success", collapsible = TRUE, solidHeader = TRUE,
+      shiny::uiOutput(ns("names_renamed_darwinized"))
+    ),
+    shinydashboard::box(
+      title = "Manually Renamed",
+      width = 2, status = "success", collapsible = TRUE, solidHeader = TRUE,
+      shiny::uiOutput(ns("names_renamed_manual"))
+    ),
+    shinydashboard::box(
+      title = "Identical Matches",
+      width = 2, status = "success", collapsible = TRUE, solidHeader = TRUE,
+      shiny::uiOutput(ns("names_renamed_identical"))
+    )
+  )
+}

@@ -18,6 +18,8 @@ Other shiny modules: \code{\link{module_server_modalsUI}},
   \code{\link{module_server_upload_dictionary}},
   \code{\link{module_server_upload_localInput}},
   \code{\link{module_server_upload_local}},
+  \code{\link{module_ui_checkboxUI}},
+  \code{\link{module_ui_checkbox}},
   \code{\link{module_ui_dictionaryUI}},
   \code{\link{module_ui_dictionary_radiobuttons_field}},
   \code{\link{module_ui_dictionary}}

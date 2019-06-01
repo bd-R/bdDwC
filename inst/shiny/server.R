@@ -16,7 +16,7 @@ shiny::shinyServer(function(input, output, session) {
   # --------------------------
   # REACTIVE VALUES
   # --------------------------
-  # All reactive values that we use
+  # All reactive values that we use within app
   rv <- shiny::reactiveValues(
     # User data used in Darwinizer
     data_user = data.frame(),
@@ -49,13 +49,14 @@ shiny::shinyServer(function(input, output, session) {
   # --------------------------
   # MODAL DIALOGS
   # --------------------------
+  # We have to keep this on top as welcoming modal is produced here
   shiny::callModule(bdDwC:::module_server_modals, "main")
-  # Information about Darwin Cloud
+  # Information about the Darwin Cloud
   # No modal as created within shiny_ui_dictionary
   shiny::observeEvent(input$pop_dc, {
     bdDwC:::shiny_server_modal_cloud()
   })
-  # Information about User dictionary
+  # Information about user dictionary
   # No modal as created within shiny_ui_dictionary
   shiny::observeEvent(input$pop_dic, {
     bdDwC:::shiny_server_modal_dictionary()
@@ -114,7 +115,6 @@ shiny::shinyServer(function(input, output, session) {
   # --------------------------
   # UPLOAD USER DATA
   # --------------------------
-
   # Upload local file
   rv <- shiny::callModule(
     bdDwC:::module_server_upload_local,
@@ -132,7 +132,6 @@ shiny::shinyServer(function(input, output, session) {
   # --------------------------
   # USER DICTIONARY
   # --------------------------
-
   # Upload user dictionary
   rv <- shiny::callModule(
     bdDwC:::module_server_upload_dictionary,
@@ -151,7 +150,6 @@ shiny::shinyServer(function(input, output, session) {
     "main",
     rv
   )
-  # NO MODULE AVAILABLE >>>>>>>>>>>>>>>>>
   # If button in standard is marked
   shiny::observeEvent(input$names_user_standard, {
     # Which button was marked
@@ -178,7 +176,6 @@ shiny::shinyServer(function(input, output, session) {
       "#names_user_standard .radio:nth-child(", which(!result), ") label"
     ))
   })
-  # NO MODULE AVAILABLE >>>>>>>>>>>>>>>>>
 
 
   # --------------------------
@@ -230,74 +227,7 @@ shiny::shinyServer(function(input, output, session) {
   # --------------------------
   # CHECKBOXES
   # --------------------------
-
-  # Create checkbox with current user names
-  output$names_user <- shiny::renderUI({
-    if (length(rv$names_user_after) == 0) {
-      return(NULL)
-    } else {
-      shiny::radioButtons(
-        "names_user_radio", "User Names", sort(rv$names_user_after)
-      )
-    }
-  })
-  # Create checkbox with current standard names
-  output$names_standard <- shiny::renderUI({
-    if (length(rv$names_standard_after) == 0) {
-      return(NULL)
-    } else {
-      res <- shiny::radioButtons(
-        "names_standard_radio", "Stand Names", sort(rv$names_standard_after)
-      )
-      # Adding unique ID so we can add info boxes with additional info
-      for (i in sort(rv$names_standard_after)) {
-        res <- gsub(paste0("<span>", i, "</span>"),
-                    paste0("<span id=\"DWC_", i, "\">", i, "</span>"),
-                    res
-        )
-      }
-      shiny::HTML(res)
-    }
-  })
-  output$names_renamed_manual <- shiny::renderUI({
-    if (length(rv$data_rename$name_rename) == 0) {
-      shiny::h5("Nothing was renamed")
-    } else {
-      foo <- subset(rv$data_rename, match_type == "Manual")$name_rename
-      if (length(foo) > 0) {
-        # Use rev to have newest on top
-        shiny::checkboxGroupInput("names_renamed_manual", NULL, rev(foo))
-      } else {
-        shiny::h5("Nothing was renamed")
-      }
-    }
-  })
-  output$names_renamed_darwinized <- shiny::renderUI({
-    if (length(rv$data_rename$name_rename) == 0) {
-      shiny::h5("No names were Darwinized")
-    } else {
-      foo <- subset(rv$data_rename, match_type == "Darwinized")$name_rename
-      if (length(foo) > 0) {
-        # Use rev to have newest on top
-        shiny::checkboxGroupInput("names_renamed_darwinized", NULL, foo)
-      } else {
-        shiny::h5("No names were Darwinized")
-      }
-    }
-  })
-  output$names_renamed_identical <- shiny::renderUI({
-    if (length(rv$data_rename$name_rename) == 0) {
-      shiny::h5("No names were Identical")
-    } else {
-      foo <- subset(rv$data_rename, match_type == "Identical")$name_rename
-      if (length(foo) > 0) {
-        # Use rev to have newest on top
-        shiny::checkboxGroupInput("names_renamed_identical", NULL, foo)
-      } else {
-        shiny::h5("No names were Identical")
-      }
-    }
-  })
+  shiny::callModule(bdDwC:::module_ui_checkbox, "main", rv)
 
 
   # --------------------------
