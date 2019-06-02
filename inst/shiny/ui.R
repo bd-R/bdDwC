@@ -22,7 +22,7 @@ shinydashboard::dashboardPage(
       shinydashboard::menuItem("Darwinizer", tabName = "darwinizer"),
       # Horizontal line
       shiny::tags$hr(style = "border-color: #bfbfbf;"),
-      bdDwC:::module_server_modalsUI("main")
+      bdDwC:::module_server_modals_ui("main")
     )
   ),
 
@@ -55,13 +55,13 @@ shinydashboard::dashboardPage(
               # USER FILE
               shinyBS::bsCollapsePanel(
                 "Upload Local File",
-                bdDwC:::module_server_upload_localInput("main"),
+                bdDwC:::module_server_upload_local_input("main"),
                 style = "info"
               ),
               # QUERY FROM A DATABASE
               shinyBS::bsCollapsePanel(
                 "Query Data From a Database",
-                bdDwC:::module_server_upload_databaseInput("main"),
+                bdDwC:::module_server_upload_database_input("main"),
                 style = "success"
               )
             )
@@ -73,14 +73,14 @@ shinydashboard::dashboardPage(
             status = "warning",
             width = 5,
             # Display dictionary information
-            bdDwC:::module_ui_dictionaryUI("main"),
+            bdDwC:::module_ui_dictionary_ui("main"),
             # Buttons for field and standard names
-            bdDwC:::module_ui_dictionary_radiobuttons_fieldOutput(
+            bdDwC:::module_ui_dictionary_radiobuttons_field_output(
               "main"
             )
           )
         ),
-        bdDwC:::module_server_darwinizerInput("main")
+        bdDwC:::module_server_darwinizer_input("main")
       ),
 
       # --------------------------
@@ -91,7 +91,7 @@ shinydashboard::dashboardPage(
         shiny::fluidRow(
           shiny::fluidRow(
             shiny::column(12,
-              bdDwC:::module_ui_valueboxOutput("main"),
+              bdDwC:::module_ui_valuebox_output("main"),
               offset = 1
             ),
             # Adds lines belowe value boxes
@@ -99,9 +99,9 @@ shinydashboard::dashboardPage(
               style = "margin-bottom:10px; border-bottom:2px solid"
             )
           ),
-          bdDwC:::module_ui_buttonsUI("main"),
+          bdDwC:::module_ui_buttons_ui("main"),
           shiny::br(), shiny::br(),
-          bdDwC:::module_ui_checkboxUI("main")
+          bdDwC:::module_ui_checkbox_ui("main")
         )
       )
     )

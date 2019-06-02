@@ -44,7 +44,7 @@ module_server_modals <- function(input, output, session)  {
 #'
 #' @keywords shiny modules internal
 #'
-module_server_modalsUI <- function(id) {
+module_server_modals_ui <- function(id) {
   ns <- shiny::NS(id)  
   # Citation
   shiny::actionButton(
@@ -79,7 +79,7 @@ module_server_upload_local <- function(input, output, session, rv) {
 #'
 #' @keywords shiny modules internal
 #'
-module_server_upload_localInput <- function(
+module_server_upload_local_input <- function(
   id,
   upload_local_file = c(
     "text/csv",
@@ -124,7 +124,7 @@ module_server_upload_database <- function(input, output, session, rv) {
 #'
 #' @keywords shiny modules internal
 #'
-module_server_upload_databaseInput <- function(id) {
+module_server_upload_database_input <- function(id) {
   online_databases <- list(
     "GBIF (Global Biodiversity Information Facility)" = "gbif",
     "iDigBio (Integrated Digitized Biocollections)" = "idigbio",
@@ -182,7 +182,9 @@ module_server_upload_databaseInput <- function(id) {
 #'
 #' @keywords shiny modules internal
 #'
-module_ui_dictionary_radiobuttons_field <- function(input, output, session, rv) {
+module_ui_dictionary_radiobuttons_field <- function(
+  input, output, session, rv
+) {
   output$names_user_field <- shiny::renderUI({
     if (is.null(rv$names_user_raw)) {
       return(NULL)
@@ -214,7 +216,7 @@ module_ui_dictionary_radiobuttons_field <- function(input, output, session, rv) 
 #'
 #' @keywords shiny modules internal
 #'
-module_ui_dictionary_radiobuttons_fieldOutput <- function(id) {
+module_ui_dictionary_radiobuttons_field_output <- function(id) {
   ns <- shiny::NS(id)
   shiny::splitLayout(
     shiny::uiOutput(ns("names_user_field")),
@@ -269,7 +271,7 @@ module_ui_dictionary <- function(input, output, session, rv) {
 #'
 #' @keywords shiny modules internal
 #'
-module_ui_dictionaryUI <- function(id) {
+module_ui_dictionary_ui <- function(id) {
   ns <- shiny::NS(id)
   shiny::tagList(
     shiny::uiOutput(ns("dic_info")),
@@ -383,7 +385,7 @@ module_ui_checkbox <- function(input, output, session, rv, match_type = NULL) {
 #' @keywords shiny modules internal
 #'
 #'
-module_ui_checkboxUI <- function(id) {
+module_ui_checkbox_ui <- function(id) {
   ns <- shiny::NS(id)
   shiny::tagList(
     shiny::column(2,
@@ -466,7 +468,7 @@ module_server_darwinizer <- function(input, output, session, rv, parent)  {
 #'
 #' @keywords shiny modules internal
 #'
-module_server_darwinizerInput <- function(id) {
+module_server_darwinizer_input <- function(id) {
   ns <- shiny::NS(id)
   shiny::actionButton(
     ns("submit_to_darwinizer"),
@@ -521,7 +523,7 @@ module_ui_buttons <- function(input, output, session, rv)  {
 #'
 #' @keywords shiny modules internal
 #'
-module_ui_buttonsUI <- function(id) {
+module_ui_buttons_ui <- function(id) {
   ns <- shiny::NS(id)
   shiny::fluidRow(
     shiny::column(2,
@@ -715,7 +717,13 @@ module_server_buttons_rollback <- function(input, output, session, rv)  {
 #'
 module_ui_valuebox <- function(input, output, session, rv)  {
   shiny::observeEvent(
-    c(input$submit_to_darwinizer, input$names_rollback, input$names_clean, input$names_remove, input$names_rename),
+    c(
+      input$submit_to_darwinizer,
+      input$names_rollback,
+      input$names_clean,
+      input$names_remove,
+      input$names_rename
+    ),
   {
     output$vb_all_names <- shiny_ui_valuebox(
       length(rv$names_user), "Names Submitted", "light-blue"
@@ -751,7 +759,7 @@ module_ui_valuebox <- function(input, output, session, rv)  {
 #'
 #' @keywords shiny modules internal
 #'
-module_ui_valueboxOutput <- function(id) {
+module_ui_valuebox_output <- function(id) {
   ns <- shiny::NS(id)
   shiny::tagList(
     shinydashboard::valueBoxOutput(ns("vb_all_names"), width = 2),
