@@ -75,9 +75,7 @@ shinydashboard::dashboardPage(
             # Display dictionary information
             bdDwC:::module_ui_dictionary_ui("main"),
             # Buttons for field and standard names
-            bdDwC:::module_ui_dictionary_radiobuttons_output(
-              "main"
-            )
+            bdDwC:::module_ui_dictionary_radiobuttons_output("main")
           )
         ),
         bdDwC:::module_server_darwinizer_input("main")

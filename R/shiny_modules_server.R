@@ -113,11 +113,13 @@ module_server_upload_database <- function(input, output, session, rv) {
 #'
 module_ui_dictionary <- function(input, output, session, rv) {
   ns <- session$ns
+  # Display dictionary status when app starts
   output$dic_info <- shiny_ui_dictionary(
     input$path_input_dictionary$name,
     rv$info_dc_date,
     ns
   )
+  # Update dictionary status when cloud data is updated
   shiny::observeEvent(input$update_darwin_cloud, {
     # Update DC dictionary
     rv$data_darwin_cloud <- download_cloud_data()
@@ -128,6 +130,7 @@ module_ui_dictionary <- function(input, output, session, rv) {
       ns
     )
   })
+  # Update dictionary status when local dictionary is uploaded
   shiny::observeEvent(input$path_input_dictionary, {
     rv$dic_user_raw <- data.table::fread(
       input$path_input_dictionary$datapath,

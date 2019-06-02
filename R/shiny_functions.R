@@ -207,40 +207,47 @@ shiny_server_upload_database <- function(
   return(as.data.frame(result))
 }
 
-#' Extract darwin core definitions and return as ui element
+#' Create information about dictionaries
 #'
-#' @param input a list with arguments for quering data from the databse
+#' @param path_dictionary a character string with path to users dictionary
+#' @param date_dictionary a value with date of darwin cloud dictionary date
+#' @param ns namespace created with {shiny::NS}
 #' 
-#' @importFrom shinyBS bsTooltip
+#' @importFrom shiny HTML renderUI
 #'
 #' @family shiny
 #'
 #' @keywords shiny internal
 #'
-shiny_ui_darwin_core_definition <- function() {
-  apply(
-    data_darwin_core_info, 1,
-    function(x) {
-      shinyBS::bsTooltip(paste0("DWC_", x[1]), x[2], "right")
-    }
-  )
-}
-
-#' Create shiny value boxes
-#'
-#' @param value value passed to `shinydashboard::valueBox` value argument
-#' @param subtitle value passed to `shinydashboard::valueBox` subtitle argument
-#' @param color value passed to `shinydashboard::valueBox` color argument
-#' 
-#' @importFrom shinydashboard renderValueBox valueBox
-#'
-#' @family shiny
-#'
-#' @keywords shiny internal
-#'
-shiny_ui_valuebox <- function(value, subtitle, color) {
-  shinydashboard::renderValueBox({
-    shinydashboard::valueBox(value, subtitle, color = color)
+shiny_ui_dictionary <- function(path_dictionary = NULL, date_dictionary, ns) {
+  button_info <- 
+  "<button class='btn btn-default action-button' id='INFO'
+    style='width: 1px; border-color: #ffffff;
+           background-color: #ffffff;
+           font-size:100%' type='button'>
+    <i class='glyphicon glyphicon-question-sign'></i>
+  </button>"
+  shiny::renderUI({
+    # Select icon
+    user_dic_icon <- ifelse(is.null(path_dictionary), "unchecked", "check")
+    # Users dictionary file
+    user_dic_file <- ifelse(
+      is.null(path_dictionary),
+      "",
+      paste0("(", sub("\\.txt$|\\.csv$", "", basename(path_dictionary)), ")")
+    )
+    result <- paste0(
+      "<b>Used dictionaries:</b>
+      <br/>
+      <i class='glyphicon glyphicon-check fa-1x'></i>
+      Darwin Cloud (version: ", format(date_dictionary, "%d-%B-%Y"), ")",
+      sub("INFO", ns("pop_dc"), button_info),
+      "<br/>
+      <i class='glyphicon glyphicon-", user_dic_icon, " fa-1x'></i>
+      Personal Dictionary ", user_dic_file,
+      sub("INFO", ns("pop_dic"), button_info)
+    )
+    return(shiny::HTML(result))
   })
 }
 
@@ -280,52 +287,20 @@ shiny_ui_dictionary_radiobuttons <- function(
   return(shiny::HTML(result))
 }
 
-#' Create information about dictionaries
+#' Create shiny value boxes
 #'
-#' @param path_dictionary a character string with path to users dictionary
-#' @param date_dictionary a value with date of darwin cloud dictionary date
-#' @param ns namespace created with {shiny::NS}
+#' @param value value passed to `shinydashboard::valueBox` value argument
+#' @param subtitle value passed to `shinydashboard::valueBox` subtitle argument
+#' @param color value passed to `shinydashboard::valueBox` color argument
 #' 
-#' @importFrom shiny HTML renderUI
+#' @importFrom shinydashboard renderValueBox valueBox
 #'
 #' @family shiny
 #'
 #' @keywords shiny internal
 #'
-shiny_ui_dictionary <- function(path_dictionary = NULL, date_dictionary, ns) {
-  shiny::renderUI({
-    # Select icon
-    user_dic_icon <- ifelse(is.null(path_dictionary), "unchecked", "check")
-    if (is.null(path_dictionary)) {
-      user_dic_file <- NULL
-    } else {
-      user_dic_file <- paste0(
-        "(", sub("\\.txt$|\\.csv$", "", basename(path_dictionary)), ")"
-      )
-    }
-    result <- paste0(
-      "<b>Used dictionaries:</b>
-      <br/>
-      <i class='glyphicon glyphicon-check fa-1x'></i>
-      Darwin Cloud (version: ", format(date_dictionary, "%d-%B-%Y"), ")
-
-      <button class='btn btn-default action-button' id='", ns("pop_dc"), "'
-              style='width: 1px; border-color: #ffffff;
-                     background-color: #ffffff;
-                     font-size:100%' type='button'>
-          <i class='glyphicon glyphicon-question-sign'></i>
-      </button>
-
-      <br/>
-      <i class='glyphicon glyphicon-", user_dic_icon, " fa-1x'></i>
-      Personal Dictionary ", user_dic_file,
-      "<button class='btn btn-default action-button' id='", ns("pop_dic"), "'
-              style='width: 1px; border-color: #ffffff;
-                     background-color: #ffffff;
-                     font-size:100%' type='button'>
-          <i class='glyphicon glyphicon-question-sign'></i>
-      </button>"
-    )
-    return(shiny::HTML(result))
+shiny_ui_valuebox <- function(value, subtitle, color) {
+  shinydashboard::renderValueBox({
+    shinydashboard::valueBox(value, subtitle, color = color)
   })
 }

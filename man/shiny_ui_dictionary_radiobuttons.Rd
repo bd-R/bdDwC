@@ -27,7 +27,6 @@ Other shiny: \code{\link{shiny_server_modal}},
   \code{\link{shiny_server_tab_darwinizer}},
   \code{\link{shiny_server_upload_database}},
   \code{\link{shiny_server_upload_local}},
-  \code{\link{shiny_ui_darwin_core_definition}},
   \code{\link{shiny_ui_dictionary}},
   \code{\link{shiny_ui_valuebox}}
 }

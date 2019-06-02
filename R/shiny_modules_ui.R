@@ -98,22 +98,6 @@ module_server_upload_database_input <- function(id) {
   )
 }
 
-#' Output module for {module_ui_dictionary_radiobuttons}
-#'
-#' @family shiny modules
-#'
-#' @keywords shiny modules internal
-#'
-module_ui_dictionary_radiobuttons_output <- function(id) {
-  ns <- shiny::NS(id)
-  shiny::splitLayout(
-    shiny::uiOutput(ns("names_user_field")),
-    shiny::uiOutput(ns("names_user_standard")),
-    cellWidths = 200,
-    cellArgs = list(style = "padding: 6px")
-  )
-}
-
 #' UI module for {module_ui_dictionary}
 #'
 #' @family shiny modules
@@ -129,8 +113,7 @@ module_ui_dictionary_ui <- function(id) {
     shiny::tags$b("Update Darwin Cloud dictionary"),
     shiny::br(),
     shiny::actionButton(ns("update_darwin_cloud"), "Update DC"),
-    shiny::br(),
-    shiny::br(),
+    shiny::br(), shiny::br(),
     shiny::fileInput(
       ns("path_input_dictionary"),
       "Choose a personal dictionary file",
@@ -138,6 +121,22 @@ module_ui_dictionary_ui <- function(id) {
         "text/csv", ".csv", "text/comma-separated-values,text/plain"
       )
     )
+  )
+}
+
+#' Output module for {module_ui_dictionary_radiobuttons}
+#'
+#' @family shiny modules
+#'
+#' @keywords shiny modules internal
+#'
+module_ui_dictionary_radiobuttons_output <- function(id) {
+  ns <- shiny::NS(id)
+  shiny::splitLayout(
+    shiny::uiOutput(ns("names_user_field")),
+    shiny::uiOutput(ns("names_user_standard")),
+    cellWidths = 200,
+    cellArgs = list(style = "padding: 6px")
   )
 }
 
