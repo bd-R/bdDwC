@@ -15,6 +15,7 @@ shiny::shinyServer(function(input, output, session) {
   # --------------------------
   # META
   # --------------------------
+
   # All reactive values that we use within app
   rv <- bdDwC:::shiny_server_reactivevalues()
   # Modals dialogs
@@ -25,10 +26,10 @@ shiny::shinyServer(function(input, output, session) {
     bdDwC:::shiny_server_tab_darwinizer(rv$data_user)
   })
 
-
   # --------------------------
   # UPLOAD DATA
   # --------------------------
+
   # Upload local file
   rv <- shiny::callModule(
     bdDwC:::module_server_upload_local,
@@ -42,10 +43,10 @@ shiny::shinyServer(function(input, output, session) {
     rv
   )
 
-
   # --------------------------
   # DICTIONARY
   # --------------------------
+
   # Create radiobuttons for users dictionary
   shiny::callModule(bdDwC:::module_ui_dictionary_radiobuttons, "main", rv)
   # Update radiobuttons while selecting field & standard names
@@ -57,10 +58,10 @@ shiny::shinyServer(function(input, output, session) {
   # Update dictionary information (date, file name)
   shiny::callModule(bdDwC:::module_ui_dictionary, "main", rv)
 
-
   # --------------------------
   # DARWINIZER
   # --------------------------
+
   # Enable darwnizer
   shiny::callModule(bdDwC:::module_ui_buttons, "main", rv)
   # Perform darwnizer
@@ -80,4 +81,5 @@ shiny::shinyServer(function(input, output, session) {
   shiny::callModule(bdDwC:::module_server_buttons_download, "main", rv)
   # Value boxes
   shiny::callModule(bdDwC:::module_ui_valuebox, "main", rv)
+
 })
