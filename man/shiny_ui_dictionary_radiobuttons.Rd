@@ -22,11 +22,13 @@ shiny_ui_dictionary_radiobuttons(names_dic = NULL, inputid, label,
 Create radio buttons for user dictionary
 }
 \seealso{
-Other shiny: \code{\link{shiny_server_modal}},
+Other shiny: \code{\link{create_renaming_checkbox}},
+  \code{\link{shiny_server_modal}},
   \code{\link{shiny_server_reactivevalues}},
   \code{\link{shiny_server_tab_darwinizer}},
   \code{\link{shiny_server_upload_database}},
   \code{\link{shiny_server_upload_local}},
+  \code{\link{shiny_ui_definition_hover}},
   \code{\link{shiny_ui_dictionary}},
   \code{\link{shiny_ui_valuebox}}
 }

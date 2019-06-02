@@ -150,28 +150,23 @@ module_ui_dictionary_radiobuttons_output <- function(id) {
 module_ui_checkbox_ui <- function(id) {
   ns <- shiny::NS(id)
   shiny::tagList(
-    shiny::column(2,
-      shiny::uiOutput(ns("names_user"))
-    ),
+    shiny::column(2, shiny::uiOutput(ns("names_user"))),
     shiny::column(2,
       shiny::uiOutput(ns("names_standard")),
       shiny::uiOutput(ns("names_standard_hover")),
       offset = 1
     ),
-    shinydashboard::box(
-      title = "Darwinized Names",
-      width = 2, status = "success", collapsible = TRUE, solidHeader = TRUE,
-      shiny::uiOutput(ns("names_renamed_darwinized"))
+    create_renaming_checkbox(
+      shiny::uiOutput(ns("names_renamed_darwinized")),
+      "Darwinized Names"
     ),
-    shinydashboard::box(
-      title = "Manually Renamed",
-      width = 2, status = "success", collapsible = TRUE, solidHeader = TRUE,
-      shiny::uiOutput(ns("names_renamed_manual"))
+    create_renaming_checkbox(
+      shiny::uiOutput(ns("names_renamed_manual")),
+      "Manually Renamed"
     ),
-    shinydashboard::box(
-      title = "Identical Matches",
-      width = 2, status = "success", collapsible = TRUE, solidHeader = TRUE,
-      shiny::uiOutput(ns("names_renamed_identical"))
+    create_renaming_checkbox(
+      shiny::uiOutput(ns("names_renamed_identical")),
+      "Identical Matches"
     )
   )
 }

@@ -287,6 +287,47 @@ shiny_ui_dictionary_radiobuttons <- function(
   return(shiny::HTML(result))
 }
 
+#' Create shiny checkbox
+#'
+#' @param id checkbox id
+#' @param title a character value that specifies title of the checkbox
+#' 
+#' @importFrom shinydashboard box
+#'
+#' @family shiny
+#'
+#' @keywords shiny internal
+#'
+create_renaming_checkbox <- function(id, title) {
+  shinydashboard::box(
+    id, title = title,
+    width = 2, status = "success", collapsible = TRUE, solidHeader = TRUE
+  )
+}
+
+#' Extract darwin core definitions and return as ui element
+#'
+#' @param names a vector of darwin core names to get information
+#' 
+#' @importFrom shinyBS bsTooltip
+#'
+#' @family shiny
+#'
+#' @keywords shiny internal
+#'
+shiny_ui_definition_hover <- function(names) {
+  result <- list()
+  for (i in names) {
+    foo <- data_darwin_core_info$name == i
+    result[[i]] <- shinyBS::bsTooltip(
+      paste0("DWC_", i),
+      data_darwin_core_info$definition[foo],
+      "right"
+    )
+  }
+  result
+}
+
 #' Create shiny value boxes
 #'
 #' @param value value passed to `shinydashboard::valueBox` value argument

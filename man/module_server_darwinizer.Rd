@@ -6,9 +6,6 @@
 \usage{
 module_server_darwinizer(input, output, session, rv, parent)
 }
-\arguments{
-\item{rv}{reactive values}
-}
 \description{
 Module for darwinizer
 }

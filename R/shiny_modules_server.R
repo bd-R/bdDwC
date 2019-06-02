@@ -252,6 +252,54 @@ module_ui_buttons <- function(input, output, session, rv)  {
   })
 }
 
+
+#' Module for darwinizer
+#' 
+#' @family shiny modules
+#'
+#' @keywords shiny modules internal
+#'
+module_server_darwinizer <- function(input, output, session, rv, parent)  {
+  shiny::observeEvent(input$submit_to_darwinizer, {
+    # Jump to Darwinizer tab
+    shinydashboard::updateTabItems(session = parent, "my_tabs", "darwinizer")
+    # If user has uploaded dictionary
+    if (nrow(rv$dic_user_raw) > 0) {
+      # Update reactive user dictionary
+      rv$dic_user <- subset(
+        rv$dic_user_raw,
+        select = c(input$names_user_field, input$names_user_standard)
+      )
+      colnames(rv$dic_user) <- c("fieldname", "standard")
+    }
+
+    # Get all standard names
+    rv$names_standard <- unique(rv$data_darwin_cloud$standard)
+    rv$names_standard_after <- unique(rv$data_darwin_cloud$standard)
+    # Run Darwinizer with user and reference dictionary
+    rv$data_darwinized <- bdDwC::darwinize_names(
+      rv$data_user,
+      rbind(rv$dic_user, rv$data_darwin_cloud)
+    )
+
+    # Checkboxes
+    # Update if something was darwinized
+    if (nrow(rv$data_darwinized) > 0) {
+      rv$data_rename <- rv$data_darwinized
+      rv$data_rename$name_rename <- link_old_new(rv$data_rename)
+      # Updated (remove name) from standard names
+      rv$names_standard_after <- rv$names_standard[
+        !rv$names_standard %in% rv$data_rename$name_new
+      ]
+      # Updated (remove name) from user names
+      rv$names_user_after <- rv$names_user[
+        !tolower(rv$names_user) %in% tolower(rv$data_rename$name_old)
+      ]
+    }
+  })
+  return(rv)
+}
+
 #' Module to create checkbox for user names
 #' 
 #' @param rv reactive values
@@ -279,13 +327,14 @@ module_ui_checkbox <- function(input, output, session, rv, match_type = NULL) {
     if (length(rv$names_standard_after) == 0) {
       NULL
     } else {
+      foo <- sort(rv$names_standard_after)
       res <- shiny::radioButtons(
         ns("names_standard_radio"),
         "Standard terms",
-        sort(rv$names_standard_after)
+        foo
       )
       # Adding unique ID so we can add info boxes with additional info
-      for (i in sort(rv$names_standard_after)) {
+      for (i in foo) {
         res <- gsub(
           paste0("<span>", i, "</span>"),
           paste0("<span id=\"DWC_", i, "\">", i, "</span>"),
@@ -295,7 +344,12 @@ module_ui_checkbox <- function(input, output, session, rv, match_type = NULL) {
       shiny::HTML(res)
     }
   })
-  # Create checkbox manually renamed terms
+  # Create hover information for checkbox with standard names
+  output$names_standard_hover <- shiny::renderUI({
+    do.call(shiny::tagList, shiny_ui_definition_hover(rv$names_standard_after))
+  })
+
+  # Create checkbox for manually renamed terms
   output$names_renamed_manual <- shiny::renderUI({
     if (length(rv$data_rename$name_rename) == 0) {
       shiny::h5("Nothing was renamed")
@@ -337,54 +391,6 @@ module_ui_checkbox <- function(input, output, session, rv, match_type = NULL) {
       }
     }
   })
-}
-
-#' Module for darwinizer
-#' 
-#' @param rv reactive values
-#' 
-#' @family shiny modules
-#'
-#' @keywords shiny modules internal
-#'
-module_server_darwinizer <- function(input, output, session, rv, parent)  {
-  shiny::observeEvent(input$submit_to_darwinizer, {
-    # Jump to Darwinizer tab
-    shinydashboard::updateTabItems(session = parent, "my_tabs", "darwinizer")
-    # If user has uploaded dictionary
-    if (nrow(rv$dic_user_raw) > 0) {
-      # Update reactive user dictionary
-      rv$dic_user <- subset(
-        rv$dic_user_raw,
-        select = c(input$names_user_field, input$names_user_standard)
-      )
-      colnames(rv$dic_user) <- c("fieldname", "standard")
-    }
-
-    # Get all standard names
-    rv$names_standard <- unique(rv$data_darwin_cloud$standard)
-    rv$names_standard_after <- unique(rv$data_darwin_cloud$standard)
-    # Run Darwinizer with user and reference dictionary
-    rv$data_darwinized <- bdDwC::darwinize_names(
-      rv$data_user, rbind(rv$dic_user, rv$data_darwin_cloud)
-    )
-
-    # Checkboxes
-    # Update if something was darwinized
-    if (nrow(rv$data_darwinized) > 0) {
-      rv$data_rename <- rv$data_darwinized
-      rv$data_rename$name_rename <- link_old_new(rv$data_rename)
-      # Updated (remove name) from standard names
-      rv$names_standard_after <- rv$names_standard[
-        !rv$names_standard %in% rv$data_rename$name_new
-      ]
-      # Updated (remove name) from user names
-      rv$names_user_after <- rv$names_user[
-        !tolower(rv$names_user) %in% tolower(rv$data_rename$name_old)
-      ]
-    }
-  })
-  return(rv)
 }
 
 #' Module to control rename button 
