@@ -182,9 +182,7 @@ module_server_upload_database_input <- function(id) {
 #'
 #' @keywords shiny modules internal
 #'
-module_ui_dictionary_radiobuttons_field <- function(
-  input, output, session, rv
-) {
+module_ui_dictionary_radiobuttons <- function(input, output, session, rv) {
   output$names_user_field <- shiny::renderUI({
     if (is.null(rv$names_user_raw)) {
       return(NULL)
@@ -210,13 +208,13 @@ module_ui_dictionary_radiobuttons_field <- function(
     )
   })
 }
-#' Output module for {module_ui_dictionary_radiobuttons_field}
+#' Output module for {module_ui_dictionary_radiobuttons}
 #'
 #' @family shiny modules
 #'
 #' @keywords shiny modules internal
 #'
-module_ui_dictionary_radiobuttons_field_output <- function(id) {
+module_ui_dictionary_radiobuttons_output <- function(id) {
   ns <- shiny::NS(id)
   shiny::splitLayout(
     shiny::uiOutput(ns("names_user_field")),

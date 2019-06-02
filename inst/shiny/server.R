@@ -21,7 +21,7 @@ shiny::shinyServer(function(input, output, session) {
   # We have to keep this on top as it contains welcoming modal
   shiny::callModule(bdDwC:::module_server_modals, "main")
   # Disable darwinizer tab if no data submitted
-  # No module as it's too complicated with Css classes
+  # No module as it's too complicated (and not needed) with Css classes
   shiny::observe({
     if (nrow(rv$data_user) == 0) {
       shinyjs::addCssClass(
@@ -58,17 +58,9 @@ shiny::shinyServer(function(input, output, session) {
   # USER DICTIONARY
   # --------------------------
   # Creat radiobuttons for users field name column
-  shiny::callModule(
-    bdDwC:::module_ui_dictionary_radiobuttons_field,
-    "main",
-    rv
-  )
+  shiny::callModule(bdDwC:::module_ui_dictionary_radiobuttons, "main", rv)
   # Update dictionary information
-  shiny::callModule(
-    bdDwC:::module_ui_dictionary,
-    "main",
-    rv
-  )
+  shiny::callModule(bdDwC:::module_ui_dictionary, "main", rv)
   # If button in standard is marked
   shiny::observeEvent(input$names_user_standard, {
     # Which button was marked
@@ -95,6 +87,11 @@ shiny::shinyServer(function(input, output, session) {
       "#names_user_standard .radio:nth-child(", which(!result), ") label"
     ))
   })
+
+
+
+
+
 
 
   # Darwnizer
