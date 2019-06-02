@@ -1,9 +1,9 @@
 options(
-  # debug text (full path)
+  # Debug text (full path)
   shiny.fullstacktrace = TRUE,
-  # let bigger input files
+  # Let bigger input files
   shiny.maxRequestSize = 50 * 1024 ^ 2,
-  # debug visual
+  # Debug visual
   shiny.reactlog = TRUE
 )
 
@@ -21,7 +21,6 @@ shiny::shinyServer(function(input, output, session) {
   # We have to keep this on top as it contains welcoming modal
   shiny::callModule(bdDwC:::module_server_modals, "main")
   # Disable darwinizer tab if no data submitted
-  # No module as it's too complicated (and not needed) with Css classes
   shiny::observe({
     bdDwC:::shiny_server_tab_darwinizer(rv$data_user)
   })
@@ -45,9 +44,9 @@ shiny::shinyServer(function(input, output, session) {
 
 
   # --------------------------
-  # USER DICTIONARY
+  # DICTIONARY
   # --------------------------
-  # Create radiobuttons for users field name column
+  # Create radiobuttons for users dictionary
   shiny::callModule(bdDwC:::module_ui_dictionary_radiobuttons, "main", rv)
   # Update radiobuttons while selecting field & standard names
   shiny::callModule(
