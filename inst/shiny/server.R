@@ -23,17 +23,7 @@ shiny::shinyServer(function(input, output, session) {
   # Disable darwinizer tab if no data submitted
   # No module as it's too complicated (and not needed) with Css classes
   shiny::observe({
-    if (nrow(rv$data_user) == 0) {
-      shinyjs::addCssClass(
-        selector = "a[data-value='darwinizer']",
-        class = "inactiveLink"
-      )
-    } else {
-      shinyjs::removeCssClass(
-        selector = "a[data-value='darwinizer']",
-        class = "inactiveLink"
-      )
-    }
+    bdDwC:::shiny_server_tab_darwinizer(rv$data_user)
   })
 
 

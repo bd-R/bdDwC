@@ -372,7 +372,7 @@ shiny_ui_dictionary <- function(path_dictionary = NULL, date_dictionary, ns) {
 #' @keywords shiny internal
 #'
 shiny_server_tab_darwinizer <- function(data_user) {
-  if (data_user == 0) {
+  if (nrow(data_user) == 0) {
     shinyjs::addCssClass(
       selector = "a[data-value='darwinizer']",
       class = "inactiveLink"
