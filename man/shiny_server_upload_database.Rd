@@ -4,8 +4,8 @@
 \alias{shiny_server_upload_database}
 \title{Query data from the remote database}
 \usage{
-shiny_server_upload_database(scientific_name, record_size, query_db,
-  has_coords)
+shiny_server_upload_database(scientific_name = "Puma concolor",
+  record_size = 500, query_db = "gbif", has_coords = 1)
 }
 \arguments{
 \item{scientific_name}{species scientific name}

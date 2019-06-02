@@ -7,9 +7,6 @@
 \usage{
 module_server_upload_local(input, output, session, rv)
 }
-\arguments{
-\item{rv}{reactive values}
-}
 \description{
 Module to upload local users data
 (calls {shiny_server_upload_local})

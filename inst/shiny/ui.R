@@ -52,13 +52,13 @@ shinydashboard::dashboardPage(
             shinyBS::bsCollapse(
               multiple = FALSE,
               open = "Upload Local File",
-              # USER FILE
+              # Local file
               shinyBS::bsCollapsePanel(
                 "Upload Local File",
                 bdDwC:::module_server_upload_local_input("main"),
                 style = "info"
               ),
-              # QUERY FROM A DATABASE
+              # Query from a databse
               shinyBS::bsCollapsePanel(
                 "Query Data From a Database",
                 bdDwC:::module_server_upload_database_input("main"),

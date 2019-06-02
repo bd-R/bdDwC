@@ -7,9 +7,6 @@
 \usage{
 module_server_upload_database(input, output, session, rv)
 }
-\arguments{
-\item{rv}{reactive values}
-}
 \description{
 Module to query data from the remote database
 (calls {shiny_server_upload_database})

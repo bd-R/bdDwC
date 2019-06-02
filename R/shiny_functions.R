@@ -70,6 +70,30 @@ shiny_server_modal <- function(
   ))
 }
 
+#' Update activity (enable/disable) of darwinizer tab
+#' 
+#' @param data_user a data.frame of submitted records to be darwnized
+#'
+#' @importFrom shinyjs addCssClass removeCssClass
+#'
+#' @family shiny
+#'
+#' @keywords shiny internal
+#'
+shiny_server_tab_darwinizer <- function(data_user) {
+  if (nrow(data_user) == 0) {
+    shinyjs::addCssClass(
+      selector = "a[data-value='darwinizer']",
+      class = "inactiveLink"
+    )
+  } else {
+    shinyjs::removeCssClass(
+      selector = "a[data-value='darwinizer']",
+      class = "inactiveLink"
+    )
+  }
+}
+
 #' Upload local users data
 #'
 #' @param path_input path to a local file from `shiny::fileInput`
@@ -124,33 +148,32 @@ shiny_server_upload_local <- function(path_input = NULL) {
 #' @keywords shiny internal
 #'
 shiny_server_upload_database <- function(
-  scientific_name,
-  record_size,
-  query_db,
-  has_coords
+  scientific_name = "Puma concolor",
+  record_size = 500 ,
+  query_db = "gbif",
+  has_coords = 1
 ) {
   # Check if user entered valid value
   if (trimws(scientific_name) == "") {
-    foo <- paste("Please enter a valid scientific name")
-    shiny::showNotification(foo, type = "error")
+    shiny::showNotification(
+      "Please enter a valid scientific name",
+      type = "error"
+    )
   }
   if (record_size <= 0) {
-    foo <- paste("Please enter a valid number of records")
-    shiny::showNotification(foo, type = "error")
+    shiny::showNotification(
+      "Please enter a valid number of records",
+      type = "error"
+    )
   }
-  shiny::showNotification(
-    "Started downloading data",
-    closeButton = FALSE,
-    type = "message"
-  )
+  shiny::showNotification("Started downloading data", type = "message")
+  coords <- switch(has_coords, "1" = TRUE, "2" = FALSE, "3" = NULL)
+
   if (query_db == "gbif") {
     result <- rgbif::occ_search(
       scientificName = scientific_name,
       limit = record_size,
-      hasCoordinate = switch(
-        has_coords,
-        "1" = TRUE, "2" = FALSE, "3" = NULL
-      )
+      hasCoordinate = coords
     )$data
   } else {
     warnings <- utils::capture.output(
@@ -158,10 +181,7 @@ shiny_server_upload_database <- function(
         query = scientific_name,
         from = query_db,
         limit = record_size,
-        has_coords = switch(
-          has_coords,
-          "1" = TRUE, "2" = FALSE, "3" = NULL
-        )
+        has_coords = coords
       ),
       type = "message"
     )
@@ -174,16 +194,13 @@ shiny_server_upload_database <- function(
   }
   if (is.null(result)) {
     result <- data.frame()
-    foo <- paste(
-      "There are no entries with",
-      scientific_name,
-      "scientific name. Please try another one"
+    shiny::showNotification(
+      paste("No entries for", scientific_name, ", please try another query"),
+      type = "error"
     )
-    shiny::showNotification(foo, type = "error")
   } else {
     shiny::showNotification(
-      "Data successfully downloaded",
-      closeButton = FALSE,
+      paste0("Data successfully uploaded (", nrow(result), " records)"),
       type = "message"
     )
   }
@@ -311,28 +328,4 @@ shiny_ui_dictionary <- function(path_dictionary = NULL, date_dictionary, ns) {
     )
     return(shiny::HTML(result))
   })
-}
-
-#' Update activity (enable/disable) of darwinizer tab
-#' 
-#' @param data_user a data.frame of submitted records to be darwnized
-#'
-#' @importFrom shinyjs addCssClass removeCssClass
-#'
-#' @family shiny
-#'
-#' @keywords shiny internal
-#'
-shiny_server_tab_darwinizer <- function(data_user) {
-  if (nrow(data_user) == 0) {
-    shinyjs::addCssClass(
-      selector = "a[data-value='darwinizer']",
-      class = "inactiveLink"
-    )
-  } else {
-    shinyjs::removeCssClass(
-      selector = "a[data-value='darwinizer']",
-      class = "inactiveLink"
-    )
-  }
 }

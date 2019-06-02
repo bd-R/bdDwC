@@ -48,7 +48,7 @@ module_server_upload_local_input <- function(
 #' @keywords shiny modules internal
 #'
 module_server_upload_database_input <- function(id) {
-  online_databases <- list(
+  databases <- list(
     "GBIF (Global Biodiversity Information Facility)" = "gbif",
     "iDigBio (Integrated Digitized Biocollections)" = "idigbio",
     "EcoEngine (Berkeley Ecoinformatics Engine)" = "ecoengine",
@@ -59,6 +59,12 @@ module_server_upload_database_input <- function(id) {
     "OBIS (Ocean Biogeographic Information System)" = "obis",
     "AntWeb" = "antweb"
   )
+  coords <- list(
+    "With Coordinates" = "1",
+    "Without Coordinates" = "2",
+    "No Filter" = "3"
+  )
+
   ns <- shiny::NS(id)
   shiny::tagList(
     shiny::textInput(
@@ -74,24 +80,20 @@ module_server_upload_database_input <- function(id) {
     shiny::selectInput(
       ns("has_coords"),
       shiny::h3("Records Filter:"),
-      list("With Coordinates" = "1",
-           "Without Coordinates" = "2",
-           "No Filter" = "3"
-      ),
+      coords,
       3
     ),
     shiny::radioButtons(
       ns("query_db"),
       shiny::h3("Online Database:"),
-      online_databases,
+      databases,
       "gbif"
     ),
     shiny::br(),
-    shiny::div(id = "query_database_div",
-      class = "activeButton",
-      shiny::actionButton(
-        ns("query_database"), "Query Database", shiny::icon("download")
-      )
+    shiny::actionButton(
+      ns("query_database"),
+      "Query Database",
+      shiny::icon("download")
     )
   )
 }

@@ -67,7 +67,7 @@ module_server_modal <- function(input, output, session)  {
 #' Module to upload local users data
 #' (calls {shiny_server_upload_local})
 #'
-#' @param rv reactive values
+#' @importFrom shiny observeEvent
 #' 
 #' @family shiny modules
 #'
@@ -84,7 +84,7 @@ module_server_upload_local <- function(input, output, session, rv) {
 #' Module to query data from the remote database
 #' (calls {shiny_server_upload_database})
 #'
-#' @param rv reactive values
+#' @importFrom shiny observeEvent
 #' 
 #' @family shiny modules
 #'
@@ -93,10 +93,10 @@ module_server_upload_local <- function(input, output, session, rv) {
 module_server_upload_database <- function(input, output, session, rv) {
   shiny::observeEvent(input$query_database, {
     rv$data_user <- shiny_server_upload_database(
-      input$scientific_name,
-      input$record_size,
-      input$query_db,
-      input$has_coords
+      scientific_name = input$scientific_name,
+      record_size = input$record_size,
+      query_db = input$query_db,
+      has_coords = input$has_coords
     )
     rv$names_user <- rv$names_user_after <- colnames(rv$data_user)
   })
