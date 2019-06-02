@@ -47,6 +47,8 @@ shiny::shinyServer(function(input, output, session) {
   # DICTIONARY
   # --------------------------
 
+  # Update dictionary information (date, file name)
+  rv <- shiny::callModule(bdDwC:::module_ui_dictionary, "main", rv)
   # Create radiobuttons for users dictionary
   shiny::callModule(bdDwC:::module_ui_dictionary_radiobuttons, "main", rv)
   # Update radiobuttons while selecting field & standard names
@@ -55,8 +57,6 @@ shiny::shinyServer(function(input, output, session) {
     "main",
     rv
   )
-  # Update dictionary information (date, file name)
-  shiny::callModule(bdDwC:::module_ui_dictionary, "main", rv)
 
   # --------------------------
   # DARWINIZER
