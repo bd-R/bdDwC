@@ -185,6 +185,9 @@ module_ui_dictionary_radiobuttons <- function(input, output, session, rv) {
 #' 
 #' @param rv reactive values
 #' 
+#' @importFrom shiny observeEvent
+#' @importFrom shinyjs enable disable
+#' 
 #' @family shiny modules
 #'
 #' @keywords shiny modules internal
@@ -237,11 +240,11 @@ module_ui_checkbox <- function(input, output, session, rv, match_type = NULL) {
   # Create checkbox with current user names
   output$names_user <- shiny::renderUI({
     if (length(rv$names_user_after) == 0) {
-      return(NULL)
+      NULL
     } else {
       shiny::radioButtons(
         ns("names_user_radio"),
-        "User Names",
+        "Input names",
         sort(rv$names_user_after)
       )
     }
@@ -249,11 +252,11 @@ module_ui_checkbox <- function(input, output, session, rv, match_type = NULL) {
   # Create checkbox with current standard names
   output$names_standard <- shiny::renderUI({
     if (length(rv$names_standard_after) == 0) {
-      return(NULL)
+      NULL
     } else {
       res <- shiny::radioButtons(
         ns("names_standard_radio"),
-        "Stand Names",
+        "Standard terms",
         sort(rv$names_standard_after)
       )
       # Adding unique ID so we can add info boxes with additional info
