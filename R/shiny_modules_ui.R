@@ -17,13 +17,15 @@ module_server_modal_ui <- function(id) {
 
 #' Input module for {module_server_upload_local}
 #'
+#' @param mime_type a character vector of MIME types
+#' 
 #' @family shiny modules
 #'
 #' @keywords shiny modules internal
 #'
 module_server_upload_local_input <- function(
   id,
-  upload_local_file = c(
+  mime_type = c(
     "text/csv",
     "text/comma-separated-values,text/plain",
     ".csv",
@@ -32,10 +34,10 @@ module_server_upload_local_input <- function(
   )
 ) {
   ns <- shiny::NS(id)
-  shiny::fileInput(ns("path_input_data"),
+  shiny::fileInput(
+    ns("path_input_data"),
     shiny::h3("CSV / DWCA ZIP file input"),
-    FALSE,
-    accept = upload_local_file
+    accept = mime_type
   )
 }
 

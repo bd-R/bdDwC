@@ -4,9 +4,12 @@
 \alias{module_server_upload_local_input}
 \title{Input module for {module_server_upload_local}}
 \usage{
-module_server_upload_local_input(id, upload_local_file = c("text/csv",
+module_server_upload_local_input(id, mime_type = c("text/csv",
   "text/comma-separated-values,text/plain", ".csv", ".zip",
   "application/zip"))
+}
+\arguments{
+\item{mime_type}{a character vector of MIME types}
 }
 \description{
 Input module for {module_server_upload_local}

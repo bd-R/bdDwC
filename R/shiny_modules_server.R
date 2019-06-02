@@ -1,4 +1,4 @@
-#' Module to call modals
+#' Module to call modals, passes arguments to {shiny_server_modal}
 #' 
 #' @family shiny modules
 #'

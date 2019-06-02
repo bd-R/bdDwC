@@ -7,7 +7,7 @@
 shiny_server_upload_local(path_input = NULL)
 }
 \arguments{
-\item{path_input}{path to local file from `shiny::fileInput`}
+\item{path_input}{path to a local file from `shiny::fileInput`}
 }
 \description{
 Upload local users data

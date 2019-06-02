@@ -2,12 +2,12 @@
 % Please edit documentation in R/shiny_modules_server.R
 \name{module_server_modal}
 \alias{module_server_modal}
-\title{Module to call modals}
+\title{Module to call modals, passes arguments to {shiny_server_modal}}
 \usage{
 module_server_modal(input, output, session)
 }
 \description{
-Module to call modals
+Module to call modals, passes arguments to {shiny_server_modal}
 }
 \seealso{
 Other shiny modules: \code{\link{module_server_buttons_clean}},

@@ -72,7 +72,7 @@ shiny_server_modal <- function(
 
 #' Upload local users data
 #'
-#' @param path_input path to local file from `shiny::fileInput`
+#' @param path_input path to a local file from `shiny::fileInput`
 #' 
 #' @importFrom data.table fread
 #' @importFrom finch dwca_read
@@ -87,23 +87,18 @@ shiny_server_upload_local <- function(path_input = NULL) {
     warning("No local file specified")
     return(NULL)
   }
+  shiny::showNotification("Started uploading data", type = "message")
 
-  shiny::showNotification(
-    "Started uploading data",
-    closeButton = FALSE,
-    type = "message"
-  )
-
-  if (grepl("zip", tolower(path_input$type))) {
+  if (grepl("zip", path_input$type, ignore.case = TRUE)) {
     result <- finch::dwca_read(path_input$datapath, TRUE)$data[[1]]
   } else {
     result <- data.table::fread(path_input$datapath, data.table = FALSE)
   }
 
-  if (nrow(result) > 0) {
+  foo <- nrow(result)
+  if (foo > 0) {
     shiny::showNotification(
-      "Data successfully uploaded",
-      closeButton = FALSE,
+      paste0("Data successfully uploaded (", foo, " records)"),
       type = "message"
     )
   }
