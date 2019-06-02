@@ -16,6 +16,7 @@ Upload local users data
 Other shiny: \code{\link{shiny_server_modal_custom}},
   \code{\link{shiny_server_modal_welcome}},
   \code{\link{shiny_server_reactivevalues}},
+  \code{\link{shiny_server_tab_darwinizer}},
   \code{\link{shiny_server_upload_database}},
   \code{\link{shiny_ui_darwin_core_definition}},
   \code{\link{shiny_ui_dictionary_radiobuttons}},

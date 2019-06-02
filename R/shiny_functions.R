@@ -360,3 +360,27 @@ shiny_ui_dictionary <- function(path_dictionary = NULL, date_dictionary, ns) {
     return(shiny::HTML(result))
   })
 }
+
+#' Update activity (enable/disable) of darwinizer tab
+#' 
+#' @param data_user a data.frame of submitted records to be darwnized
+#'
+#' @importFrom shinyjs addCssClass removeCssClass
+#'
+#' @family shiny
+#'
+#' @keywords shiny internal
+#'
+shiny_server_tab_darwinizer <- function(data_user) {
+  if (data_user == 0) {
+    shinyjs::addCssClass(
+      selector = "a[data-value='darwinizer']",
+      class = "inactiveLink"
+    )
+  } else {
+    shinyjs::removeCssClass(
+      selector = "a[data-value='darwinizer']",
+      class = "inactiveLink"
+    )
+  }
+}
