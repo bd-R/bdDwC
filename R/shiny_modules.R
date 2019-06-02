@@ -784,3 +784,46 @@ module_server_buttons_download <- function(input, output, session, rv)  {
     }
   )
 }
+
+#' Module to update (enable/disable) radio buttons for users dictionary
+#' 
+#' @param rv reactive values
+#' 
+#' @family shiny modules
+#'
+#' @keywords shiny modules internal
+#'
+module_ui_dictionary_radiobuttons_update <- function(
+  input, output, session, rv
+) {
+  ns <- session$ns
+  shiny::observeEvent(input$names_user_standard, {
+    # Which button was marked
+    result <- grepl(input$names_user_standard, rv$names_user_raw)
+    # Disable marked button in a opposite box
+    shinyjs::disable(selector = paste0(
+      "#", ns("names_user_field"),
+      ".radio:nth-child(", which(result), ") label"
+    ))
+    # Enable all non marked buttons in current box
+    shinyjs::enable(selector = paste0(
+      "#", ns("names_user_field"),
+      ".radio:nth-child(", which(!result), ") label"
+    ))
+  })
+  # If button in field is marked
+  shiny::observeEvent(input$names_user_field, {
+    # Which button was marked
+    result <- grepl(input$names_user_field, rv$names_user_raw)
+    # Disable marked button in a opposite box
+    shinyjs::disable(selector = paste0(
+      "#", ns("names_user_standard"),
+      ".radio:nth-child(", which(result), ") label"
+    ))
+    # Enable all non marked buttons in current box
+    shinyjs::enable(selector = paste0(
+      "#", ns("names_user_standard"), 
+      ".radio:nth-child(", which(!result), ") label"
+    ))
+  })
+}
