@@ -62,7 +62,7 @@ shiny::shinyServer(function(input, output, session) {
   # DARWINIZER
   # --------------------------
 
-  # Enable darwnizer
+  # Enable darwnizer and other buttons
   shiny::callModule(bdDwC:::module_ui_buttons, "main", rv)
   # Perform darwnizer
   rv <- shiny::callModule(

@@ -227,6 +227,31 @@ module_ui_dictionary_radiobuttons_update <- function(
   })
 }
 
+#' Module to enable/disable darwinizer buttons
+#' 
+#' @param rv reactive values
+#' 
+#' @family shiny modules
+#'
+#' @keywords shiny modules internal
+#'
+module_ui_buttons <- function(input, output, session, rv)  {
+  shiny::observe({
+    # Disable submission if there's no data
+    shinyjs::toggleState("submit_to_darwinizer", nrow(rv$data_user) > 0)
+    # Disable renaming when no names left
+    shinyjs::toggleState(
+      "names_rename",
+      all(length(rv$names_user_after) > 0, length(rv$names_standard_after) > 0)
+    )
+    # Disable rollback when no nothing was darwinized
+    shinyjs::toggleState(
+      "names_rollback",
+      length(rv$data_darwinized$name_old) > 0
+    )
+  })
+}
+
 #' Module to create checkbox for user names
 #' 
 #' @param rv reactive values
@@ -360,38 +385,6 @@ module_server_darwinizer <- function(input, output, session, rv, parent)  {
     }
   })
   return(rv)
-}
-
-#' Module to enable/disable darwinizer buttons
-#' 
-#' @param rv reactive values
-#' 
-#' @family shiny modules
-#'
-#' @keywords shiny modules internal
-#'
-module_ui_buttons <- function(input, output, session, rv)  {
-  shiny::observe({
-    # Disable submission if there's no data
-    shinyjs::toggleState(
-      "submit_to_darwinizer",
-      nrow(rv$data_user) > 0
-    )
-    # Disable renaming when no names left
-    shinyjs::toggleState(
-      "names_rename",
-      all(
-        length(rv$names_user_after) > 0,
-        length(rv$names_standard_after) > 0
-      )
-        # nrow(rv$data_rename) == 0
-    )
-    # Disable rollback when no nothing was darwinized
-    shinyjs::toggleState(
-      "names_rollback",
-      length(rv$data_darwinized$name_old) > 0
-    )
-  })
 }
 
 #' Module to control rename button 
