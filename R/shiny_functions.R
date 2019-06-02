@@ -40,50 +40,7 @@ shiny_server_reactivevalues <- function()  {
   return(rv)
 }
 
-#' Show shiny welcoming modal
-#'
-#' Show shiny modal with specified title, subtitle and other details
-#'
-#' @param title a character string passed as `shiny::modalDialog` title 
-#' @param subtitle a character string shown withing `shiny::modalDialog`
-#' 
-#' @import shiny
-#' @importFrom utils packageVersion
-#'
-#' @family shiny
-#'
-#' @keywords shiny internal
-#'
-shiny_server_modal_welcome <- function(
-  title = "Welcome to Darwinizer!",
-  subtitle = "Darwinize Your Data",
-  package = "bdDwC"
-) {
-  shiny::showModal(shiny::modalDialog(
-    title = shiny::h3(title),
-    shiny::p(subtitle),
-    shiny::img(src = "bdverse.png", align = "center", width = "570"),
-    shiny::helpText(
-      "GPL-3 License Tomer Gueta, Vijay Barve, Povilas Gibas,
-       Thiloshon Nagarajah, Ashwin Agrawal and Carmel Yohay",
-       "(", format(Sys.Date(), "%Y"), ").",
-       shiny::br(),
-       "Package version", as.character(utils::packageVersion("bdDwC"))
-    ),
-    shiny::helpText(
-      "Contribute: ",
-      shiny::a(paste0("https://github.com/bd-R/", package),
-               href = paste0("https://github.com/bd-R/", package)),
-      shiny::br(), "Join: ",
-      shiny::a("https://bd-r-group.slack.com",
-               href = "https://bd-r-group.slack.com")
-    ),
-    size = "m",
-    easyClose = TRUE
-  ))
-}
-
-#' Show shiny custom modal
+#' Show shiny modal
 #'
 #' Show shiny modal with specified title, subtitle and other details
 #'
@@ -99,9 +56,9 @@ shiny_server_modal_welcome <- function(
 #'
 #' @keywords shiny internal
 #'
-shiny_server_modal_custom <- function(
-  title = "Wanted Title!",
-  body = "Wanted Body",
+shiny_server_modal <- function(
+  title = "foo",
+  body = "bar",
   size = "m",
   easyClose = TRUE
 ) {

@@ -22,7 +22,7 @@ shinydashboard::dashboardPage(
       shinydashboard::menuItem("Darwinizer", tabName = "darwinizer"),
       # Horizontal line
       shiny::tags$hr(style = "border-color: #bfbfbf;"),
-      bdDwC:::module_server_modals_ui("main")
+      bdDwC:::module_server_modal_ui("main")
     )
   ),
 

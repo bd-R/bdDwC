@@ -20,7 +20,7 @@ shiny::shinyServer(function(input, output, session) {
   rv <- bdDwC:::shiny_server_reactivevalues()
   # Modals dialogs
   # We have to keep this on top as it contains welcoming modal
-  shiny::callModule(bdDwC:::module_server_modals, "main")
+  shiny::callModule(bdDwC:::module_server_modal, "main")
   # Disable darwinizer tab if no data submitted
   shiny::observe({
     bdDwC:::shiny_server_tab_darwinizer(rv$data_user)

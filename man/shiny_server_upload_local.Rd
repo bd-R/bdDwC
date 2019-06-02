@@ -13,8 +13,7 @@ shiny_server_upload_local(path_input = NULL)
 Upload local users data
 }
 \seealso{
-Other shiny: \code{\link{shiny_server_modal_custom}},
-  \code{\link{shiny_server_modal_welcome}},
+Other shiny: \code{\link{shiny_server_modal}},
   \code{\link{shiny_server_reactivevalues}},
   \code{\link{shiny_server_tab_darwinizer}},
   \code{\link{shiny_server_upload_database}},

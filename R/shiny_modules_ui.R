@@ -4,7 +4,7 @@
 #'
 #' @keywords shiny modules internal
 #'
-module_server_modals_ui <- function(id) {
+module_server_modal_ui <- function(id) {
   ns <- shiny::NS(id)  
   # Citation
   shiny::actionButton(

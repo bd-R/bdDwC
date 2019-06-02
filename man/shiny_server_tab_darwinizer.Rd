@@ -13,8 +13,7 @@ shiny_server_tab_darwinizer(data_user)
 Update activity (enable/disable) of darwinizer tab
 }
 \seealso{
-Other shiny: \code{\link{shiny_server_modal_custom}},
-  \code{\link{shiny_server_modal_welcome}},
+Other shiny: \code{\link{shiny_server_modal}},
   \code{\link{shiny_server_reactivevalues}},
   \code{\link{shiny_server_upload_database}},
   \code{\link{shiny_server_upload_local}},

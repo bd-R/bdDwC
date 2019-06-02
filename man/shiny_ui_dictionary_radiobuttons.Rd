@@ -22,8 +22,7 @@ shiny_ui_dictionary_radiobuttons(names_dic = NULL, inputid, label,
 Create radio buttons for user dictionary
 }
 \seealso{
-Other shiny: \code{\link{shiny_server_modal_custom}},
-  \code{\link{shiny_server_modal_welcome}},
+Other shiny: \code{\link{shiny_server_modal}},
   \code{\link{shiny_server_reactivevalues}},
   \code{\link{shiny_server_tab_darwinizer}},
   \code{\link{shiny_server_upload_database}},

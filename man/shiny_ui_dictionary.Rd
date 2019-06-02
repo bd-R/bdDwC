@@ -17,8 +17,7 @@ shiny_ui_dictionary(path_dictionary = NULL, date_dictionary, ns)
 Create information about dictionaries
 }
 \seealso{
-Other shiny: \code{\link{shiny_server_modal_custom}},
-  \code{\link{shiny_server_modal_welcome}},
+Other shiny: \code{\link{shiny_server_modal}},
   \code{\link{shiny_server_reactivevalues}},
   \code{\link{shiny_server_tab_darwinizer}},
   \code{\link{shiny_server_upload_database}},

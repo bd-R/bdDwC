@@ -4,21 +4,46 @@
 #'
 #' @keywords shiny modules internal
 #'
-module_server_modals <- function(input, output, session)  {
+module_server_modal <- function(input, output, session)  {
   # Welcoming text
-  shiny_server_modal_welcome()
+  shiny_server_modal(
+    title = shiny::h3("Welcome to Darwinizer!"),
+    body = shiny::tags$p(
+      shiny::p("Darwinize Your Data"),
+      shiny::img(src = "bdverse.png", align = "center", width = "570"),
+      shiny::helpText(
+        "GPL-3 License Tomer Gueta, Vijay Barve, Povilas Gibas,
+         Thiloshon Nagarajah, Ashwin Agrawal and Carmel Yohay",
+         "(", format(Sys.Date(), "%Y"), ").",
+         shiny::br(),
+         "Package version", as.character(utils::packageVersion("bdDwC"))
+      ),
+      shiny::helpText(
+        "Contribute: ",
+        shiny::a(
+          "https://github.com/bd-R/bdDwC",
+          href = "https://github.com/bd-R/bdDwC"
+        ),
+        shiny::br(), "Join: ",
+        shiny::a(
+          "https://bd-r-group.slack.com",
+          href = "https://bd-r-group.slack.com"
+        )
+      )
+    )
+  )
   # Citation
   shiny::observeEvent(input$citation, {
-    shiny_server_modal_custom(
-      shiny::h3("Cite us"),
-      shiny::tags$p("bdverse will be published soon!")
+    shiny_server_modal(
+      title = shiny::h3("Cite us"),
+      body = shiny::tags$p("bdverse will be published soon!")
     )
   })
   # Information about the Darwin Cloud
   shiny::observeEvent(input$pop_dc, {
-    shiny_server_modal_custom(
-      shiny::h3("Darwin Cloud Data"),
-      shiny::tags$p(
+    shiny_server_modal(
+      title = shiny::h3("Darwin Cloud Data"),
+      body = shiny::tags$p(
         "bdDwC uses Darwin Core Dictionary (stored on official",
         shiny::tags$a(
           href = "https://github.com/kurator-org/kurator-validation",
@@ -32,9 +57,9 @@ module_server_modals <- function(input, output, session)  {
   })
   # Information about users dictionary
   shiny::observeEvent(input$pop_dic, {
-    shiny_server_modal_custom(
-      shiny::h3("Personal Dictionary File"),
-      shiny::tags$p("File with columns fieldname and standard name")
+    shiny_server_modal(
+      title = shiny::h3("Personal Dictionary File"),
+      body = shiny::tags$p("File with columns fieldname and standard name")
     )
   })
 }
