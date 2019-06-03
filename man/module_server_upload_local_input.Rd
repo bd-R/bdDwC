@@ -4,11 +4,19 @@
 \alias{module_server_upload_local_input}
 \title{Input module for {module_server_upload_local}}
 \usage{
-module_server_upload_local_input(id, mime_type = c("text/csv",
+module_server_upload_local_input(id_namespace = "main",
+  id_input = "path_input_data",
+  label_input = "CSV / DWCA ZIP file input", mime_type = c("text/csv",
   "text/comma-separated-values,text/plain", ".csv", ".zip",
   "application/zip"))
 }
 \arguments{
+\item{id_namespace}{a character string to be namespaced}
+
+\item{id_input}{a character that specifies input slot}
+
+\item{label_input}{a character string to display for a file upload}
+
 \item{mime_type}{a character vector of MIME types}
 }
 \description{

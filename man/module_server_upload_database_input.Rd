@@ -4,7 +4,35 @@
 \alias{module_server_upload_database_input}
 \title{Input module for {module_server_upload_database}}
 \usage{
-module_server_upload_database_input(id)
+module_server_upload_database_input(id_namespace = "main",
+  id_text = "scientific_name", label_text = "Scientific Name:",
+  value_text = "Puma concolor", id_num = "record_size",
+  label_num = "Record Size:", value_num = 500,
+  id_coord = "has_coords", label_coord = "Records Filter:",
+  value_id_coord = 1:3, value_label_coord = c("With Coordinates",
+  "Without Coordinates", "No Filter"), id_database = "query_db",
+  label_database = "Online Database:", value_id_database = c("gbif",
+  "idigbio", "ecoengine", "vertnet", "bison", "inat", "ala", "obis",
+  "antweb"),
+  value_label_database = c("GBIF (Global Biodiversity Information Facility)",
+  "iDigBio (Integrated Digitized Biocollections)",
+  "EcoEngine (Berkeley Ecoinformatics Engine)",
+  "Vertnet (Vertebrate Network)",
+  "BISON (Biodiversity Information Serving Our Nation)", "iNaturalist",
+  "ALA (Atlas of Living Australia)",
+  "OBIS (Ocean Biogeographic Information System)", "AntWeb"),
+  id_query = "query_database", label_query = "query_database")
+}
+\arguments{
+\item{id_namespace}{a character string to be namespaced}
+
+\item{id_coord}{a character string to be namespaced}
+
+\item{label_coord}{a character string to be namespaced}
+
+\item{id_database}{a character string to be namespaced}
+
+\item{label_database}{a character string to be namespaced}
 }
 \description{
 Input module for {module_server_upload_database}

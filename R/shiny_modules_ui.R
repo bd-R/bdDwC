@@ -1,15 +1,23 @@
-#' UI Module for {module_server_modals}
+#' UI module for {module_server_modals}
+#' 
+#' This module produces UI for modal dialogs
+#' 
+#' @param id_namespace a character string to be namespaced
+#' @param label_citation a character string to display on citation button
 #' 
 #' @family shiny modules
 #'
 #' @keywords shiny modules internal
 #'
-module_server_modal_ui <- function(id) {
-  ns <- shiny::NS(id)  
-  # Citation
+module_server_modal_ui <- function(
+  id_namespace = "main",
+  id_citation = "citation",
+  label_citation = "Cite us"
+) {
+  ns <- shiny::NS(id_namespace)  
   shiny::actionButton(
-    ns("citation"),
-    "Cite us",
+    ns(id_citation),
+    label_citation,
     style = "border-color: #091520;
              background-color: #e5e5e5"
   )
@@ -17,6 +25,9 @@ module_server_modal_ui <- function(id) {
 
 #' Input module for {module_server_upload_local}
 #'
+#' @param id_namespace a character string to be namespaced
+#' @param id_input a character that specifies input slot
+#' @param label_input a character string to display for a file upload
 #' @param mime_type a character vector of MIME types
 #' 
 #' @family shiny modules
@@ -24,7 +35,9 @@ module_server_modal_ui <- function(id) {
 #' @keywords shiny modules internal
 #'
 module_server_upload_local_input <- function(
-  id,
+  id_namespace = "main",
+  id_input = "path_input_data",
+  label_input = "CSV / DWCA ZIP file input",
   mime_type = c(
     "text/csv",
     "text/comma-separated-values,text/plain",
@@ -33,68 +46,74 @@ module_server_upload_local_input <- function(
     "application/zip"
   )
 ) {
-  ns <- shiny::NS(id)
-  shiny::fileInput(
-    ns("path_input_data"),
-    shiny::h3("CSV / DWCA ZIP file input"),
-    accept = mime_type
-  )
+  ns <- shiny::NS(id_namespace)
+  shiny::fileInput(ns(id_input), shiny::h3(label_input), accept = mime_type)
 }
 
 #' Input module for {module_server_upload_database}
 #'
+#' @param id_namespace a character string to be namespaced
+#' @param id_database a character string to be namespaced
+#' @param label_database a character string to be namespaced
+#' @param id_coord a character string to be namespaced
+#' @param label_coord a character string to be namespaced
+#' 
+#' @importFrom stats setNames
+#' 
 #' @family shiny modules
 #'
 #' @keywords shiny modules internal
 #'
-module_server_upload_database_input <- function(id) {
-  databases <- list(
-    "GBIF (Global Biodiversity Information Facility)" = "gbif",
-    "iDigBio (Integrated Digitized Biocollections)" = "idigbio",
-    "EcoEngine (Berkeley Ecoinformatics Engine)" = "ecoengine",
-    "Vertnet (Vertebrate Network)" = "vertnet",
-    "BISON (Biodiversity Information Serving Our Nation)" = "bison",
-    "iNaturalist" = "inat",
-    "ALA (Atlas of Living Australia)" = "ala",
-    "OBIS (Ocean Biogeographic Information System)" = "obis",
-    "AntWeb" = "antweb"
-  )
-  coords <- list(
-    "With Coordinates" = "1",
-    "Without Coordinates" = "2",
-    "No Filter" = "3"
-  )
-
-  ns <- shiny::NS(id)
+module_server_upload_database_input <- function(
+  id_namespace = "main",
+  id_text = "scientific_name",
+  label_text = "Scientific Name:",
+  value_text = "Puma concolor",
+  id_num = "record_size",
+  label_num = "Record Size:",
+  value_num = 500,
+  id_coord = "has_coords",
+  label_coord = "Records Filter:",
+  value_id_coord = 1:3,
+  value_label_coord = c("With Coordinates", "Without Coordinates", "No Filter"),
+  id_database = "query_db",
+  label_database = "Online Database:",
+  value_id_database = c(
+    "gbif", "idigbio", "ecoengine", "vertnet", "bison",
+    "inat", "ala", "obis", "antweb"
+  ),
+  value_label_database = c(
+    "GBIF (Global Biodiversity Information Facility)",
+    "iDigBio (Integrated Digitized Biocollections)",
+    "EcoEngine (Berkeley Ecoinformatics Engine)",
+    "Vertnet (Vertebrate Network)",
+    "BISON (Biodiversity Information Serving Our Nation)",
+    "iNaturalist",
+    "ALA (Atlas of Living Australia)",
+    "OBIS (Ocean Biogeographic Information System)",
+    "AntWeb"
+  ),
+  id_query = "query_database",
+  label_query = "query_database"
+) {
+  ns <- shiny::NS(id_namespace)
   shiny::tagList(
-    shiny::textInput(
-      ns("scientific_name"),
-      shiny::h3("Scientific Name:"),
-      "Puma concolor"
-    ),
-    shiny::numericInput(
-      ns("record_size"),
-      shiny::h3("Record Size:"),
-      500
-    ),
+    shiny::textInput(ns(id_text), shiny::h3(label_text), value_text),
+    shiny::numericInput(ns(id_num), shiny::h3(label_num), value_num),
     shiny::selectInput(
-      ns("has_coords"),
-      shiny::h3("Records Filter:"),
-      coords,
-      3
+      ns(id_coord),
+      shiny::h3(label_coord),
+      stats::setNames(value_id_coord, value_label_coord),
+      value_id_coord[3]
     ),
     shiny::radioButtons(
-      ns("query_db"),
-      shiny::h3("Online Database:"),
-      databases,
-      "gbif"
+      ns(id_database),
+      shiny::h3(label_database),
+      stats::setNames(value_id_database, value_label_database),
+      value_id_database[1]
     ),
     shiny::br(),
-    shiny::actionButton(
-      ns("query_database"),
-      "Query Database",
-      shiny::icon("download")
-    )
+    shiny::actionButton(ns(id_query), label_query, shiny::icon("download"))
   )
 }
 

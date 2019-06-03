@@ -2,12 +2,18 @@
 % Please edit documentation in R/shiny_modules_ui.R
 \name{module_server_modal_ui}
 \alias{module_server_modal_ui}
-\title{UI Module for {module_server_modals}}
+\title{UI module for {module_server_modals}}
 \usage{
-module_server_modal_ui(id)
+module_server_modal_ui(id_namespace = "main", id_citation = "citation",
+  label_citation = "Cite us")
+}
+\arguments{
+\item{id_namespace}{a character string to be namespaced}
+
+\item{label_citation}{a character string to display on citation button}
 }
 \description{
-UI Module for {module_server_modals}
+This module produces UI for modal dialogs
 }
 \seealso{
 Other shiny modules: \code{\link{module_server_buttons_clean}},
