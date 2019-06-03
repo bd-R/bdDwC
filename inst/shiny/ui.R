@@ -1,3 +1,8 @@
+# We MUST load shinyBS here otherwise hover (names_standard_hover) won't work
+# Adding this to module_ui_checkbox_ui would fail checks
+# This is the only way to have hover
+library(shinyBS)
+
 shinydashboard::dashboardPage(
 
   # --------------------------

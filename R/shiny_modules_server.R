@@ -337,16 +337,19 @@ module_ui_checkbox <- function(input, output, session, rv, match_type = NULL) {
       for (i in foo) {
         res <- gsub(
           paste0("<span>", i, "</span>"),
-          paste0("<span id=\"DWC_", i, "\">", i, "</span>"),
+          paste0("<span id=\"dwc_hover_", i, "\">", i, "</span>"),
           res
         )
       }
       shiny::HTML(res)
     }
   })
-  # Create hover information for checkbox with standard names
   output$names_standard_hover <- shiny::renderUI({
-    do.call(shiny::tagList, shiny_ui_definition_hover(rv$names_standard_after))
+    if (length(rv$names_standard_after) == 0) {
+      NULL
+    } else {
+      shiny_ui_definition_hover(sort(rv$names_standard_after))
+    }
   })
 
   # Create checkbox for manually renamed terms

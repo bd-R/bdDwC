@@ -2,15 +2,15 @@
 % Please edit documentation in R/shiny_functions.R
 \name{shiny_ui_definition_hover}
 \alias{shiny_ui_definition_hover}
-\title{Extract darwin core definitions and return as ui element}
+\title{Extract darwin core definitions and return as hovering ui element}
 \usage{
 shiny_ui_definition_hover(names)
 }
 \arguments{
-\item{names}{a vector of darwin core names to get information}
+\item{names}{a vector of standard names}
 }
 \description{
-Extract darwin core definitions and return as ui element
+Extract darwin core definitions and return as hovering ui element
 }
 \seealso{
 Other shiny: \code{\link{create_renaming_checkbox}},

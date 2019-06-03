@@ -305,9 +305,9 @@ create_renaming_checkbox <- function(id, title) {
   )
 }
 
-#' Extract darwin core definitions and return as ui element
+#' Extract darwin core definitions and return as hovering ui element
 #'
-#' @param names a vector of darwin core names to get information
+#' @param names a vector of standard names
 #' 
 #' @importFrom shinyBS bsTooltip
 #'
@@ -316,16 +316,18 @@ create_renaming_checkbox <- function(id, title) {
 #' @keywords shiny internal
 #'
 shiny_ui_definition_hover <- function(names) {
-  result <- list()
-  for (i in names) {
-    foo <- data_darwin_core_info$name == i
-    result[[i]] <- shinyBS::bsTooltip(
-      paste0("DWC_", i),
-      data_darwin_core_info$definition[foo],
-      "right"
-    )
-  }
-  result
+  result <- lapply(
+    names,
+    function(i) {
+      foo <- data_darwin_core_info$name == i
+      shinyBS::bsTooltip(
+        paste0("dwc_hover_", i),
+        data_darwin_core_info$definition[foo],
+        "right"
+      )
+    }
+  )
+  return(shiny::tagList(result))
 }
 
 #' Create shiny value boxes

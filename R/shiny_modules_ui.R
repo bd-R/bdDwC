@@ -146,7 +146,6 @@ module_ui_dictionary_radiobuttons_output <- function(id) {
 #'
 #' @keywords shiny modules internal
 #'
-#'
 module_ui_checkbox_ui <- function(id) {
   ns <- shiny::NS(id)
   shiny::tagList(
