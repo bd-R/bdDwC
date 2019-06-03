@@ -145,6 +145,7 @@ module_ui_dictionary <- function(input, output, session, rv) {
   })
   return(rv)
 }
+
 #' Module to create radio buttons for users dictionary
 #' (calls {shiny_ui_dictionary_radiobuttons})
 #' 
@@ -181,6 +182,7 @@ module_ui_dictionary_radiobuttons <- function(input, output, session, rv) {
     )
   })
 }
+
 #' Module to update (enable/disable) radio buttons for users dictionary
 #' 
 #' @param rv reactive values
@@ -251,7 +253,6 @@ module_ui_buttons <- function(input, output, session, rv)  {
     )
   })
 }
-
 
 #' Module for darwinizer
 #' 
@@ -508,6 +509,23 @@ module_server_buttons_rollback <- function(input, output, session, rv)  {
   return(rv)
 }
 
+#' Module to control download button
+#' 
+#' @param rv reactive values
+#' 
+#' @family shiny modules
+#'
+#' @keywords shiny modules internal
+#'
+module_server_buttons_download <- function(input, output, session, rv)  {
+  output$download_data <- shiny::downloadHandler(
+    filename = format(Sys.time(), "darwinizedData_%Y_%b_%d_%X.csv"),
+    content = function(file) {
+      data.table::fwrite(rename_user_data(rv$data_user, rv$data_rename), file)
+    }
+  )
+}
+
 #' Module to control values boxes
 #' 
 #' @param rv reactive values
@@ -553,21 +571,4 @@ module_ui_valuebox <- function(input, output, session, rv)  {
       "green"
     )
   })
-}
-
-#' Module to control download button
-#' 
-#' @param rv reactive values
-#' 
-#' @family shiny modules
-#'
-#' @keywords shiny modules internal
-#'
-module_server_buttons_download <- function(input, output, session, rv)  {
-  output$download_data <- shiny::downloadHandler(
-    filename = format(Sys.time(), "darwinizedData_%Y_%b_%d_%X.csv"),
-    content = function(file) {
-      data.table::fwrite(rename_user_data(rv$data_user, rv$data_rename), file)
-    }
-  )
 }

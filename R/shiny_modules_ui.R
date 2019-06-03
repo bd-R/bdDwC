@@ -220,13 +220,13 @@ module_ui_buttons_ui <- function(id) {
     shiny::column(2,
       shiny::verticalLayout(
         shiny::actionButton(
-            ns("names_remove"),
-            "Remove selected rename",
-            icon = shiny::icon("times"),
-            width = 210,
-            style = "color: #000000;
-                     background-color: #a188bd;
-                     border-color: #091520"
+          ns("names_remove"),
+          "Remove selected rename",
+          icon = shiny::icon("times"),
+          width = 210,
+          style = "color: #000000;
+                   background-color: #a188bd;
+                   border-color: #091520"
         ),
         shiny::br(),
         shiny::actionButton(
