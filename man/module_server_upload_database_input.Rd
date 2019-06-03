@@ -26,13 +26,39 @@ module_server_upload_database_input(id_namespace = "main",
 \arguments{
 \item{id_namespace}{a character string to be namespaced}
 
-\item{id_coord}{a character string to be namespaced}
+\item{id_text}{a character that specifies text slot}
 
-\item{label_coord}{a character string to be namespaced}
+\item{label_text}{a character to display for a text slot}
 
-\item{id_database}{a character string to be namespaced}
+\item{value_text}{a character that species scientific name}
 
-\item{label_database}{a character string to be namespaced}
+\item{id_num}{a character that specifies numeric slot}
+
+\item{label_num}{a character to display for a numeric slot}
+
+\item{value_num}{a numeric value for number of species to download}
+
+\item{id_coord}{a character that specifies coordinate slot}
+
+\item{label_coord}{a character to display for a coordinate slot}
+
+\item{value_id_coord}{numeric values as index for {value_label_coord}}
+
+\item{value_label_coord}{a character string (vector) to display as
+coordinate selections}
+
+\item{id_database}{a character string that specifies database slot}
+
+\item{value_id_database}{a character vector as index for
+{value_label_database}}
+
+\item{value_label_database}{a character vector to display as database names}
+
+\item{id_query}{a character string that specifies action button to query}
+
+\item{label_query}{a character string to display on query database button}
+
+\item{label_databasea}{a character string to display for a database slot}
 }
 \description{
 Input module for {module_server_upload_database}

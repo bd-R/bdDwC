@@ -53,10 +53,24 @@ module_server_upload_local_input <- function(
 #' Input module for {module_server_upload_database}
 #'
 #' @param id_namespace a character string to be namespaced
-#' @param id_database a character string to be namespaced
-#' @param label_database a character string to be namespaced
-#' @param id_coord a character string to be namespaced
-#' @param label_coord a character string to be namespaced
+#' @param id_text a character that specifies text slot
+#' @param label_text a character to display for a text slot
+#' @param value_text a character that species scientific name
+#' @param id_num a character that specifies numeric slot
+#' @param label_num a character to display for a numeric slot
+#' @param value_num a numeric value for number of species to download
+#' @param id_coord a character that specifies coordinate slot
+#' @param label_coord a character to display for a coordinate slot
+#' @param value_id_coord numeric values as index for {value_label_coord}
+#' @param value_label_coord a character string (vector) to display as
+#' coordinate selections
+#' @param id_database a character string that specifies database slot
+#' @param label_databasea a character string to display for a database slot
+#' @param value_id_database a character vector as index for
+#' {value_label_database}
+#' @param value_label_database a character vector to display as database names
+#' @param id_query a character string that specifies action button to query
+#' @param label_query a character string to display on query database button
 #' 
 #' @importFrom stats setNames
 #' 
