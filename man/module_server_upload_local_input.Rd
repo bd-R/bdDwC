@@ -20,7 +20,7 @@ module_server_upload_local_input(id_namespace = "main",
 \item{mime_type}{a character vector of MIME types}
 }
 \description{
-Input module for {module_server_upload_local}
+This module procuces UI for local file upload
 }
 \seealso{
 Other shiny modules: \code{\link{module_server_buttons_clean}},

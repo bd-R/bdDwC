@@ -24,6 +24,8 @@ module_server_modal_ui <- function(
 }
 
 #' Input module for {module_server_upload_local}
+#' 
+#' This module procuces UI for local file upload
 #'
 #' @param id_namespace a character string to be namespaced
 #' @param id_input a character that specifies input slot
@@ -51,6 +53,8 @@ module_server_upload_local_input <- function(
 }
 
 #' Input module for {module_server_upload_database}
+#' 
+#' This module procuces UI for quering from the database
 #'
 #' @param id_namespace a character string to be namespaced
 #' @param id_text a character that specifies text slot
@@ -132,28 +136,33 @@ module_server_upload_database_input <- function(
 }
 
 #' UI module for {module_ui_dictionary}
+#' 
+#' This module procuces UI dictionary panel
 #'
+#' @param id_namespace a character string to be namespaced
+#' 
 #' @family shiny modules
 #'
 #' @keywords shiny modules internal
 #'
-module_ui_dictionary_ui <- function(id) {
-  ns <- shiny::NS(id)
+module_ui_dictionary_ui <- function(
+  id_namespace,
+  id_dic_info = "dic_info",
+  id_dwc = "update_darwin_cloud",
+  label_dwc = "Update Darwin Cloud dictionary",
+  id_file = "path_input_dictionary",
+  label_file = "Choose a personal dictionary file",
+  type_file = c("text/csv", ".csv", "text/comma-separated-values,text/plain")
+) {
+  ns <- shiny::NS(id_namespace)
   shiny::tagList(
-    shiny::uiOutput(ns("dic_info")),
+    shiny::uiOutput(ns(id_dic_info)),
     shiny::br(),
-    # Darwin Cloud dictionary
     shiny::tags$b("Update Darwin Cloud dictionary"),
     shiny::br(),
-    shiny::actionButton(ns("update_darwin_cloud"), "Update DC"),
+    shiny::actionButton(ns(id_dwc), label_dwc),
     shiny::br(), shiny::br(),
-    shiny::fileInput(
-      ns("path_input_dictionary"),
-      "Choose a personal dictionary file",
-      accept = c(
-        "text/csv", ".csv", "text/comma-separated-values,text/plain"
-      )
-    )
+    shiny::fileInput(ns(id_file), label_file, accept = type_file)
   )
 }
 

@@ -4,10 +4,19 @@
 \alias{module_ui_dictionary_ui}
 \title{UI module for {module_ui_dictionary}}
 \usage{
-module_ui_dictionary_ui(id)
+module_ui_dictionary_ui(id_namespace, id_dic_info = "dic_info",
+  id_dwc = "update_darwin_cloud",
+  label_dwc = "Update Darwin Cloud dictionary",
+  id_file = "path_input_dictionary",
+  label_file = "Choose a personal dictionary file",
+  type_file = c("text/csv", ".csv",
+  "text/comma-separated-values,text/plain"))
+}
+\arguments{
+\item{id_namespace}{a character string to be namespaced}
 }
 \description{
-UI module for {module_ui_dictionary}
+This module procuces UI dictionary panel
 }
 \seealso{
 Other shiny modules: \code{\link{module_server_buttons_clean}},

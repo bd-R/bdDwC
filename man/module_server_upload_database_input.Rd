@@ -61,7 +61,7 @@ coordinate selections}
 \item{label_databasea}{a character string to display for a database slot}
 }
 \description{
-Input module for {module_server_upload_database}
+This module procuces UI for quering from the database
 }
 \seealso{
 Other shiny modules: \code{\link{module_server_buttons_clean}},
