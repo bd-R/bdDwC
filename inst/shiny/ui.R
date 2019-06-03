@@ -8,7 +8,7 @@ shinydashboard::dashboardPage(
   # --------------------------
   # HEADER
   # --------------------------
-
+  title = "bdDwC",
   shinydashboard::dashboardHeader(
     title = span(img(src = "bdDwC.png", width = 20), "bdDwC")
   ),
@@ -108,6 +108,5 @@ shinydashboard::dashboardPage(
         )
       )
     )
-  ),
-  title = "bdDwC"
+  )
 )
