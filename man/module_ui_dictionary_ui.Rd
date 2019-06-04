@@ -14,6 +14,19 @@ module_ui_dictionary_ui(id_namespace, id_dic_info = "dic_info",
 }
 \arguments{
 \item{id_namespace}{a character string to be namespaced}
+
+\item{id_dic_info}{a character string that specifies dictionary info slot}
+
+\item{id_dwc}{a character string for Darwin Cloud dictionary update button}
+
+\item{label_dwc}{a character string to display on update button}
+
+\item{id_file}{a character string for dictionary file slort}
+
+\item{label_file}{a character string to display on input file slort}
+
+\item{type_file}{a character string that specifies allowed file types for
+dictionary}
 }
 \description{
 This module procuces UI dictionary panel

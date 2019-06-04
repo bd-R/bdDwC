@@ -140,6 +140,13 @@ module_server_upload_database_input <- function(
 #' This module procuces UI dictionary panel
 #'
 #' @param id_namespace a character string to be namespaced
+#' @param id_dic_info a character string that specifies dictionary info slot
+#' @param id_dwc a character string for Darwin Cloud dictionary update button
+#' @param label_dwc a character string to display on update button
+#' @param id_file a character string for dictionary file slort
+#' @param label_file a character string to display on input file slort
+#' @param type_file a character string that specifies allowed file types for
+#' dictionary
 #' 
 #' @family shiny modules
 #'
