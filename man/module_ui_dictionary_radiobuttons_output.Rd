@@ -4,10 +4,21 @@
 \alias{module_ui_dictionary_radiobuttons_output}
 \title{Output module for {module_ui_dictionary_radiobuttons}}
 \usage{
-module_ui_dictionary_radiobuttons_output(id)
+module_ui_dictionary_radiobuttons_output(id_namespace = "main",
+  id_name_field = "names_user_field",
+  id_name_standard = "names_user_standard")
+}
+\arguments{
+\item{id_namespace}{a character string to be namespaced}
+
+\item{id_name_field}{a character string that specifies column for a field
+term}
+
+\item{id_name_standard}{a character string that specifies column for a
+standard term}
 }
 \description{
-Output module for {module_ui_dictionary_radiobuttons}
+This module displays radiobuttons for user dictionary
 }
 \seealso{
 Other shiny modules: \code{\link{module_server_buttons_clean}},

@@ -153,7 +153,7 @@ module_server_upload_database_input <- function(
 #' @keywords shiny modules internal
 #'
 module_ui_dictionary_ui <- function(
-  id_namespace,
+  id_namespace = "main",
   id_dic_info = "dic_info",
   id_dwc = "update_darwin_cloud",
   label_dwc = "Update Darwin Cloud dictionary",
@@ -174,18 +174,30 @@ module_ui_dictionary_ui <- function(
 }
 
 #' Output module for {module_ui_dictionary_radiobuttons}
+#' 
+#' This module displays radiobuttons for user dictionary
 #'
+#' @param id_namespace a character string to be namespaced
+#' @param id_name_field a character string that specifies column for a field
+#' term
+#' @param id_name_standard a character string that specifies column for a
+#' standard term
+#' 
 #' @family shiny modules
 #'
 #' @keywords shiny modules internal
 #'
-module_ui_dictionary_radiobuttons_output <- function(id) {
-  ns <- shiny::NS(id)
+module_ui_dictionary_radiobuttons_output <- function(
+  id_namespace = "main",
+  id_name_field = "names_user_field",
+  id_name_standard = "names_user_standard"
+) {
+  ns <- shiny::NS(id_namespace)
   shiny::splitLayout(
-    shiny::uiOutput(ns("names_user_field")),
-    shiny::uiOutput(ns("names_user_standard")),
+    shiny::uiOutput(ns(id_name_field)),
+    shiny::uiOutput(ns(id_name_standard)),
     cellWidths = 200,
-    cellArgs = list(style = "padding: 6px")
+    cellArgs = list(style = "padding: 10px")
   )
 }
 
