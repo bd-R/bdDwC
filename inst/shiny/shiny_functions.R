@@ -9,7 +9,7 @@
 #'
 #' @keywords shiny internal
 #'
-shiny_server_reactivevalues <- function()  {
+shiny_server_reactivevalues <- function() {
   rv <- shiny::reactiveValues(
     # User data used in Darwinizer
     data_user = data.frame(),

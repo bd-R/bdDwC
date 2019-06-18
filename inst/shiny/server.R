@@ -20,7 +20,7 @@ shiny::shinyServer(function(input, output, session) {
   rv <- bdDwC:::shiny_server_reactivevalues()
   # Modals dialogs
   # We have to keep this on top as it contains welcoming modal
-  shiny::callModule(bdDwC:::module_server_modal, "main")
+  shiny::callModule(module_server_modal, "main")
   # Disable darwinizer tab if no data submitted
   shiny::observe({
     bdDwC:::shiny_server_tab_darwinizer(rv$data_user)
@@ -48,9 +48,9 @@ shiny::shinyServer(function(input, output, session) {
   # --------------------------
 
   # Update dictionary information (date, file name)
-  rv <- shiny::callModule(bdDwC:::module_ui_dictionary, "main", rv)
+  rv <- shiny::callModule(module_ui_dictionary, "main", rv)
   # Create radiobuttons for users dictionary
-  shiny::callModule(bdDwC:::module_ui_dictionary_radiobuttons, "main", rv)
+  shiny::callModule(module_ui_dictionary_radiobuttons, "main", rv)
   # Update radiobuttons while selecting field & standard names
   shiny::callModule(
     bdDwC:::module_ui_dictionary_radiobuttons_update,
@@ -63,7 +63,7 @@ shiny::shinyServer(function(input, output, session) {
   # --------------------------
 
   # Enable darwnizer and other buttons
-  shiny::callModule(bdDwC:::module_ui_buttons, "main", rv)
+  shiny::callModule(module_ui_buttons, "main", rv)
   # Perform darwnizer
   rv <- shiny::callModule(
     bdDwC:::module_server_darwinizer,
@@ -72,14 +72,14 @@ shiny::shinyServer(function(input, output, session) {
     parent = session
   )
   # Checkboxes with names
-  shiny::callModule(bdDwC:::module_ui_checkbox, "main", rv)
+  shiny::callModule(module_ui_checkbox, "main", rv)
   # Buttons to perform filtering
-  rv <- shiny::callModule(bdDwC:::module_server_buttons_rename, "main", rv)
-  rv <- shiny::callModule(bdDwC:::module_server_buttons_remove, "main", rv)
-  rv <- shiny::callModule(bdDwC:::module_server_buttons_clean, "main", rv)
-  rv <- shiny::callModule(bdDwC:::module_server_buttons_rollback, "main", rv)
-  shiny::callModule(bdDwC:::module_server_buttons_download, "main", rv)
+  rv <- shiny::callModule(module_server_buttons_rename, "main", rv)
+  rv <- shiny::callModule(module_server_buttons_remove, "main", rv)
+  rv <- shiny::callModule(module_server_buttons_clean, "main", rv)
+  rv <- shiny::callModule(module_server_buttons_rollback, "main", rv)
+  shiny::callModule(module_server_buttons_download, "main", rv)
   # Value boxes
-  shiny::callModule(bdDwC:::module_ui_valuebox, "main", rv)
+  shiny::callModule(module_ui_valuebox, "main", rv)
 
 })
