@@ -17,13 +17,13 @@ shiny::shinyServer(function(input, output, session) {
   # --------------------------
 
   # All reactive values that we use within app
-  rv <- bdDwC:::shiny_server_reactivevalues()
+  rv <- shiny_server_reactivevalues()
   # Modals dialogs
   # We have to keep this on top as it contains welcoming modal
   shiny::callModule(module_server_modal, "main")
   # Disable darwinizer tab if no data submitted
   shiny::observe({
-    bdDwC:::shiny_server_tab_darwinizer(rv$data_user)
+    shiny_server_tab_darwinizer(rv$data_user)
   })
 
   # --------------------------
@@ -32,13 +32,13 @@ shiny::shinyServer(function(input, output, session) {
 
   # Upload local file
   rv <- shiny::callModule(
-    bdDwC:::module_server_upload_local,
+    module_server_upload_local,
     "main",
     rv
   )
   # Download from the remote database
   rv <- shiny::callModule(
-    bdDwC:::module_server_upload_database,
+    module_server_upload_database,
     "main",
     rv
   )
@@ -53,7 +53,7 @@ shiny::shinyServer(function(input, output, session) {
   shiny::callModule(module_ui_dictionary_radiobuttons, "main", rv)
   # Update radiobuttons while selecting field & standard names
   shiny::callModule(
-    bdDwC:::module_ui_dictionary_radiobuttons_update,
+    module_ui_dictionary_radiobuttons_update,
     "main",
     rv
   )
@@ -66,7 +66,7 @@ shiny::shinyServer(function(input, output, session) {
   shiny::callModule(module_ui_buttons, "main", rv)
   # Perform darwnizer
   rv <- shiny::callModule(
-    bdDwC:::module_server_darwinizer,
+    module_server_darwinizer,
     "main",
     rv,
     parent = session

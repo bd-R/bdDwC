@@ -112,7 +112,7 @@ module_server_upload_database_input <- function(
     "AntWeb"
   ),
   id_query = "query_database",
-  label_query = "query_database"
+  label_query = "Download data"
 ) {
   ns <- shiny::NS(id_namespace)
   shiny::tagList(

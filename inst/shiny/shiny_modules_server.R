@@ -122,7 +122,7 @@ module_ui_dictionary <- function(input, output, session, rv) {
   # Update dictionary status when cloud data is updated
   shiny::observeEvent(input$update_darwin_cloud, {
     # Update DC dictionary
-    rv$data_darwin_cloud <- download_cloud_data()
+    rv$data_darwin_cloud <- bdDwC::download_cloud_data()
     rv$info_dc_date <- Sys.Date()
     output$dic_info <- shiny_ui_dictionary(
       input$path_input_dictionary$name,
@@ -287,7 +287,7 @@ module_server_darwinizer <- function(input, output, session, rv, parent)  {
     # Update if something was darwinized
     if (nrow(rv$data_darwinized) > 0) {
       rv$data_rename <- rv$data_darwinized
-      rv$data_rename$name_rename <- link_old_new(rv$data_rename)
+      rv$data_rename$name_rename <- bdDwC:::link_old_new(rv$data_rename)
       # Updated (remove name) from standard names
       rv$names_standard_after <- rv$names_standard[
         !rv$names_standard %in% rv$data_rename$name_new
@@ -419,7 +419,7 @@ module_server_buttons_rename <- function(input, output, session, rv)  {
       )
     )
     # Create (combine) renamed name
-    rv$data_rename$name_rename <- link_old_new(rv$data_rename)
+    rv$data_rename$name_rename <- bdDwC:::link_old_new(rv$data_rename)
     # Updated (remove name) from standard names
     rv$names_standard_after <- rv$names_standard[
       !rv$names_standard %in% rv$data_rename$name_new
@@ -497,7 +497,7 @@ module_server_buttons_rollback <- function(input, output, session, rv)  {
   shiny::observeEvent(input$names_rollback, {
     if (nrow(rv$data_darwinized) > 0) {
       rv$data_rename <- rv$data_darwinized
-      rv$data_rename$name_rename <- link_old_new(rv$data_rename)
+      rv$data_rename$name_rename <- bdDwC:::link_old_new(rv$data_rename)
       rv$names_standard_after <- rv$names_standard[
         !rv$names_standard %in% rv$data_rename$name_new
       ]
@@ -521,7 +521,10 @@ module_server_buttons_download <- function(input, output, session, rv)  {
   output$download_data <- shiny::downloadHandler(
     filename = format(Sys.time(), "darwinizedData_%Y_%b_%d_%X.csv"),
     content = function(file) {
-      data.table::fwrite(rename_user_data(rv$data_user, rv$data_rename), file)
+      data.table::fwrite(
+        bdDwC::rename_user_data(rv$data_user, rv$data_rename),
+        file
+      )
     }
   )
 }

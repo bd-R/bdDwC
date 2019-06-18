@@ -18,7 +18,7 @@ shiny_server_reactivevalues <- function() {
     # Data that contains all renamings
     data_rename = data.frame(),
     # Darwin Cloud Data (standard and fieldname)
-    data_darwin_cloud = data_darwin_cloud$data,
+    data_darwin_cloud = bdDwC:::data_darwin_cloud$data,
     # Original set of names in user data
     names_user = c(),
     # Set of names in user data after renaming
@@ -28,7 +28,7 @@ shiny_server_reactivevalues <- function() {
     # Set of Darwin Cloud names after renaming
     names_standard_after = c(),
     # Dictionary version (date)
-    info_dc_date = data_darwin_cloud$date,
+    info_dc_date = bdDwC:::data_darwin_cloud$date,
     # User original dictionary
     dic_user_raw = data.frame(),
     # Names in user original dictionary used to create radio buttons
@@ -319,10 +319,10 @@ shiny_ui_definition_hover <- function(names) {
   result <- lapply(
     names,
     function(i) {
-      foo <- data_darwin_core_info$name == i
+      foo <- bdDwC:::data_darwin_core_info$name == i
       shinyBS::bsTooltip(
         paste0("dwc_hover_", i),
-        data_darwin_core_info$definition[foo],
+        bdDwC:::data_darwin_core_info$definition[foo],
         "right"
       )
     }
