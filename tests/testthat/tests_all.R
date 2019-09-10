@@ -149,17 +149,6 @@ test_that("Download Darwin Core Info", {
   expect_equal(length(unique(foo$definition)), 1)
 })
 
-context("Utils")
-
-test_that("Launch Shiny App", {
-  expect_error(run_dwc(1))
-  expect_error(run_dwc(""))
-  expect_error(run_dwc(c("shiny", "bdDwC")))
-  expect_error(run_dwc("bdDwC"))
-  # Should work in interactive
-  expect_error(run_dwc())
-})
-
 context("Tests")
 # These tests should either return error (s it's intended or be silent
 test_that("User Data", {

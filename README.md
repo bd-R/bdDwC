@@ -11,17 +11,8 @@ Darwinazing biodiversity data in R.
 
 "Darwin Core is a standard maintained by the Darwin Core maintenance group. It includes a glossary of terms intended to facilitate the sharing of information about biological diversity by providing identifiers, labels, and definitions." [Darwin Core](https://github.com/tdwg/dwc)
 
-`bdDwC` is R package that user can Darwinize given data using `shiny` application interface.  This package is part of [`bd-R`](https://github.com/bd-R) and soon will be implemented into two other packages [`bdchecks`](https://github.com/bd-R/bdchecks) and [`bdclean`](https://github.com/bd-R/bdclean)
+`bdDwC` is an R package that user can Darwinize given dataset using comand-line interface. This package is part of [`bd-R`](https://github.com/bd-R) and has a shiny interface implemented in [`bddwc.app`](https://github.com/bd-R/bddwc.app).
 
-
-This package lets user to:
-
-- Upload users dataset.  
-- Upload users dictionary.  
-- Run automatic *Darwinizer*.  
-- Perform manual renaming.
-
-All these actions are done within reactive `shiny` environment. 
 
 ---
 
@@ -32,11 +23,6 @@ Install `bdDwC` with:
 Or for development version:
 
     devtools::install_github("bd-R/bdDwC")
-
-Run `bdDwC` `shiny` app with:
-    
-    library(bdDwC)
-    run_dwc()
 
 ---
 
@@ -49,8 +35,8 @@ Load `bdDwC` package
 `bdDwC` contains Indian Reptile dataset `bdDwC:::data_reptiles`.  
 Darwinize data with `darwinize_names` (replace `bdDwC:::data_reptiles` with wanted dataset):
 
-    result <- darwinize_names(dataUser = bdDwC:::data_reptiles,
-                              dataDWC  = bdDwC:::data_darwin_cloud$data)
+    result <- darwinize_names(data_user = bdDwC:::data_reptiles,
+                              data_dwc  = bdDwC:::data_darwin_cloud$data)
 
 
 Rename your data using `bdDwC` with `rename_user_data`:
