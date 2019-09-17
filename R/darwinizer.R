@@ -16,6 +16,7 @@
 #'   data_user = bdDwC:::data_reptiles,
 #'   data_dwc = bdDwC:::data_darwin_cloud$data
 #' )
+#' 
 #' @family darwinizer functions
 #'
 #' @export
@@ -145,6 +146,7 @@ darwinize_names <- function(data_user = NULL, data_dwc = NULL) {
 #'   data_dwc = bdDwC:::data_darwin_cloud$data
 #' )
 #' rename_user_data(bdDwC:::data_reptiles, result)
+#' 
 #' @family darwinizer functions
 #'
 #' @export

@@ -18,6 +18,7 @@
 #'
 #' @examples
 #' download_cloud_data()
+#' 
 #' @importFrom data.table fread
 #'
 #' @family dictionary functions

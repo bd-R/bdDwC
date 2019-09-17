@@ -37,9 +37,10 @@ test_data_user <- function(data = NULL) {
 #' @keywords internal
 #'
 test_data_dwc <- function(
-                          data = NULL,
-                          column_field = "fieldname",
-                          column_stand = "standard") {
+  data = NULL,
+  column_field = "fieldname",
+  column_stand = "standard") {
+
   if (is.null(data)) {
     stop("Specify data_dwc")
   } else if (class(data) != "data.frame") {
