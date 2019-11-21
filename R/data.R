@@ -1,7 +1,7 @@
 #' Darwin Cloud Data
 #'
 #' Darwin Cloud data used to Darwinize. Darwin Cloud data was retrieved using
-#' `bdDwC::download_cloud_data()` function. This dataset contains Darwin Cloud
+#' `bdDwC:::download_cloud_data()` function. This dataset contains Darwin Cloud
 #' data and a download date.
 #'
 #' @format A list of length two. First entry contains a data frame with
