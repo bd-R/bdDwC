@@ -26,9 +26,11 @@ darwinize_names(
   data_user = bdDwC:::data_reptiles,
   data_dwc = bdDwC:::data_darwin_cloud$data
 )
+
 }
 \seealso{
-Other darwinizer functions: \code{\link{link_old_new}},
-  \code{\link{rename_user_data}}
+Other darwinizer functions: 
+\code{\link{link_old_new}()},
+\code{\link{rename_user_data}()}
 }
 \concept{darwinizer functions}

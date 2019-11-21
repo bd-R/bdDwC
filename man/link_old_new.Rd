@@ -20,8 +20,9 @@ a data.frame of darwinized user names
 standard names with unicode characters to present in checkboxes.
 }
 \seealso{
-Other darwinizer functions: \code{\link{darwinize_names}},
-  \code{\link{rename_user_data}}
+Other darwinizer functions: 
+\code{\link{darwinize_names}()},
+\code{\link{rename_user_data}()}
 }
 \concept{darwinizer functions}
 \keyword{internal}

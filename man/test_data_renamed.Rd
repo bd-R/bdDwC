@@ -16,9 +16,11 @@ error or nothing
 Test If Provided Renaming Data is Valid
 }
 \seealso{
-Other test functions: \code{\link{test_cloud}},
-  \code{\link{test_columns_cloud}},
-  \code{\link{test_data_dwc}}, \code{\link{test_data_user}}
+Other test functions: 
+\code{\link{test_cloud}()},
+\code{\link{test_columns_cloud}()},
+\code{\link{test_data_dwc}()},
+\code{\link{test_data_user}()}
 }
 \concept{test functions}
 \keyword{internal}

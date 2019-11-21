@@ -35,7 +35,7 @@ Authors@R: c(
 Depends: R (>= 3.4)
 Imports: data.table
 LazyData: true
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.0
 Encoding: UTF-8
 Suggests: testthat,
           covr

@@ -4,8 +4,7 @@
 \alias{clean_dwc}
 \title{Clean Dictionary Data}
 \usage{
-clean_dwc(data = NULL, column_field = "fieldname",
-  column_stand = "standard")
+clean_dwc(data = NULL, column_field = "fieldname", column_stand = "standard")
 }
 \arguments{
 \item{data}{a data.frame with dictionary data}
@@ -23,8 +22,9 @@ a data.frame of cleaned dictionary data
 Clean dictionary from unnecessary or empty fields
 }
 \seealso{
-Other dictionary functions: \code{\link{download_cloud_data}},
-  \code{\link{get_darwin_core_info}}
+Other dictionary functions: 
+\code{\link{download_cloud_data}()},
+\code{\link{get_darwin_core_info}()}
 }
 \concept{dictionary functions}
 \keyword{internal}

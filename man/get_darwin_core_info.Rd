@@ -4,10 +4,13 @@
 \alias{get_darwin_core_info}
 \title{Retrieve Information about Darwin Core Terms}
 \usage{
-
-  get_darwin_core_info(path_darwin_cloud = "http://tdwg.github.io/dwc/terms/",
-  regex_term = "table-secondary", regex_name = ".*>(.*)\\\\s<span.*",
-  regex_definition = ".*</td><td>(.*)</td></tr>.*", name_to_def = 2)
+get_darwin_core_info(
+  path_darwin_cloud = "http://tdwg.github.io/dwc/terms/",
+  regex_term = "table-secondary",
+  regex_name = ".*>(.*)\\\\s<span.*",
+  regex_definition = ".*</td><td>(.*)</td></tr>.*",
+  name_to_def = 2
+)
 }
 \arguments{
 \item{path_darwin_cloud}{a character string that specifies path to Darwin}
@@ -33,8 +36,9 @@ Darwin Core Terms. This information is displayed when using manually
 renaming.
 }
 \seealso{
-Other dictionary functions: \code{\link{clean_dwc}},
-  \code{\link{download_cloud_data}}
+Other dictionary functions: 
+\code{\link{clean_dwc}()},
+\code{\link{download_cloud_data}()}
 }
 \concept{dictionary functions}
 \keyword{internal}

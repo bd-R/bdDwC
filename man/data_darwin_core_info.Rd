@@ -10,6 +10,6 @@ data_darwin_core_info
 }
 \description{
 Darwin Core Info dataset stores standard names/terms and their definitions.
-This object was created using `bdDwC::get_darwin_core_info()` function.
+This object was created using `bdDwC:::get_darwin_core_info()` function.
 }
 \keyword{datasets}

@@ -4,8 +4,11 @@
 \alias{test_data_dwc}
 \title{Test If Provided Dictionary Data is Valid}
 \usage{
-test_data_dwc(data = NULL, column_field = "fieldname",
-  column_stand = "standard")
+test_data_dwc(
+  data = NULL,
+  column_field = "fieldname",
+  column_stand = "standard"
+)
 }
 \arguments{
 \item{data}{a data.frame with dictionary data}
@@ -23,10 +26,11 @@ error or nothing
 Test If Provided Dictionary Data is Valid
 }
 \seealso{
-Other test functions: \code{\link{test_cloud}},
-  \code{\link{test_columns_cloud}},
-  \code{\link{test_data_renamed}},
-  \code{\link{test_data_user}}
+Other test functions: 
+\code{\link{test_cloud}()},
+\code{\link{test_columns_cloud}()},
+\code{\link{test_data_renamed}()},
+\code{\link{test_data_user}()}
 }
 \concept{test functions}
 \keyword{internal}

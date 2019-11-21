@@ -4,11 +4,13 @@
 \alias{download_cloud_data}
 \title{Download Darwin Cloud Data}
 \usage{
-
-  download_cloud_data(path_remote = "https://raw.githubusercontent.com/kurator-org/",
+download_cloud_data(
+  path_remote = "https://raw.githubusercontent.com/kurator-org/",
   path_github = "kurator-validation/master/packages/kurator_dwca/",
   path_file = "data/vocabularies/darwin_cloud.txt",
-  column_field = "fieldname", column_stand = "standard")
+  column_field = "fieldname",
+  column_stand = "standard"
+)
 }
 \arguments{
 \item{path_remote}{a character string that specifies path to remote
@@ -35,9 +37,11 @@ renames them so they could be used in `shiny` app.
 }
 \examples{
 download_cloud_data()
+
 }
 \seealso{
-Other dictionary functions: \code{\link{clean_dwc}},
-  \code{\link{get_darwin_core_info}}
+Other dictionary functions: 
+\code{\link{clean_dwc}()},
+\code{\link{get_darwin_core_info}()}
 }
 \concept{dictionary functions}

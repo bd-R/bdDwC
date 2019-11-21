@@ -11,7 +11,7 @@ data_darwin_cloud
 }
 \description{
 Darwin Cloud data used to Darwinize. Darwin Cloud data was retrieved using
-`bdDwC::download_cloud_data()` function. This dataset contains Darwin Cloud
+`bdDwC:::download_cloud_data()` function. This dataset contains Darwin Cloud
 data and a download date.
 }
 \keyword{datasets}

@@ -16,10 +16,11 @@ error or nothing
 Test If Provided Columns of Cloud Data are Valid
 }
 \seealso{
-Other test functions: \code{\link{test_cloud}},
-  \code{\link{test_data_dwc}},
-  \code{\link{test_data_renamed}},
-  \code{\link{test_data_user}}
+Other test functions: 
+\code{\link{test_cloud}()},
+\code{\link{test_data_dwc}()},
+\code{\link{test_data_renamed}()},
+\code{\link{test_data_user}()}
 }
 \concept{test functions}
 \keyword{internal}
