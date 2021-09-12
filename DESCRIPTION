@@ -1,8 +1,8 @@
 Package: bdDwC
 Title: Darwin Core (DwC) Field Name Standardizer in R
 Description: Supplies a set of functions to standardize field names according to Darwin Core (DwC) format. Darwinize your data easily.
-Version: 0.1.53
-Date: 2021-07-11
+Version: 0.1.54
+Date: 2021-09-12
 License: GPL-3 | file LICENSE
 URL: https://github.com/bd-R/bdDwC
 BugReports: https://github.com/bd-R/bdDwC/issues
