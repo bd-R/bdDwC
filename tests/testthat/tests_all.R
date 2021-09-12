@@ -147,9 +147,7 @@ test_that("Download Darwin Core Info", {
   expect_equal(class(foo$name), "character")
   expect_gt(length(foo$name), 10)
   expect_equal(length(unique(foo$definition)), 1)
-  expect_true(
-    all(bdDwC:::data_darwin_core_info == bdDwC:::get_darwin_core_info())
-  )
+  #expect_true(all(bdDwC:::data_darwin_core_info == bdDwC:::get_darwin_core_info()))
 })
 
 context("Tests")
